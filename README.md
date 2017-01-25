@@ -13,8 +13,8 @@ Check installed version:
 
 Create symlink in bin directory
 ```
-ln -s /usr/bin/meteor ~/meteor/meteor
-```
+ln -s ~/meteor/meteor /usr/bin/meteor
+``
 
 # Clone weBrew repository
 ```
