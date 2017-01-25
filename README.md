@@ -1,4 +1,4 @@
-# Install meteor on Raspberry Pi
+# 1. Install meteor on Raspberry Pi
 
 Get Meteor universal (e.g. into your $HOME):
 ```
@@ -14,9 +14,9 @@ Check installed version:
 Create symlink in bin directory
 ```
 ln -s ~/meteor/meteor /usr/bin/meteor
-``
+```
 
-# Clone weBrew repository
+# 2. Clone weBrew repository
 ```
 cd ~
 git clone https://github.com/plapczyn/webrew.git
