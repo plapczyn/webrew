@@ -18,5 +18,6 @@ ln -s ~/meteor/meteor /usr/bin/meteor
 
 # Clone weBrew repository
 ```
+cd ~
 git clone https://github.com/plapczyn/webrew.git
 ```
