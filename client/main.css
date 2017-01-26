@@ -1,1 +1,11 @@
 /* CSS declarations go here */
+.hero__image .carousel-caption{
+  postion:;
+  top:5%;
+  bottom:20%;
+  background-image: image("img/bg.jpg");
+}
+
+.title{
+  font-size: 5em;
+}
