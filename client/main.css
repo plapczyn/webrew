@@ -1,11 +1,25 @@
 /* CSS declarations go here */
-.hero__image .carousel-caption{
-  postion:;
-  top:5%;
-  bottom:20%;
-  background-image: image("img/bg.jpg");
+body{ margin:0px 0px; }
+
+#hero{
+  background-image:url(img/bg.jpg);
+  background-size:cover;
+  position:relative;
+  height:50vh;
 }
 
-.title{
-  font-size: 5em;
+.header{
+  position:absolute;
+  top:50%;
+  text-align:center;
+  width:100%;
+  color:#fff;
+  font-size:2em;
+  -ms-transform: translate(0,-50%); /* IE 9 */
+    -webkit-transform: translate(0,-50%); /* Safari */
+    transform: translate(0,-50%);
+}
+
+.header h1{
+  font-size: 4em;
 }

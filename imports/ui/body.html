@@ -1,17 +1,19 @@
 <body>
-  <div class="hero__image">
-   <div class="carousel-caption">
-         <h1 class="title">weBrew</h1>
-         <p>The world's foremost coffee network.</p>
-       </div>
-   <img src="img/bg.jpg" alt="weBrew" class="img-responsive">
- </div>
-  <h1> Recently Added </h1>
-  <ul>
-    {{#each coffees}}
-    {{> coffee}}
-    {{/each}}
-  </ul>
+  <div id="hero">
+    <div class="header">
+      <h1>weBrew</h1>
+      <p>The world's foremost coffee network.</p>
+    </div>
+  </div>
+
+  <div class="container" >
+    <h1> Recently Added </h1>
+    <ul>
+      {{#each coffees}}
+      {{> coffee}}
+      {{/each}}
+    </ul>
+  </div>
 </body>
 
 <template name="coffee">
