@@ -7,22 +7,44 @@
         <p>{{name}}'s Profile</p>
       </div>
     </div>
-<div class="container-fluid">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-xs-11 col-xs-offset-1">
 
-    <div class="row">
+          <img src="{{pictureUrl}}" class="img-thumbnail profile-picture offset-top"/>
 
-      <div class="col-xs-11 col-xs-offset-1">
-        <img src="{{pictureUrl}}" class="img-thumbnail profile-picture offset-top"/>
-        <div class="user-info">
-          <p>Hello, my name is {{name}}</p>
-          <p>I highly enjoy Coffee</p>
+          <div class="row offset-top">
+            <div class="col-xs-2">
+              <div class="user-info thumbnail profile-info">
+                <p>
+                  {{info}}
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
+        <div class="col-xs-10 col-xs-offset-1">
+          <div class="row">
+            {{#each coffeeReviews}}
+            <div class="col-xs-3 col-xs-offset-1">
+              <div onclick="alert()" class="thumbnail" style="height:auto; background-color:beige" href="http://localhost:300">
+                <img src="{{pictureUrl}}" class="coffee-review"/>
+                <div class="rating">
+                  Rating:
+                  <i class="glyphicon glyphicon-star"></i>
+                  <i class="glyphicon glyphicon-star"></i>
+                  <i class="glyphicon glyphicon-star"></i>
+                  <i class="glyphicon glyphicon-star"></i>
+                  <i class="glyphicon glyphicon-star half"></i>
+                </div>
+              </div>
+            </div>
+            {{/each}}
+          </div>
 
+        </div>
       </div>
-
-
     </div>
-  </div>
 
-</div>
+  </div>
 </template>
