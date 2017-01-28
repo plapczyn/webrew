@@ -1,0 +1,22 @@
+<template name="Home">
+
+  <div id="hero">
+    <div class="header">
+      <h1>weBrew</h1>
+      <p>The world's foremost coffee network.</p>
+    </div>
+  </div>
+  <div class="container" >
+  {{> loginButtons }}
+    <h1> Recently Added </h1>
+    <ul>
+      {{#each coffees}}
+      {{> coffee}}
+      {{/each}}
+    </ul>
+  </div>
+  {{#each users}}
+      {{> mebrew}}
+  {{/each}}
+
+</template>
