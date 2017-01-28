@@ -1,0 +1,24 @@
+#mehero{
+  background-image:url(img/bg.jpg);
+  background-size:cover;
+  position:relative;
+  height:50vh;
+}
+.fit-width{
+  padding-left:0px;
+  padding-right:0px;
+}
+
+.profile-picture{
+  height: 200px;
+  width: 200px;
+  box-shadow: 1px 1px 7px grey;
+}
+.offset-top{
+  position:relative;
+  bottom:50px;
+}
+.card{
+  box-shadow: 2px 2px 7px grey;
+  margin: 5px;
+}
