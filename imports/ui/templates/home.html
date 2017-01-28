@@ -1,26 +1,34 @@
 <template name="Home">
-
+  {{#if currentUser}}
   <div id="hero">
     <div class="header">
       <h1>weBrew</h1>
       <p>The world's foremost coffee network.</p>
-      {{#if currentUser}}
-        <p> My name is {{> loginButtons }} and I love coffee! </p>
-      {{else}}
-        <p> I'm a member, {{> loginButtons }} </p>
-      {{/if}}
+      <p> My name is {{> loginButtons }} and I love coffee! </p>
     </div>
   </div>
+  {{else}}
+  <div id="hero-login">
+    <div class="header">
+      <h1>weBrew</h1>
+      <p>The world's foremost coffee network.</p>
+      <p> I'm a member, <span style="a:link{color: white}">{{> loginButtons }}</span></p>
+    </div>
+  </div>
+  {{/if}}
+
+  {{#if currentUser}}
   <div class="container" >
     <h1> Recently Added </h1>
-    <ul>
+    <div class="row">
       {{#each coffees}}
       {{> coffee}}
       {{/each}}
-    </ul>
+    </div>
   </div>
-  {{#each users}}
-      {{> mebrew}}
-  {{/each}}
+  {{/if}}
 
+  {{#each users}}
+  {{> mebrew}}
+  {{/each}}
 </template>
