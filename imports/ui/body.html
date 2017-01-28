@@ -1,4 +1,15 @@
 <body>
+  {{> app_body}}
+</body>
+
+<template name="app_body">
+  {{> Template.dynamic template=main}}
+</template>
+
+
+
+<template name="Home">
+
   <div id="hero">
     <div class="header">
       <h1>weBrew</h1>
@@ -17,4 +28,4 @@
   {{#each users}}
       {{> mebrew}}
   {{/each}}
-</body>
+</template>
