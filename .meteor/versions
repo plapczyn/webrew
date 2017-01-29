@@ -56,9 +56,11 @@ modules@0.6.4
 modules-runtime@0.6.4_1
 mongo@1.1.9_1
 mongo-id@1.0.5
+mrt:moment@2.8.1
 npm-bcrypt@0.8.7_1
 npm-mongo@1.4.44_1
 observe-sequence@1.0.12
+ogamedia:timer@0.0.9
 ordered-dict@1.0.8
 promise@0.7.2_1
 random@1.0.10
