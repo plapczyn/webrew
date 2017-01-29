@@ -21,3 +21,8 @@ ln -s ~/meteor/meteor /usr/bin/meteor
 cd ~
 git clone https://github.com/plapczyn/webrew.git
 ```
+
+# Notes
+
+The usingn color palette here..
+http://colorpalettes.net/color-palette-2648/
