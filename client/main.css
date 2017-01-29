@@ -2,14 +2,14 @@
 body{ margin:0px 0px; }
 
 #hero{
-  background-image:url(img/bg.jpg);
+  background-image:url(/img/bg.jpg);
   background-size:cover;
   position:relative;
   height:50vh;
 }
 
 #hero-login{
-  background-image:url(img/bg.jpg);
+  background-image:url(/img/bg.jpg);
   background-size:cover;
   position:relative;
   height:100vh;
