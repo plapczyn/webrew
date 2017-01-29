@@ -6,5 +6,4 @@ Template.brew.helpers({
   brew () {
       return Coffees.find({name: FlowRouter.getParam("brewId")});
     },
-
 });

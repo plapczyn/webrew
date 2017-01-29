@@ -1,15 +1,8 @@
 <template name="newbrew">
 
   <form class="newbrew">
-    <input type="text" name="name" placeholder="Type to add new brew" />
+    <input type="text" name="name" placeholder="Name your brew" />
+    <input type="text" name="roast" placeholder="What type of roast?" />
+    <button type="submit" class="btn btn-default">Submit</button>
   </form>
-  <div class="col-sm-6 col-md-4">
-    <div class="thumbnail">
-      <img src="img/default-brew.jpg" alt="...">
-      <div class="caption">
-        <h3>{{name}} <span class="label label-default">New</span></h3>
-        <p>{{roast}} Roast</p>
-      </div>
-    </div>
-  </div>
 </template>
