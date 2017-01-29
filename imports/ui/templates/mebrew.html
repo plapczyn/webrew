@@ -1,47 +1,56 @@
 <template name="mebrew">
-  <div style="height:100%; width:100%">
-
-    <div id="mehero">
-      <div class="header">
-        <h1>meBrew</h1>
-        <p>{{name}}'s Profile</p>
-      </div>
+  <div id="mehero">
+    <div class="header">
+      <h1>meBrew</h1>
+      <p>{{name}}'s Profile</p>
     </div>
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-xs-11 col-xs-offset-1">
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-11 col-xs-offset-1">
 
-          <img src="{{pictureUrl}}" class="img-thumbnail profile-picture offset-top"/>
+        <img src="{{pictureUrl}}" class="img-thumbnail profile-picture offset-top"/>
 
-          <div class="row offset-top">
-            <div class="col-xs-2">
-              <div class="user-info thumbnail profile-info">
-                <p>
-                  {{info}}
-                </p>
-              </div>
+        <div class="row offset-top">
+          <div class="col-xs-2">
+            <div class="user-info thumbnail profile-info">
+              <p>
+                {{info}}
+              </p>
             </div>
           </div>
         </div>
-        <div class="col-xs-10 col-xs-offset-1">
-          <div class="row">
-            {{#each coffeeReviews}}
-            {{> coffee }}
-            {{/each}}
-          </div>
+      </div>
+    </div>
+    <!-- <div class="col-xs-10 col-xs-offset-1"> -->
+    <div class="row">
 
-<p>
-  FAVOORITES
-</p>
-          <div class="row">
-            {{#each favorites}}
-              {{#each brew name = .}}
-              {{> coffee}}
-              {{/each}}
-            {{/each}}
-          </div>
-        </div>
+      <h1>Added by {{name}}</h1>
+
+      <div class="row" style="margin-bottom:0px">
+        {{#each meBrews}}
+        {{#each brew name = .}}
+        {{> coffee}}
+        {{/each}}
+        {{/each}}
+
+      </div>
+      <div class="row">
+        {{#each coffeeReviews}}
+        {{> coffee }}
+        {{/each}}
+      </div>
+
+      <h1>{{name}}'s Favorites</h1>
+
+      <div class="row">
+        {{#each favorites}}
+        {{#each brew name = .}}
+        {{> coffee}}
+        {{/each}}
+        {{/each}}
       </div>
     </div>
   </div>
+  <!-- </div> -->
 </template>

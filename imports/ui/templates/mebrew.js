@@ -17,9 +17,9 @@ Template.mebrew.events({
 Template.mebrew.helpers({
   name: "Paul",
   pictureUrl:"/img/Paul.jpg",
-  coffeeReviews:[{name:"TEST"},{},{},{},{},{}],
   info: "This is some test information... I LOVE INFORMATION",
   favorites: ["Kirkland", "Tyler's Treat"],
+  meBrews: ["Kirkland", "Tyler's Treat"],
 
   brew (element) {
     return Coffees.find({name:element.hash.name});
