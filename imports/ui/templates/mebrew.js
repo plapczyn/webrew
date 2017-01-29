@@ -17,5 +17,6 @@ Template.mebrew.helpers({
   name: "Paul",
   pictureUrl:"img/Paul.jpg",
   coffeeReviews:[{name:"TEST"},{},{},{},{},{}],
-  info: "This is some test information... I LOVE INFORMATION"
+  info: "This is some test information... I LOVE INFORMATION",
+  favorites: ["Kirkland", "Duncan Donuts", "Kirkland Jungle Blend"]
 });
