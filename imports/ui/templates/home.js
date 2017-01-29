@@ -4,6 +4,6 @@ import { Coffees } from '../../api/collections/coffees.js';
 
 Template.Home.helpers({
   coffees () {
-      return Coffees.find({});
-    },
+    return Coffees.find({},{ sort: { createdAt: -1 } });
+  },
 });
