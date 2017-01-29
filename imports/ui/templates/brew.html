@@ -1,0 +1,15 @@
+<template name="brew">
+  <div class="col-sm-6 col-md-6">
+    <div class="thumbnail">
+      <a href="/brew/{{name}}" class="">
+        <img src="img/default-brew.jpg" alt="...">
+        <div class="caption">
+          {{#each brew}}
+          <h3>Name: {{name}} <span class="label label-default">New</span></h3>
+          <p>Roast: {{roast}} </p>
+          {{/each}}
+        </div>
+      </a>
+    </div>
+  </div>
+</template>

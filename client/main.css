@@ -34,7 +34,19 @@ body{ margin:0px 0px; }
   text-decoration: none;
 }
 
+.login-link-text{
+  color: white;
+  text-decoration: none;
+}
+
 #login-buttons a, .accounts-dialog a {
     cursor: pointer;
     text-decoration: none;
+}
+
+#login-buttons .login-button, .accounts-dialog .login-button {
+  background: #b69476;
+}
+#login-buttons .login-button:hover, .accounts-dialog .login-button:hover{
+  background: #e8e9eb;
 }

@@ -1,1 +1,1 @@
-import './coffee.html'
+import './coffee.html';
