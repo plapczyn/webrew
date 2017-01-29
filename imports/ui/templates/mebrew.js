@@ -16,6 +16,6 @@ Template.mebrew.events({
 Template.mebrew.helpers({
   name: "Paul",
   pictureUrl:"img/Paul.jpg",
-  coffeeReviews:[{},{},{},{},{},{}],
+  coffeeReviews:[{name:"TEST"},{},{},{},{},{}],
   info: "This is some test information... I LOVE INFORMATION"
 })

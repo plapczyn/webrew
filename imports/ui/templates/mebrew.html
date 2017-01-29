@@ -26,25 +26,11 @@
         <div class="col-xs-10 col-xs-offset-1">
           <div class="row">
             {{#each coffeeReviews}}
-            <div class="col-xs-3 col-xs-offset-1">
-              <div onclick="alert()" class="thumbnail" style="height:auto; background-color:beige" href="http://localhost:300">
-                <img src="{{pictureUrl}}" class="coffee-review"/>
-                <div class="rating">
-                  Rating:
-                  <i class="glyphicon glyphicon-star"></i>
-                  <i class="glyphicon glyphicon-star"></i>
-                  <i class="glyphicon glyphicon-star"></i>
-                  <i class="glyphicon glyphicon-star"></i>
-                  <i class="glyphicon glyphicon-star half"></i>
-                </div>
-              </div>
-            </div>
+            {{> coffee name=counter}}
             {{/each}}
           </div>
-
         </div>
       </div>
     </div>
-
   </div>
 </template>
