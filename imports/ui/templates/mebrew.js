@@ -1,4 +1,5 @@
 import './mebrew.html'
+import './mebrew.css'
 
 Template.mebrew.onCreated(() =>{
   this.counter = 0;
@@ -15,5 +16,6 @@ Template.mebrew.events({
 Template.mebrew.helpers({
   name: "Paul",
   pictureUrl:"img/Paul.jpg",
-  coffeeReviews:[{},{}]
+  coffeeReviews:[{},{},{},{},{},{}],
+  info: "This is some test information... I LOVE INFORMATION"
 })
