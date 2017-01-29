@@ -1,4 +1,4 @@
-import './home.html'
+import './home.html';
 
 import { Coffees } from '../../api/collections/coffees.js';
 

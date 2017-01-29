@@ -34,6 +34,11 @@ body{ margin:0px 0px; }
   text-decoration: none;
 }
 
+.login-link-text{
+  color: white;
+  text-decoration: none;
+}
+
 #login-buttons a, .accounts-dialog a {
     cursor: pointer;
     text-decoration: none;

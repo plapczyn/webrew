@@ -1,5 +1,5 @@
-import './mebrew.html'
-import './mebrew.css'
+import './mebrew.html';
+import './mebrew.css';
 
 Template.mebrew.onCreated(() =>{
   this.counter = 0;
@@ -18,4 +18,4 @@ Template.mebrew.helpers({
   pictureUrl:"img/Paul.jpg",
   coffeeReviews:[{},{},{},{},{},{}],
   info: "This is some test information... I LOVE INFORMATION"
-})
+});
