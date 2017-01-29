@@ -12,11 +12,13 @@ Template.newbrew.events({
     const name = target.name.value;
     const roast = target.roast.value;
 
-    // Insert a task into the collection
+    // Insert a new coffee into the collection
     Coffees.insert({
       name: name,
       roast: roast,
-      createdAt: new Date(), // current time
+      createdAt: new Date(),
+      owner: Meteor.userId(),
+      username: Meteor.user().username,
     });
 
     // Clear form
