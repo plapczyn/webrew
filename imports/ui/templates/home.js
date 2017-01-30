@@ -1,4 +1,5 @@
 import './home.html';
+import './home.css'
 
 import { Coffees } from '../../api/collections/coffees.js';
 

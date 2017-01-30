@@ -13,12 +13,14 @@ Template.newbrew.events({
     const name = target.name.value;
     const roast = target.roast.value;
     const description = target.description.value;
+    const imageURL = target.imageURL.value;
 
     // Insert a new coffee into the collection
     Coffees.insert({
       name: name,
       roast: roast,
       description: description,
+      imageURL: imageURL,
       createdAt: new Date(),
       owner: Meteor.userId(),
       username: Meteor.user().username,

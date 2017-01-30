@@ -19,19 +19,24 @@
   <div class="container">
     <p> </p>
     <div class="row">
-      <div class="col-md-4">
-        <img src="/img/default-brew.jpg" class="img-responsive" alt="...">
+      <div class="col-md-8">
+        <h1>{{name}}</h1>
+        <h3>{{roast}} Roast </h3>
+        <p> Added {{tm_now createdAt}} by <a href="/mebrew/{{username}}" class="">{{username}}</a></p>
+        {{#if isOwner}}
+        <button type="button" class="delete btn btn-danger">Delete Brew</button>
+        {{/if}}
+        <h3>Brew Summery</h3>
+        <p>{{#markdown}}{{description}}{{/markdown}} </p>
       </div>
       <div class="col-md-4">
-        <h1>{{name}}</h1>
-        <p>{{roast}} Roast </p>
-        {{#if isOwner}}
-        <button type="button" class="delete btn btn-danger">Delete</button>
+        {{#if imageURL}}
+        <img src="{{imageURL}}" class="img-responsive" alt="...">
+        {{else}}
+        <img src="/img/default-brew.jpg" class="img-responsive" alt="...">
         {{/if}}
       </div>
       <div class="col-md-4">
-        <h3>Brew Summery</h3>
-        <p>{{#markdown}}{{description}}{{/markdown}} </p>
       </div>
     </div>
   </div>
