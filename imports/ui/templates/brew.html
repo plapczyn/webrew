@@ -1,4 +1,22 @@
 <template name="brew">
+  <div id="{{#if currentUser}}hero{{else}}hero-login{{/if}}">
+    <ul class="nav nav-pills pull-right">
+      <li role="presentation" class="active"><a href="/">Home</a></li>
+      <li role="presentation"><a href="/new">New Brew</a></li>
+      <li role="presentation"><a href="/me">Me</a></li>
+    </ul>
+    <div class="header">
+      {{#if currentUser}}
+      <h1><a href="/" style="a{color: white; text-decoration: none;}">reBrew</a></h1>
+      <p>The world's foremost coffee network.</p>
+      <p> My name is {{> loginButtons }} and I love coffee! </p>
+      {{else}}
+      <h1><a href="/" style="a{color: white; text-decoration: none;}">weBrew</a></h1>
+      <p>The world's foremost coffee network.</p>
+      <p> I'm a member, <span style="a:link{color: white}">{{> loginButtons }}</span></p>
+      {{/if}}
+    </div>
+  </div>
   <div class="col-xs-12 col-sm-6 col-md-6">
     <div class="thumbnail">
       {{#each brew}}

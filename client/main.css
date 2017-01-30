@@ -50,3 +50,10 @@ body{ margin:0px 0px; }
 #login-buttons .login-button:hover, .accounts-dialog .login-button:hover{
   background: #e8e9eb;
 }
+.nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus{
+  background-color: #b69476;
+}
+
+.nav a{
+  color: white;
+}
