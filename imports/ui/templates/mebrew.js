@@ -24,6 +24,6 @@ Template.mebrew.helpers({
   },
 
   brew (element) {
-    return Coffees.find({name:element.hash.name.coffee});
+    return Coffees.find({name:element.hash.name.name});
   }
 });
