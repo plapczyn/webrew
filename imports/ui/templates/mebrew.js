@@ -1,10 +1,8 @@
 import './mebrew.html';
 import './mebrew.css';
 import { Coffees } from '../../api/collections/coffees.js';
-
+import { Favorites } from '../../api/collections/coffees.js';
 Template.mebrew.onCreated(() =>{
-  this.counter = 0;
-
 });
 
 Template.mebrew.events({
@@ -15,13 +13,17 @@ Template.mebrew.events({
 });
 
 Template.mebrew.helpers({
-  name: "Paul",
+  name: FlowRouter.getParam("userName"),
   pictureUrl:"/img/Paul.jpg",
   info: "This is some test information... I LOVE INFORMATION",
-  favorites: ["Kirkland", "Tyler's Treat"],
-  meBrews: ["Kirkland", "Tyler's Treat"],
+  favorites(){
+    return Favorites.find({userName: FlowRouter.getParam("userName")})
+  },
+  meBrews (){
+    return Coffees.find({username: FlowRouter.getParam("userName")})
+  },
 
   brew (element) {
-    return Coffees.find({name:element.hash.name});
+    return Coffees.find({name:element.hash.name.name});
   }
 });
