@@ -1,8 +1,40 @@
 <template name="newbrew">
+  <div id="{{#if currentUser}}hero{{else}}hero-login{{/if}}">
+    <ul class="nav nav-pills pull-right">
+      <li role="presentation"><a href="/">Home</a></li>
+      <li role="presentation" class="active"><a href="/new">New Brew</a></li>
+      <li role="presentation"><a href="/me">Me</a></li>
+    </ul>
+    <div class="header">
+      {{#if currentUser}}
+      <h1><a href="/" style="a{color: white; text-decoration: none;}">newBrew</a></h1>
+      <p>The world's foremost coffee network.</p>
+      <p> My name is {{> loginButtons }} and I love coffee! </p>
+      {{else}}
+      <h1><a href="/" style="a{color: white; text-decoration: none;}">weBrew</a></h1>
+      <p>The world's foremost coffee network.</p>
+      <p> I'm a member, <span style="a:link{color: white}">{{> loginButtons }}</span></p>
+      {{/if}}
+    </div>
+  </div>
+  <div class="thumbnail">
+    <div class="caption">
+      <form class="newbrew">
+        <div class="form-group">
+          <h1>What should we name it?</h1>
+          <input type="text" name="name" placeholder="Name your brew" />
+        </div>
+        <div class="form-group">
+          <h1>How roasted is it?</h1>
+        <input type="text" name="roast" placeholder="What type of roast?" />
+        </div>
+        <div class="form-group">
+          <h1>Give it a picture</h1>
+          <input type="file" id="exampleInputFile">
+        </div>
+        <button type="submit" class="btn btn-default">Submit</button>
+      </form>
 
-  <form class="newbrew">
-    <input type="text" name="name" placeholder="Name your brew" />
-    <input type="text" name="roast" placeholder="What type of roast?" />
-    <button type="submit" class="btn btn-default">Submit</button>
-  </form>
+    </div>
+  </div>
 </template>

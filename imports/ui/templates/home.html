@@ -1,5 +1,10 @@
 <template name="Home">
   <div id="{{#if currentUser}}hero{{else}}hero-login{{/if}}">
+    <ul class="nav nav-pills pull-right">
+      <li role="presentation" class="active"><a href="/">Home</a></li>
+      <li role="presentation"><a href="/new">New Brew</a></li>
+      <li role="presentation"><a href="/me">Me</a></li>
+    </ul>
     <div class="header">
       {{#if currentUser}}
       <h1><a href="/" style="a{color: white; text-decoration: none;}">weBrew</a></h1>
