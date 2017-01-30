@@ -1,18 +1,18 @@
 <template name="Home">
   <div id="{{#if currentUser}}hero{{else}}hero-login{{/if}}">
+    {{#if currentUser}}
     <ul class="nav nav-pills pull-right">
       <li role="presentation" class="active"><a href="/">Home</a></li>
       <li role="presentation"><a href="/new">New Brew</a></li>
       <li role="presentation"><a href="/me">Me</a></li>
     </ul>
+    {{/if}}
     <div class="header">
-      {{#if currentUser}}
-      <h1><a href="/" style="a{color: white; text-decoration: none;}">weBrew</a></h1>
+      <h1><a id="title">weBrew</a></h1>
       <p>The world's foremost coffee network.</p>
+      {{#if currentUser}}
       <p> My name is {{> loginButtons }} and I love coffee! </p>
       {{else}}
-      <h1><a href="/" style="a{color: white; text-decoration: none;}">weBrew</a></h1>
-      <p>The world's foremost coffee network.</p>
       <p> I'm a member, <span style="a:link{color: white}">{{> loginButtons }}</span></p>
       {{/if}}
     </div>

@@ -1,0 +1,28 @@
+.newbrew input {
+    width: 100%;
+    padding: 15px;
+    box-sizing: border-box;
+    font-size: 2em;
+    text-align: center;
+    color: #fc6c58;
+    border: 0;
+    margin-bottom: 10px;
+}
+
+.newbrew textarea {
+    width: 100%;
+    padding: 15px;
+    box-sizing: border-box;
+    font-size: 2em;
+    color: #fc6c58;
+    border: 0;
+    margin-bottom: 10px;
+}
+
+::-webkit-input-placeholder {
+   text-align: center;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+   text-align: center;
+}

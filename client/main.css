@@ -34,9 +34,17 @@ body{ margin:0px 0px; }
   text-decoration: none;
 }
 
-.login-link-text{
+.login-link-text, #title{
   color: white;
   text-decoration: none;
+}
+
+.thumbnail a{
+  text-decoration: none;
+}
+
+#title a:hover, #title a:focus {
+    color: white;
 }
 
 #login-buttons a, .accounts-dialog a {
