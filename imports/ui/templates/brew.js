@@ -13,7 +13,7 @@ Template.brew.helpers({
 
 Template.brew.events({
   'click .delete'(event) {
-    // Insert a new coffee into the collection
+    // Remove coffee from the collection
     Coffees.remove(this._id);
     FlowRouter.go('Main');
   },

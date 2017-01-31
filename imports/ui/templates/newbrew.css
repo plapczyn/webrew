@@ -1,5 +1,5 @@
 .newbrew input {
-    width: 100%;
+    width: 50%;
     padding: 15px;
     box-sizing: border-box;
     font-size: 1em;
@@ -10,7 +10,7 @@
 }
 
 .newbrew textarea {
-    width: 100%;
+    width: 50%;
     padding: 15px;
     box-sizing: border-box;
     font-size: 1em;
