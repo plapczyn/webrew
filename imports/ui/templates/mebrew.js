@@ -17,13 +17,14 @@ Template.mebrew.helpers({
   pictureUrl:"/img/Paul.jpg",
   info: "This is some test information... I LOVE INFORMATION",
   favorites(){
-    return Favorites.find({userName: FlowRouter.getParam("userName")})
+    return Favorites.find({user: FlowRouter.getParam("userName")})
   },
   meBrews (){
     return Coffees.find({username: FlowRouter.getParam("userName")})
   },
 
   brew (element) {
+    console.log(element.hash.name)
     return Coffees.find({name:element.hash.name.name});
   }
 });
