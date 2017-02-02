@@ -65,3 +65,7 @@ body{ margin:0px 0px; }
 .nav a{
   color: white;
 }
+
+.thumbnail img{
+  max-height: 300px;
+}
