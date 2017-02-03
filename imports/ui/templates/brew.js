@@ -9,6 +9,16 @@ Template.brew.helpers({
   },
   isOwner(){
     return this.owner === Meteor.userId();
+  },
+  InFavorites(){
+    let username = Meteor.user().username;
+    let brew = FlowRouter.getParam("brewId");
+    let favorite =  Favorites.findOne({user: username, name: brew});
+
+    if(!favorite){
+      return true;
+    }
+    return false;
   }
 });
 
