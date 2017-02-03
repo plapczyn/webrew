@@ -19,6 +19,9 @@ Template.brew.helpers({
       return true;
     }
     return false;
+  },
+  reBrew(){
+    return [1];
   }
 });
 
@@ -49,8 +52,8 @@ Template.brew.events({
     event.preventDefault();
     var user = Meteor.user().username;
     var id = FlowRouter.getParam('brewId');
-    var gg = Favorites.findOne({user: user, name: id})._id;
+    var favoriteId = Favorites.findOne({user: user, name: id})._id;
 
-    Favorites.remove({_id: gg});
+    Favorites.remove({_id: favoriteId});
   }
 });

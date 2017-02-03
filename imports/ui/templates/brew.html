@@ -43,8 +43,10 @@
         <img src="/img/default-brew.jpg" class="img-responsive" alt="...">
         {{/if}}
       </div>
-      <div class="col-md-4">
-      </div>
+      <h1>Online Reviews</h1>
+      {{#each reBrew}}
+      {{> rebrew title = 'Coffee? More like !@#$' rebrew = "This is seriously the worst coffee I've ever had. I mean, I would rather eat dirt"}}
+      {{/each}}
     </div>
   </div>
   {{/each}}
