@@ -44,5 +44,13 @@ Template.brew.events({
       color: 'red'
     };
     Toast.info(brew + " was added to your favorites");
+  },
+  'click .removeFromFavorites'(event){
+    event.preventDefault();
+    var user = Meteor.user().username;
+    var id = FlowRouter.getParam('brewId');
+    var gg = Favorites.findOne({user: user, name: id})._id;
+
+    Favorites.remove({_id: gg});
   }
 });
