@@ -25,8 +25,14 @@
         <p> Added {{tm_now createdAt}} by <a href="/mebrew/{{username}}" class="">{{username}}</a></p>
         {{#if isOwner}}
         <button type="button" class="delete btn btn-danger">Delete Brew</button>
-        <button type="button" class="addToFavorites btn btn-success">Add to Favorites</button>
         {{/if}}
+
+        {{#if InFavorites}}
+        <button type="button" class="addToFavorites btn btn-success">Add to Favorites</button>
+        {{else}}
+        <button type="button" class="removeFromFavorites btn btn-success">Remove from Favorites</button>
+        {{/if}}
+
         <h3>Brew Summery</h3>
         <p>{{#markdown}}{{description}}{{/markdown}} </p>
       </div>
@@ -37,8 +43,10 @@
         <img src="/img/default-brew.jpg" class="img-responsive" alt="...">
         {{/if}}
       </div>
-      <div class="col-md-4">
-      </div>
+      <h1>Online Reviews</h1>
+      {{#each reBrew}}
+      {{> rebrew title = 'Coffee? More like !@#$' rebrew = "This is seriously the worst coffee I've ever had. I mean, I would rather eat dirt"}}
+      {{/each}}
     </div>
   </div>
   {{/each}}

@@ -9,6 +9,19 @@ Template.brew.helpers({
   },
   isOwner(){
     return this.owner === Meteor.userId();
+  },
+  InFavorites(){
+    let username = Meteor.user().username;
+    let brew = FlowRouter.getParam("brewId");
+    let favorite =  Favorites.findOne({user: username, name: brew});
+
+    if(!favorite){
+      return true;
+    }
+    return false;
+  },
+  reBrew(){
+    return [1];
   }
 });
 
@@ -34,5 +47,13 @@ Template.brew.events({
       color: 'red'
     };
     Toast.info(brew + " was added to your favorites");
+  },
+  'click .removeFromFavorites'(event){
+    event.preventDefault();
+    var user = Meteor.user().username;
+    var id = FlowRouter.getParam('brewId');
+    var favoriteId = Favorites.findOne({user: user, name: id})._id;
+
+    Favorites.remove({_id: favoriteId});
   }
 });
