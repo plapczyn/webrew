@@ -2,6 +2,7 @@ import './brew.html';
 
 import { Coffees } from '../../api/collections/coffees.js';
 import { Favorites } from '../../api/collections/coffees.js';
+import { Rebrews } from '../../api/collections/coffees.js';
 
 Template.brew.helpers({
   brew () {
@@ -21,7 +22,7 @@ Template.brew.helpers({
     return false;
   },
   reBrew(){
-    return [1];
+    return Rebrews.find({brew: FlowRouter.getParam('brewId')});
   }
 });
 
