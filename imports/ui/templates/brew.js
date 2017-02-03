@@ -27,6 +27,19 @@ Template.brew.helpers({
 
 Template.brew.events({
   'click .delete'(event) {
+    var brew = FlowRouter.getParam('brewId')
+    Toast.options = {
+      closeButton: true,
+      progressBar: true,
+      positionClass: 'toast-top-left',
+      showEasing: 'swing',
+      hideEasing: 'linear',
+      showMethod: 'fadeIn',
+      hideMethod: 'fadeOut',
+      timeOut: 1500,
+      color: 'red'
+    };
+    Toast.info(brew + " was removed");
     // Remove coffee from the collection
     Coffees.remove(this._id);
     FlowRouter.go('Main');
@@ -51,9 +64,20 @@ Template.brew.events({
   'click .removeFromFavorites'(event){
     event.preventDefault();
     var user = Meteor.user().username;
-    var id = FlowRouter.getParam('brewId');
-    var favoriteId = Favorites.findOne({user: user, name: id})._id;
-
+    var brew = FlowRouter.getParam('brewId');
+    var favoriteId = Favorites.findOne({user: user, name: brew})._id;
     Favorites.remove({_id: favoriteId});
+    Toast.options = {
+      closeButton: true,
+      progressBar: true,
+      positionClass: 'toast-top-left',
+      showEasing: 'swing',
+      hideEasing: 'linear',
+      showMethod: 'fadeIn',
+      hideMethod: 'fadeOut',
+      timeOut: 1500,
+      color: 'red'
+    };
+    Toast.info(brew + " was removed from your favorites");
   }
 });
