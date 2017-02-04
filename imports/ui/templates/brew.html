@@ -3,7 +3,7 @@
     <ul class="nav nav-pills pull-right">
       <li role="presentation" class="active"><a href="/">Home</a></li>
       <li role="presentation"><a href="/new">New Brew</a></li>
-      <li role="presentation"><a href="/me">Me</a></li>
+      <li role="presentation"><a class="goMe">Me</a></li>
     </ul>
     <div class="header">
       <h1><a id="title">reBrew</a></h1>
@@ -24,7 +24,7 @@
         <h3>{{roast}} Roast </h3>
         <p> Added {{tm_now createdAt}} by <a href="/mebrew/{{username}}" class="">{{username}}</a></p>
         {{#if isOwner}}
-        <button type="button" class="delete btn btn-danger">Delete Brew</button>
+        <button type="button" class="deleteBrew delete btn btn-warning">Delete Brew</button>
         {{/if}}
 
         {{#if InFavorites}}
@@ -46,14 +46,14 @@
           <span class="glyphicon glyphicon-pencil" aria-hidden="true" style="font-size:35px"></span>
         </button>
         {{#if rebrewing}}
-        <form class="newRebrew thumbnail" style="display:inline-block">
+        <form class="submitRebrew thumbnail" style="display:inline-block">
           <div class="form-group">
             <label>Rebrew Title</label>
             <input type="text" name="title" class="form-control" placeholder="Add a title">
           </div>
           <div class="form-group">
             <label>Rebrew details</label>
-            <textarea type="text" name="title" class="form-control" style="width:200px; height:200px"></textarea>
+            <textarea type="text" name="rebrew" class="form-control" style="width:200px; height:200px"></textarea>
           </div>
           <div class="form-group">
               <h5>Overall rating</h5>
@@ -64,7 +64,7 @@
                   <option>4</option>
                   <option>5</option>
               </select>
-              <button class="submit submitRebrew btn btn-info" type="submit">
+              <button class="btn btn-info" type="submit" style="float:right">
                 <span class="glyphicon glyphicon-plus" style="font-size:20px" aria-hidden="true"></span>
               </button>
 

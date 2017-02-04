@@ -8,3 +8,10 @@ Template.Home.helpers({
     return Coffees.find({},{ sort: { createdAt: -1 } });
   },
 });
+
+Template.Home.events({
+  'click .goMe' (event){
+    FlowRouter.go('mebrew', {userName: Meteor.user().username})
+
+  }
+})

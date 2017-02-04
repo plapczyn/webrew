@@ -1,12 +1,11 @@
 import './brew.html';
-
+import './brew.css';
 import { Coffees } from '../../api/collections/coffees.js';
 import { Favorites } from '../../api/collections/coffees.js';
 import { Rebrews } from '../../api/collections/coffees.js';
 
 Template.brew.onCreated(function (){
   var instance = this;
-
   instance.isReBrewing = new ReactiveVar(false);
 });
 
@@ -95,9 +94,27 @@ Template.brew.events({
     var instance = Template.instance();
     instance.isReBrewing.set(!instance.isReBrewing.get());
   },
-  'submit submitRebrew'(event){
-    console.log(event);
+  'submit .submitRebrew'(event){
     event.preventDefault();
+    console.log("ASDASdA");
+    const target = event.target;
+    const title = target.title.value;
+    const rebrew = target.rebrew.value;
+    const rating = target.rating.value;
+    const test = Meteor.user().username;
+    let brew = FlowRouter.getParam('brewId');
+
+    Rebrews.insert({
+      user: test,
+      brew: brew,
+      rebrew: rebrew,
+      rating: rating
+    });
+
+  },
+  'click .goMe' (event){
+    // FlowRouter.go('mebrew', {userName: Meteor.user().username})
+
   }
 
 });

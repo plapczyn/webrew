@@ -1,9 +1,9 @@
 <template name="mebrew">
-  <div id="mehero">
+  <div id="hero">
     <ul class="nav nav-pills pull-right">
       <li role="presentation"><a href="/">Home</a></li>
       <li role="presentation"><a href="/new">New Brew</a></li>
-      <li role="presentation"><a href="/me">Me</a></li>
+      <li role="presentation"><a class="goMe" style="cursor:pointer">Me</a></li>
     </ul>
     <div class="header">
       <h1>meBrew</h1>
@@ -12,7 +12,7 @@
   </div>
   <div class="container">
     <div class="row">
-      <div class="profile-box"> 
+      <div class="profile-box">
       <!-- <div class="col-xs-11 col-xs-offset-1"> -->
 
         <img src="{{pictureUrl}}" class="img-thumbnail profile-picture offset-top"/>

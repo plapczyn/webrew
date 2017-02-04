@@ -8,3 +8,11 @@ import './templates/mebrew.js';
 import './templates/newbrew.js';
 import './templates/brew.js';
 import './templates/rebrew.js';
+
+export var ColorPallete = {
+  lightGrey: '#e8e9eb',
+  grey: '#a9a9ab',
+  lightBrown: '#b69476',
+  darkBrown: '#66290b',
+  blackBrown:'#120907'
+}

@@ -9,6 +9,10 @@ Template.mebrew.events({
   'click .test':(event) => {
     console.log("Event test" + this.counter);
     this.counter++;
+  },
+  'click .goMe' (event){
+    FlowRouter.go('mebrew', {userName: Meteor.user().username})
+
   }
 });
 
