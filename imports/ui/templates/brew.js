@@ -123,9 +123,9 @@ Template.brew.events({
     FlowRouter.go('brew', {brewId: name});
 
   },
+    //Goto Profile
   'click .goMe' (event){
-    // FlowRouter.go('mebrew', {userName: Meteor.user().username})
-
+      FlowRouter.go('mebrew', {userName: Meteor.user().username})
   }
 
 });
