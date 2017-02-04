@@ -16,3 +16,10 @@ Template.rebrew.helpers({
     return countArr;
   }
 });
+
+Template.review.events({
+    //Goto Profile
+    'click .goMe' (event){
+        FlowRouter.go('mebrew', {userName: Meteor.user().username})
+    }
+});
