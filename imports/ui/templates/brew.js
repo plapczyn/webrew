@@ -103,16 +103,18 @@ Template.brew.events({
     const title = target.title.value;
     const rebrew = target.rebrew.value;
     const rating = target.rating.value;
-    const test = Meteor.user().username;
+    const user = Meteor.user().username;
+    const reviewdate = Date.now();
     let brew = FlowRouter.getParam('brewId');
 
     //update database
     Rebrews.insert({
-      user: test,
+      user: user,
       brew: brew,
       rebrew: rebrew,
       rating: rating,
-      title: title
+      title: title,
+      reviewdate: reviewdate
     });
 
     //resetform and refresh page

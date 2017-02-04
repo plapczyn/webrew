@@ -22,14 +22,15 @@
   <p> </p>
       <form class="newbrew text-center">
           <div class="form-group">
-              <input type="text" name="name" placeholder="What shall we call this delicious brew?" />
+              <input required type="text" name="name" placeholder="What shall we call this delicious brew?" />
           </div>
-          <!--Roast Select Option  1-->
-          <div class="form-group">
+          
+          <!--Roast Select Option  1 -->
+          <!--<div class="form-group">
               <input type="text" name="roast" placeholder="What type of roast is it?" />
-          </div>
-          <!--Roast Select Option  2-->
-          <div class="form-group">
+          </div>-->
+          <!--Roast Select Option  2 -->
+          <!--<div class="form-group">
               <h5>Option 2: What type of roast is it?</h5>
               <label class="radio-inline">
                   <input style="height:auto;width:auto;" type="radio" name="roast" value="Light Roast">Light Roast
@@ -50,10 +51,10 @@
                   Dark Roast
               </label>
               <img class="img-thumbnail img-responsive" src="/img/dark_roast_bg.png" alt="light roast" width="75" height="75">
-          </div>
+          </div>-->
 
           <!-- Roast Select Option 3 -->
-          <div class="form-group">
+          <!--<div class="form-group">
               <h5>Option 3: What type of roast is it?</h5>
               <div style="display:inline-block; text-align:left;">
                   <div class="radio">
@@ -73,11 +74,12 @@
                       <label><input style="height:auto;width:auto;" type="radio" name="roast" value="Dark Roast">Dark Roast</label>
                   </div>
               </div>
-          </div>
+          </div>-->
+       
           <!--Roast Select Option  4 -->
           <div class="form-group">
-              <h5>Option 4: What type of roast is it?</h5>
-              <select class="form-group" style="width:auto; padding:10px; border-radius:10px;" name="roast">
+              <h5>What type of roast is it?</h5>
+              <select required class="form-group" style="width:auto; padding:10px; border-radius:10px;" name="roast">
                   <option>Light Roast</option>
                   <option>Medium Roast</option>
                   <option>Medium-Dark Roast</option>
@@ -89,9 +91,9 @@
               <input type="text" name="imageURL" placeholder="Where can we find a picture of it?" />
           </div>
           <div class="form-group" and litaray commentary>
-              <textarea placeholder="Are you a fan of delicious flavor and literary commentary? Tell us about this brew" rows="3" id="description"></textarea>
+              <textarea required placeholder="Are you a fan of delicious flavor and literary commentary? Tell us about this brew" rows="3" id="description"></textarea>
           </div>
-          <button type="submit" class="btn btn-primary btn-lg center-block">Submit</button>
+          <button type="submit" class="btn btn-primary btn-lg center-block" style="margin-bottom:30px;">Submit</button>
       </form>
   </div>
 </template>
