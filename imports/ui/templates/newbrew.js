@@ -17,10 +17,10 @@ Template.newbrew.events({
 
     // Insert a new coffee into the collection
     Coffees.insert({
-      name: name,
-      roast: roast,
+      name: name.trim(),
+      roast: roast.trim(),
       description: description,
-      imageURL: imageURL,
+      imageURL: imageURL.trim(),
       createdAt: new Date(),
       owner: Meteor.userId(),
       username: Meteor.user().username,
