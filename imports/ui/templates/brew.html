@@ -42,11 +42,38 @@
         {{else}}
         <img src="/img/default-brew.jpg" class="img-responsive" alt="...">
         {{/if}}
-      </div>
-      <div class="col-md-6">
-        <button class="btn">
+        <button class="btn addRebrew" style="float:right; margin-top:10px; box-shadow:2px 2px 2px gray; display:inline-block">
           <span class="glyphicon glyphicon-pencil" aria-hidden="true" style="font-size:35px"></span>
         </button>
+        {{#if rebrewing}}
+        <form class="newRebrew thumbnail" style="display:inline-block">
+          <div class="form-group">
+            <label>Rebrew Title</label>
+            <input type="text" name="title" class="form-control" placeholder="Add a title">
+          </div>
+          <div class="form-group">
+            <label>Rebrew details</label>
+            <textarea type="text" name="title" class="form-control" style="width:200px; height:200px"></textarea>
+          </div>
+          <div class="form-group">
+              <h5>Overall rating</h5>
+              <select class="form-group" style="width:auto; padding:10px; border-radius:10px;" name="rating">
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
+              </select>
+              <button class="submit submitRebrew btn btn-info" type="submit">
+                <span class="glyphicon glyphicon-plus" style="font-size:20px" aria-hidden="true"></span>
+              </button>
+
+
+          </div>
+        </form>
+        {{/if}}
+      </div>
+      <div class="col-md-6">
 
       </div>
       <div class="col-md-12">

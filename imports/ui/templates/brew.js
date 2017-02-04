@@ -4,7 +4,14 @@ import { Coffees } from '../../api/collections/coffees.js';
 import { Favorites } from '../../api/collections/coffees.js';
 import { Rebrews } from '../../api/collections/coffees.js';
 
+Template.brew.onCreated(function (){
+  var instance = this;
+
+  instance.isReBrewing = new ReactiveVar(false);
+});
+
 Template.brew.helpers({
+  addingRebrew: false,
   brew () {
     return Coffees.find({name: FlowRouter.getParam("brewId")});
   },
@@ -23,6 +30,9 @@ Template.brew.helpers({
   },
   reBrew(){
     return Rebrews.find({brew: FlowRouter.getParam('brewId')});
+  },
+  rebrewing(){
+    return Template.instance().isReBrewing.get();
   }
 });
 
@@ -80,5 +90,14 @@ Template.brew.events({
       color: 'red'
     };
     Toast.info(brew + " was removed from your favorites");
+  },
+  'click .addRebrew'(event){
+    var instance = Template.instance();
+    instance.isReBrewing.set(!instance.isReBrewing.get());
+  },
+  'submit submitRebrew'(event){
+    console.log(event);
+    event.preventDefault();
   }
+
 });
