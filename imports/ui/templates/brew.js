@@ -95,8 +95,10 @@ Template.brew.events({
     instance.isReBrewing.set(!instance.isReBrewing.get());
   },
   'submit .submitRebrew'(event){
+    //prevent the stupid refresh page and put params in
     event.preventDefault();
-    console.log("ASDASdA");
+
+    //grab form data
     const target = event.target;
     const title = target.title.value;
     const rebrew = target.rebrew.value;
@@ -104,12 +106,19 @@ Template.brew.events({
     const test = Meteor.user().username;
     let brew = FlowRouter.getParam('brewId');
 
+    //update database
     Rebrews.insert({
       user: test,
       brew: brew,
       rebrew: rebrew,
-      rating: rating
+      rating: rating,
+      title: title
     });
+
+    //resetform and refresh page
+    Template.instance().isReBrewing.set(false);
+    let name = FlowRouter.getParam('brewId');
+    FlowRouter.go('brew', {brewId: name});
 
   },
   'click .goMe' (event){

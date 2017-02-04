@@ -1,5 +1,5 @@
 <template name="rebrew">
-  <div class="col-xs-6" >
+  <div class="col-md-6 col-sm-12 col-lg-12" >
     <div class="thumbnail" style="box-shadow:5px 5px 5px gray">
       <div class="media">
         <div class="media-left media-middle">
@@ -10,11 +10,12 @@
           {{rebrew}}
         </div>
         <div style="float:right">
+          {{#each ratingFull ../rating}}
           <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+          {{/each}}
+          {{#each ratingNone ../rating}}
           <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
-          <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
-          <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
-          <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
+          {{/each}}
         </div>
       </div>
     </div>
