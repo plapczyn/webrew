@@ -6,17 +6,15 @@
       <li role="presentation"><a class="goMe" style="cursor:pointer">Me</a></li>
 
     </ul>
-    <div class="header">
-      {{#if currentUser}}
-      <h1><a href="/" style="a{color: white; text-decoration: none;}">newBrew</a></h1>
-      <p>The world's foremost coffee network.</p>
-      <p> My name is {{> loginButtons }} and I love coffee! </p>
-      {{else}}
-      <h1><a href="/" style="a{color: white; text-decoration: none;}">weBrew</a></h1>
-      <p>The world's foremost coffee network.</p>
-      <p> I'm a member, <span style="a:link{color: white}">{{> loginButtons }}</span></p>
-      {{/if}}
-    </div>
+      <div class="header">
+          <h1><a id="title">newBrew</a></h1>
+          <p>The world's foremost coffee network.</p>
+          {{#if currentUser}}
+          <p> My name is {{> loginButtons }} and I love coffee! </p>
+          {{else}}
+          <p> I'm a member, <span style="a:link{color: white}">{{> loginButtons }}</span></p>
+          {{/if}}
+      </div>
   </div>
   <div class="container">
   <p> </p>
