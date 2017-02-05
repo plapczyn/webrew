@@ -31,6 +31,7 @@ ejson@1.0.12
 email@1.0.14_1
 es5-shim@4.5.12_1
 fastclick@1.0.12
+fortawesome:fontawesome@4.5.0
 fourquet:jquery-toast@2.1.2_1
 geojson-utils@1.0.9
 hot-code-push@1.0.4
@@ -42,6 +43,7 @@ insecure@1.0.7
 jquery@1.11.9
 kadira:blaze-layout@2.3.0
 kadira:flow-router@2.12.1
+kosst:css-star-rating@0.1.1
 launch-screen@1.0.12
 less@2.6.3_1
 livedata@1.0.18
