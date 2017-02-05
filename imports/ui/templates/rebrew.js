@@ -1,5 +1,5 @@
 import './rebrew.html'
-
+import { BrewFiles } from '../../api/collections/coffees.js';
 Template.rebrew.helpers({
     ratingFull(count){
     var countArr = [];
@@ -14,6 +14,10 @@ Template.rebrew.helpers({
       countArr.push({});
     }
     return countArr;
+  },
+  submitterImage(){
+    return BrewFiles.findOne({user:this.user}).imageURL;
+    console.log(this)
   }
 });
 
