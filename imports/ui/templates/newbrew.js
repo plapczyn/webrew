@@ -25,11 +25,13 @@ Template.newbrew.events({
       owner: Meteor.userId(),
       username: Meteor.user().username,
     });
-    
+
+    var myAudio = new Audio('/ItsAGoodBrew.ogg');
+    myAudio.play();
     // Clear form
     FlowRouter.go('Main');
   },
-  
+
   //Goto Profile
   'click .goMe' (event){
       FlowRouter.go('mebrew', {userName: Meteor.user().username})

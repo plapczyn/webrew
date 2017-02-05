@@ -2,16 +2,26 @@ import './mebrew.html';
 import './mebrew.css';
 import { Coffees } from '../../api/collections/coffees.js';
 import { Favorites } from '../../api/collections/coffees.js';
-Template.mebrew.onCreated(() =>{
+import { BrewFiles } from '../../api/collections/coffees.js';
+Template.mebrew.onCreated(() => {
+// var t = Meteor.user().username;
 });
 
 Template.mebrew.events({
-  'click .test':(event) => {
-    console.log("Event test" + this.counter);
-    this.counter++;
-  },
   'click .goMe' (event){
     FlowRouter.go('mebrew', {userName: Meteor.user().username})
+  },
+  'submit .changeImage'(event){
+    event.preventDefault();
+    var url = event.target.url.value;
+
+    try{
+      var id = BrewFiles.findOne({user: Meteor.user().username})._id;
+      BrewFiles.update({_id: id}, {$set: {imageURL: url}});
+    }
+    catch(e){
+      BrewFiles.insert({user: Meteor.user().username, imageURL: url})
+    }
 
   }
 });
@@ -28,7 +38,11 @@ Template.mebrew.helpers({
   },
 
   brew (element) {
-    console.log(element.hash.name)
     return Coffees.find({name:element.hash.name.name});
+  },
+  getImage(){
+    if(!!Meteor.user()){
+      return BrewFiles.findOne({user: Meteor.user().username}).imageURL;
+    }
   }
 });
