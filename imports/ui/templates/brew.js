@@ -7,12 +7,6 @@ import { Rebrews } from '../../api/collections/coffees.js';
 Template.brew.onCreated(function (){
   var instance = this;
   instance.isReBrewing = new ReactiveVar(false);
-  var myAudio = new Audio('/Starbucks Crave  Black Coffee -  The Careless Lovers.mp3');
-  myAudio.addEventListener('ended', function() {
-    this.currentTime = 0;
-    this.play();
-}, false);
-myAudio.play();
 });
 
 Template.brew.helpers({
