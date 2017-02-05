@@ -1,7 +1,7 @@
 import './rebrew.html'
 
 Template.rebrew.helpers({
-  ratingFull(count){
+    ratingFull(count){
     var countArr = [];
     for (var i=0; i<count; i++){
       countArr.push({});
@@ -17,7 +17,7 @@ Template.rebrew.helpers({
   }
 });
 
-Template.review.events({
+Template.rebrew.events({
     //Goto Profile
     'click .goMe' (event){
         FlowRouter.go('mebrew', {userName: Meteor.user().username})

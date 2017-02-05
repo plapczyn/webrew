@@ -1,88 +1,97 @@
 <template name="brew">
-  <div id="{{#if currentUser}}hero{{else}}hero-login{{/if}}">
-    <ul class="nav nav-pills pull-right">
-      <li role="presentation" class="active"><a href="/">Home</a></li>
-      <li role="presentation"><a href="/new">New Brew</a></li>
-      <li role="presentation"><a class="goMe" style="cursor:pointer">Me</a></li>
-    </ul>
-    <div class="header">
-      <h1><a id="title">reBrew</a></h1>
-      <p>The world's foremost coffee network.</p>
-      {{#if currentUser}}
-      <p> My name is {{> loginButtons }} and I love coffee! </p>
-      {{else}}
-      <p> I'm a member, <span style="a:link{color: white}">{{> loginButtons }}</span></p>
-      {{/if}}
+    <div id="{{#if currentUser}}hero{{else}}hero-login{{/if}}">
+        <ul class="nav nav-pills pull-right">
+            <li role="presentation" class="active"><a href="/">Home</a></li>
+            <li role="presentation"><a href="/new">New Brew</a></li>
+            <li role="presentation"><a class="goMe" style="cursor:pointer">Me</a></li>
+        </ul>
+        <div class="header">
+            <h1><a id="title">reBrew</a></h1>
+            <p>The world's foremost coffee network.</p>
+            {{#if currentUser}}
+            <p> My name is {{> loginButtons }} and I love coffee! </p>
+            {{else}}
+            <p> I'm a member, <span style="a:link{color: white}">{{> loginButtons }}</span></p>
+            {{/if}}
+        </div>
     </div>
-  </div>
-  {{#each brew}}
-  <div class="container">
-    <p> </p>
-    <div class="row">
-      <div class="col-md-8">
-        <h1>{{name}}</h1>
-        <h3>{{roast}}</h3>
-        <p> Added {{tm_now createdAt}} by <a href="/mebrew/{{username}}" class="">{{username}}</a></p>
-        {{#if isOwner}}
-        <button type="button" class="deleteBrew delete btn btn-warning">Delete Brew</button>
+    {{#each brew}}
+    <div class="container">
+        <p> </p>
+        <div class="row">
+            <div class="col-md-8">
+                <h1>{{name}}</h1>
+                <h3>{{roast}}</h3>
+                <p> Added {{tm_now createdAt}} by <a href="/mebrew/{{username}}" class="">{{username}}</a></p>
+                <button type="button" class="addRebrew btn btn-info" data-toggle="modal" data-target="#reBrewingModal" data-keyboard="true">Add a Review</button>
+                {{#if InFavorites}}
+                <button type="button" class="addToFavorites btn btn-success">Add to Favorites</button>
+                {{else}}
+                <button type="button" class="removeFromFavorites btn btn-success">Remove from Favorites</button>
+                {{/if}}
+                {{#if isOwner}}
+                <button type="button" class="deleteBrew delete btn btn-warning">Delete Brew</button>
+                {{/if}}
+                <h3>Brew Summery</h3>
+                <p>{{#markdown}}{{description}}{{/markdown}} </p>
+            </div>
+            <div class="col-md-4">
+                {{#if imageURL}}
+                <img src="{{imageURL}}" class="img-responsive" alt="...">
+                {{else}}
+                <img src="/img/default-brew.jpg" class="img-responsive" alt="...">
+                {{/if}}
+            </div>
+        </div>
+
+        {{#if reBrewCount}}
+        <div class="col-md-12">
+            <h1>Reviews <span class="badge">{{reBrewCount}}</span></h1>
+        </div>
         {{/if}}
 
-        {{#if InFavorites}}
-        <button type="button" class="addToFavorites btn btn-success">Add to Favorites</button>
-        {{else}}
-        <button type="button" class="removeFromFavorites btn btn-success">Remove from Favorites</button>
-        {{/if}}
+        {{#each reBrew}}
+        {{> rebrew title=title rebrew=rebrew user=user createdAt=reviewdate ratingNum=rating}}
+        {{/each}}
 
-        <h3>Brew Summery</h3>
-        <p>{{#markdown}}{{description}}{{/markdown}} </p>
-      </div>
-      <div class="col-md-4">
-        {{#if imageURL}}
-        <img src="{{imageURL}}" class="img-responsive" alt="...">
-        {{else}}
-        <img src="/img/default-brew.jpg" class="img-responsive" alt="...">
-        {{/if}}
-        <button class="btn addRebrew" style="float:right; margin-top:10px; box-shadow:2px 2px 2px gray; display:inline-block">
-          <span class="glyphicon glyphicon-pencil" aria-hidden="true" style="font-size:35px"></span>
-        </button>
-        {{#if rebrewing}}
-        <form class="submitRebrew thumbnail" style="display:inline-block">
-          <div class="form-group">
-            <label>Rebrew Title</label>
-            <input type="text" name="title" class="form-control" placeholder="Add a title">
-          </div>
-          <div class="form-group">
-            <label>Rebrew details</label>
-            <textarea type="text" name="rebrew" class="form-control" style="width:200px; height:200px"></textarea>
-          </div>
-          <div class="form-group">
-              <h5>Overall rating</h5>
-              <select class="form-group" style="width:auto; padding:10px; border-radius:10px;" name="rating">
-                  <option>1</option>
-                  <option>2</option>
-                  <option>3</option>
-                  <option>4</option>
-                  <option>5</option>
-              </select>
-              <button class="btn btn-info" type="submit" style="float:right">
-                <span class="glyphicon glyphicon-plus" style="font-size:20px" aria-hidden="true"></span>
-              </button>
-
-
-          </div>
-        </form>
-        {{/if}}
-      </div>
-      <div class="col-md-6">
-
-      </div>
-      <div class="col-md-12">
-        <h1>Online Reviews</h1>
-      </div>
-      {{#each reBrew}}
-      {{> rebrew title=title rebrew=rebrew user=user createdAt=reviewdate}}
-      {{/each}}
     </div>
-  </div>
-  {{/each}}
+    {{/each}}
+
+    <!--Rebrewing Modal-->
+    <div class="modal fade" id="reBrewingModal" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">How was the brew?</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="submitRebrew thumbnail">
+                        <div class="form-group">
+                            <label>Rebrew Title</label>
+                            <input required type="text" name="title" class="form-control" placeholder="Add a title">
+                        </div>
+                        <div class="form-group">
+                            <label>Rebrew details</label>
+                            <textarea required type="text" name="rebrew" class="form-control"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Overall rating</label><br />
+                            <input id="irating" required class="form-group" type="hidden" name="rating" value="">
+                            <!-- https://atmospherejs.com/kosst/css-star-rating -->
+                            {{> rating value=0 }}
+                            <button class="btn btn-info" type="submit" style="float:right">
+                                <span class="glyphicon glyphicon-plus" style="font-size:20px" aria-hidden="true"></span>
+                            </button>
+
+                        </div>
+                    </form>
+                </div>
+                <!--<div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>-->
+            </div>
+        </div>
+    </div>
+
 </template>

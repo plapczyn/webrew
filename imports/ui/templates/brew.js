@@ -27,6 +27,9 @@ Template.brew.helpers({
     }
     return false;
   },
+  reBrewCount(){
+    return Rebrews.find({brew: FlowRouter.getParam('brewId')}).count();
+  },
   reBrew(){
     return Rebrews.find({brew: FlowRouter.getParam('brewId')});
   },
@@ -36,25 +39,32 @@ Template.brew.helpers({
 });
 
 Template.brew.events({
-  'click .delete'(event) {
-    var brew = FlowRouter.getParam('brewId')
-    Toast.options = {
-      closeButton: true,
-      progressBar: true,
-      positionClass: 'toast-top-left',
-      showEasing: 'swing',
-      hideEasing: 'linear',
-      showMethod: 'fadeIn',
-      hideMethod: 'fadeOut',
-      timeOut: 1500,
-      color: 'red'
-    };
-    Toast.info(brew + " was removed");
-    // Remove coffee from the collection
-    Coffees.remove(this._id);
-    FlowRouter.go('Main');
+    'click .delete'(event) {
+
+    var c = confirm("Do you really want to remove this Brew?");
+    if (c == true) {
+        var brew = FlowRouter.getParam('brewId')
+        Toast.options = {
+            closeButton: true,
+            progressBar: true,
+            positionClass: 'toast-top-left',
+            showEasing: 'swing',
+            hideEasing: 'linear',
+            showMethod: 'fadeIn',
+            hideMethod: 'fadeOut',
+            timeOut: 1500,
+            color: 'red'
+        };
+        Toast.info(brew + " was removed");
+        // Remove coffee from the collection
+        Coffees.remove(this._id);
+        FlowRouter.go('Main');
+    } else {
+       // Do nothing
+    }
   },
-  'click .addToFavorites'(event){
+
+    'click .addToFavorites'(event){
     var userName = Meteor.user().username;
     var brew = FlowRouter.getParam('brewId')
     Favorites.insert({user: userName, name:brew });
@@ -71,6 +81,7 @@ Template.brew.events({
     };
     Toast.info(brew + " was added to your favorites");
   },
+  
   'click .removeFromFavorites'(event){
     event.preventDefault();
     var user = Meteor.user().username;
@@ -107,7 +118,7 @@ Template.brew.events({
     const reviewdate = Date.now();
     let brew = FlowRouter.getParam('brewId');
 
-    //update database
+    //insert into database
     Rebrews.insert({
       user: user,
       brew: brew,
@@ -117,15 +128,23 @@ Template.brew.events({
       reviewdate: reviewdate
     });
 
-    //resetform and refresh page
+      //resetform and refresh page
+    $("#reBrewingModal").modal("hide");
     Template.instance().isReBrewing.set(false);
     let name = FlowRouter.getParam('brewId');
     FlowRouter.go('brew', {brewId: name});
-
+    Toast.info("New review added to " + brew);
   },
     //Goto Profile
   'click .goMe' (event){
       FlowRouter.go('mebrew', {userName: Meteor.user().username})
-  }
+  },
+
+    //Star Rating
+    'click .rating'(event) {
+      const value = $(event.target).val();
+      $("#irating").val(value);
+    }
+
 
 });
