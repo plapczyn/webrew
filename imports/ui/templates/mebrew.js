@@ -18,9 +18,11 @@ Template.mebrew.events({
     try{
       var id = BrewFiles.findOne({user: Meteor.user().username})._id;
       BrewFiles.update({_id: id}, {$set: {imageURL: url}});
+      $("#meBrewModal").modal("hide");
     }
     catch(e){
-      BrewFiles.insert({user: Meteor.user().username, imageURL: url})
+      BrewFiles.insert({user: Meteor.user().username, imageURL: url});
+      $("#meBrewModal").modal("hide");
     }
 
   }

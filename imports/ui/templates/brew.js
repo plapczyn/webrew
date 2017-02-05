@@ -133,7 +133,7 @@ Template.brew.events({
     Template.instance().isReBrewing.set(false);
     let name = FlowRouter.getParam('brewId');
     FlowRouter.go('brew', {brewId: name});
-    Toast.info("New review added to " + brew);
+    Toast.info("New reBrew added to " + brew);
   },
     //Goto Profile
   'click .goMe' (event){
