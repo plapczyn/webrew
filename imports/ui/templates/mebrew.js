@@ -4,7 +4,7 @@ import { Coffees } from '../../api/collections/coffees.js';
 import { Favorites } from '../../api/collections/coffees.js';
 import { BrewFiles } from '../../api/collections/coffees.js';
 Template.mebrew.onCreated(() => {
-// var t = Meteor.user().username;
+  // var t = Meteor.user().username;
 });
 
 Template.mebrew.events({
@@ -15,16 +15,19 @@ Template.mebrew.events({
     event.preventDefault();
     var url = event.target.url.value;
 
-    try{
-      var id = BrewFiles.findOne({user: Meteor.user().username})._id;
-      BrewFiles.update({_id: id}, {$set: {imageURL: url}});
-      $("#meBrewModal").modal("hide");
-    }
-    catch(e){
-      BrewFiles.insert({user: Meteor.user().username, imageURL: url});
-      $("#meBrewModal").modal("hide");
-    }
-
+    var secure = Promise.resolve(Meteor.user()).then(function(data){
+      if(Meteor.user().username == FlowRouter.getParam('userName')){
+        try{
+          var id = BrewFiles.findOne({user: Meteor.user().username})._id;
+          BrewFiles.update({_id: id}, {$set: {imageURL: url}});
+          $("#meBrewModal").modal("hide");
+        }
+        catch(e){
+          BrewFiles.insert({user: Meteor.user().username, imageURL: url});
+          $("#meBrewModal").modal("hide");
+        }
+      }
+    })
   }
 });
 
@@ -43,8 +46,18 @@ Template.mebrew.helpers({
     return Coffees.find({name:element.hash.name.name});
   },
   getImage(){
-    if(!!Meteor.user()){
-      return BrewFiles.findOne({user: Meteor.user().username}).imageURL;
+    if(BrewFiles.findOne({user: FlowRouter.getParam('userName')})){
+      return BrewFiles.findOne({user: FlowRouter.getParam('userName')}).imageURL;
+    }},
+    isUser(){
+      if(!!Meteor.user()){
+        if(Meteor.user().username == FlowRouter.getParam('userName')){
+          return "modal";
+        }
+        else{
+          return "";
+        }
+      }
     }
-  }
-});
+
+  });

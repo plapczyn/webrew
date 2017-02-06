@@ -69,3 +69,7 @@ body{ margin:0px 0px; }
 .thumbnail img{
   max-height: 300px;
 }
+
+.newlines {
+  white-space: pre-line;
+}
