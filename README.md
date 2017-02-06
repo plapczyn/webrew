@@ -24,5 +24,5 @@ git clone https://github.com/plapczyn/webrew.git
 
 # Notes
 
-The usingn color palette here..
+Here is the color palette...
 http://colorpalettes.net/color-palette-2648/
