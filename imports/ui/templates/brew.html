@@ -52,11 +52,13 @@
         </div>
         {{/if}}
 
-        {{#each reBrew}}
-        <div class="row">
-          {{> rebrew title=title rebrew=rebrew user=user createdAt=reviewdate ratingNum=rating}}
+        <div class="container-fluid">
+          <div class="row myComments">
+            {{#each reBrew}}
+            {{> rebrew title=title rebrew=rebrew user=user createdAt=reviewdate ratingNum=rating}}
+            {{/each}}
+          </div>
         </div>
-        {{/each}}
 
     </div>
     {{/each}}

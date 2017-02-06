@@ -1,18 +1,21 @@
 <template name="rebrew">
-  <div class="col-xs-12" >
-    <div class="thumbnail" style="box-shadow:5px 5px 5px gray">
+  <div class="col-md-6" >
+    <div class="thumbnail">
       <div class="media">
-        <div class="media-left media-middle">
-          <img class="media-object" src="{{submitterImage}}" alt="..." style="max-height:100px; width: 100px">
+        <div class="media-left">
+          <img class="media-object" src="{{submitterImage}}" alt="..." style="max-height:140px; width: 140px">
+          <p > {{> rating value=ratingNum disabled=true}} </p>
         </div>
         <div class="media-body">
+          <!-- <blockquote> -->
           <div>
-            <p class="pull-right" style="display: inline;"> {{> rating value=ratingNum disabled=true}} </p>
             <h3 style="display: inline;">{{title}}</h3>
           </div>
           <p class="newlines">{{rebrew}}</p>
           <br />
           <p style="display:inline-block"> Added {{tm_now createdAt}} by <a href="/mebrew/{{user}}" >{{user}}</a></p>
+          <!--           </blockquote> -->
+          <br />
         </div>
       </div>
     </div>

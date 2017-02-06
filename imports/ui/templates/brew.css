@@ -1,3 +1,16 @@
 .btn:focus,.btn:active {
    outline: none !important;
 }
+
+.myComments{display: -webkit-flex;
+   display: flex;
+   -webkit-justify-content: center;
+   justify-content: center;
+   -webkit-flex-direction: row;
+   flex-direction: row;
+   -webkit-flex-wrap: wrap;
+   flex-wrap: wrap;
+   -webkit-flex-flow: row wrap;
+   flex-flow: row wrap;
+  }
+.col-md-6{ padding:10px; min-height:100%; width:50%;}
