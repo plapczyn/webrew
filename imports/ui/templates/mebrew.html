@@ -10,7 +10,7 @@
       <p>{{name}}'s Profile</p>
     </div>
   </div>
-      <div class="modal fade" id="reBrewingModal" role="dialog">
+      <div class="modal fade" id="meBrewModal" role="dialog">
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
                 <div class="modal-header">
@@ -18,7 +18,7 @@
                     <h4 class="modal-title">Image Maintanance</h4>
                 </div>
                 <div class="modal-body">
-                    <form class="submitRebrew changeImage">
+                    <form class="changeImage">
                         <div class="form-group">
                             <label>Change Image</label>
                             <input required type="text" name="url" class="form-control" placeholder="Add a new image URL">
@@ -44,7 +44,7 @@
       <div class="profile-box">
       <!-- <div class="col-xs-11 col-xs-offset-1"> -->
 
-        <img src="{{getImage}}" class="btn img-thumbnail profile-picture offset-top" data-toggle="modal" data-target="#reBrewingModal" data-keyboard="true"/>
+        <img src="{{getImage}}" class="btn img-thumbnail profile-picture offset-top" data-toggle="modal" data-target="#meBrewModal" data-keyboard="true"/>
 
         <div class="row offset-top">
           <div class="col-xs-2">
