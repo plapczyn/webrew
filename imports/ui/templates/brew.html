@@ -30,7 +30,7 @@
                 <button type="button" class="removeFromFavorites btn btn-success">Remove from Favorites</button>
                 {{/if}}
                 {{#if isOwner}}
-                <button type="button" class="deleteBrew delete btn btn-warning">Delete Brew</button>
+                <button type="button" class="btn btn-warning delModal" data-toggle="modal" data-target="#DeleteBrewModal" data-keyboard="true" data-id="my_id_value">Delete Brew</button>
                 {{/if}}
                 <h3>Brew Summary</h3>
                 <p class="newlines">{{description}}</p>
@@ -104,33 +104,20 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">How was the reBrew?</h4>
+                    <h4 class="modal-title">Delete Brew</h4>
                 </div>
                 <div class="modal-body">
-                    <form class="submitRebrew thumbnail">
-                        <div class="form-group">
-                            <label>Rebrew title</label>
-                            <input required type="text" name="title" class="form-control" placeholder="Add a title">
-                        </div>
-                        <div class="form-group">
-                            <label>Rebrew details</label>
-                            <textarea required type="text" name="rebrew" class="form-control"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label>Overall rating</label><br />
-                            <input id="irating" required class="form-group" type="hidden" name="rating" value="">
-                            <!-- https://atmospherejs.com/kosst/css-star-rating -->
-                            {{> rating value=0 }}
-                            <button class="btn btn-info" type="submit" style="float:right">
-                                <i class="fa fa-2x fa-coffee" aria-hidden="true"></i>
-                            </button>
-
-                        </div>
-                    </form>
+                    <h6 class="modal-body">Are you sure you want to remove this brew?</h6>
+                    <input id="brewID" type="hidden" value="">
                 </div>
-                <!--<div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>-->
+                <div class="modal-footer">
+                    <button class="btn btn-warning delete" type="button">
+                        <i class="fa fa-check" aria-hidden="true"></i> OK
+                    </button>
+                    <button class="btn btn-danger" type="button" data-dismiss="modal">
+                        <i class="fa fa-times" aria-hidden="true"></i> Cancel
+                    </button>
+                </div>
             </div>
         </div>
     </div>

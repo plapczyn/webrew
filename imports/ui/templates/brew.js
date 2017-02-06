@@ -39,10 +39,11 @@ Template.brew.helpers({
 });
 
 Template.brew.events({
+    'click .delModal'(event) {
+        document.getElementById("brewID").value = this._id;
+    },
     'click .delete'(event) {
 
-    var c = confirm("Do you really want to remove this Brew?");
-    if (c == true) {
         var brew = FlowRouter.getParam('brewId')
         Toast.options = {
             closeButton: true,
@@ -55,13 +56,14 @@ Template.brew.events({
             timeOut: 1500,
             color: 'red'
         };
-        Toast.info(brew + " was removed");
-        // Remove coffee from the collection
-        Coffees.remove(this._id);
-        FlowRouter.go('Main');
-    } else {
-       // Do nothing
-    }
+        // Hide Modal 
+        $("#DeleteBrewModal").on("hidden.bs.modal", function (){
+            //Remove coffee from the collection
+            Coffees.remove(document.getElementById("brewID").value);
+            FlowRouter.go('Main');
+            Toast.info(brew + " was removed");
+        });
+        $("#DeleteBrewModal").modal("hide");
   },
 
     'click .addToFavorites'(event){
