@@ -31,7 +31,7 @@ Template.brew.helpers({
     return Rebrews.find({brew: FlowRouter.getParam('brewId')}).count();
   },
   reBrew(){
-    return Rebrews.find({brew: FlowRouter.getParam('brewId')});
+    return Rebrews.find({brew: FlowRouter.getParam('brewId')},{ sort: { reviewdate: -1 } });
   },
   rebrewing(){
     return Template.instance().isReBrewing.get();
@@ -56,7 +56,7 @@ Template.brew.events({
             timeOut: 1500,
             color: 'red'
         };
-        // Hide Modal 
+        // Hide Modal
         $("#DeleteBrewModal").on("hidden.bs.modal", function (){
             //Remove coffee from the collection
             Coffees.remove(document.getElementById("brewID").value);
@@ -147,5 +147,5 @@ Template.brew.events({
     const value = $(event.target).val();
     $("#irating").val(value);
   }
-  
+
 });
