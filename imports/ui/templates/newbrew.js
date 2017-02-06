@@ -26,8 +26,6 @@ Template.newbrew.events({
       username: Meteor.user().username,
     });
 
-    var myAudio = new Audio('/ItsAGoodBrew.ogg');
-    myAudio.play();
     // Clear form
     FlowRouter.go('Main');
   },

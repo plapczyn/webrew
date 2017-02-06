@@ -6,8 +6,10 @@
           <img class="media-object" src="{{submitterImage}}" alt="..." style="max-height:100px; width: 100px">
         </div>
         <div class="media-body">
-          {{> rating value=ratingNum disabled=true}}
-          <h4 class="media-heading">{{title}}</h4>
+          <div>
+            <p class="pull-right" style="display: inline;"> {{> rating value=ratingNum disabled=true}} </p>
+            <h3 style="display: inline;">{{title}}</h3>
+          </div>
           <p class="newlines">{{rebrew}}</p>
           <br />
           <p style="display:inline-block"> Added {{tm_now createdAt}} by <a href="/mebrew/{{user}}" >{{user}}</a></p>

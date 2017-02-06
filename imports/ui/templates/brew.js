@@ -140,11 +140,10 @@ Template.brew.events({
       FlowRouter.go('mebrew', {userName: Meteor.user().username})
   },
 
-    //Star Rating
-    'click .rating'(event) {
-      const value = $(event.target).val();
-      $("#irating").val(value);
-    }
-
-
+  //Star Rating
+  'click .rating'(event) {
+    const value = $(event.target).val();
+    $("#irating").val(value);
+  }
+  
 });
