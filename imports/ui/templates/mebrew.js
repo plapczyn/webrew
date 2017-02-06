@@ -18,15 +18,16 @@ Template.mebrew.events({
     var secure = Promise.resolve(Meteor.user()).then(function(data){
       if(Meteor.user().username == FlowRouter.getParam('userName')){
         try{
-          console.log("ASDASDASDA");
           var id = BrewFiles.findOne({user: Meteor.user().username})._id;
           BrewFiles.update({_id: id}, {$set: {imageURL: url}});
+          $("#meBrewModal").modal("hide");
         }
         catch(e){
           BrewFiles.insert({user: Meteor.user().username, imageURL: url});
+          $("#meBrewModal").modal("hide");
         }
       }
-      })
+    })
   }
 });
 
@@ -46,17 +47,17 @@ Template.mebrew.helpers({
   },
   getImage(){
     if(BrewFiles.findOne({user: FlowRouter.getParam('userName')})){
-    return BrewFiles.findOne({user: FlowRouter.getParam('userName')}).imageURL;
-  }},
-  isUser(){
-    if(!!Meteor.user()){
-      if(Meteor.user().username == FlowRouter.getParam('userName')){
-        return "modal";
-      }
-      else{
-        return "";
+      return BrewFiles.findOne({user: FlowRouter.getParam('userName')}).imageURL;
+    }},
+    isUser(){
+      if(!!Meteor.user()){
+        if(Meteor.user().username == FlowRouter.getParam('userName')){
+          return "modal";
+        }
+        else{
+          return "";
+        }
       }
     }
-  }
 
-});
+  });
