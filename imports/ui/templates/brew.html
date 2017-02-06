@@ -33,7 +33,7 @@
                 <button type="button" class="deleteBrew delete btn btn-warning">Delete Brew</button>
                 {{/if}}
                 <h3>Brew Summary</h3>
-                <p>{{#markdown}}{{description}}{{/markdown}} </p>
+                <p class="newlines">{{description}}</p>
             </div>
             <div class="col-md-4">
                 {{#if imageURL}}
@@ -45,13 +45,17 @@
         </div>
 
         {{#if reBrewCount}}
-        <div class="col-md-12">
-            <h1>reBrew Details <span class="badge">{{reBrewCount}}</span></h1>
+        <div class="row">
+          <div class="col-md-12">
+            <h3>reBrew Details <span class="badge">{{reBrewCount}}</span></h3>
+          </div>
         </div>
         {{/if}}
 
         {{#each reBrew}}
-        {{> rebrew title=title rebrew=rebrew user=user createdAt=reviewdate ratingNum=rating}}
+        <div class="row">
+          {{> rebrew title=title rebrew=rebrew user=user createdAt=reviewdate ratingNum=rating}}
+        </div>
         {{/each}}
 
     </div>
