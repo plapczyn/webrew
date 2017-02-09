@@ -11,21 +11,27 @@ Template.mebrew.events({
   'click .goMe' (event){
     FlowRouter.go('mebrew', {userName: Meteor.user().username})
   },
-  'submit .changeImage'(event){
+  'submit .changeProfile'(event){
     event.preventDefault();
     var url = event.target.url.value;
-
+    var Tagline = event.target.tagline.value;
     var secure = Promise.resolve(Meteor.user()).then(function(data){
       if(Meteor.user().username == FlowRouter.getParam('userName')){
+        var id = BrewFiles.findOne({user: Meteor.user().username})._id;
         try{
-          var id = BrewFiles.findOne({user: Meteor.user().username})._id;
-          BrewFiles.update({_id: id}, {$set: {imageURL: url}});
-          $("#meBrewModal").modal("hide");
+            BrewFiles.update({_id: id}, {$set: {imageURL: url}})
         }
         catch(e){
-          BrewFiles.insert({user: Meteor.user().username, imageURL: url});
-          $("#meBrewModal").modal("hide");
+            BrewFiles.insert({user: Meteor.user().username, imageURL: url});
         }
+   
+        try{
+            BrewFiles.update({_id: id}, {$set: {tagline: Tagline}})
+        }
+        catch(e){
+            BrewFiles.insert({user: Meteor.user().username, tagline: Tagline});
+        }
+        $("#meBrewModal").modal("hide");
       }
     })
   }
@@ -33,8 +39,7 @@ Template.mebrew.events({
 
 Template.mebrew.helpers({
   name: FlowRouter.getParam("userName"),
-  pictureUrl:"/img/Paul.jpg",
-  info: "This is some test information... I LOVE INFORMATION",
+  info: "Tell us a little about yourself and how you like to Brew? Click the image to update!",
   favorites(){
     return Favorites.find({user: FlowRouter.getParam("userName")})
   },
@@ -48,8 +53,14 @@ Template.mebrew.helpers({
   getImage(){
     if(BrewFiles.findOne({user: FlowRouter.getParam('userName')})){
       return BrewFiles.findOne({user: FlowRouter.getParam('userName')}).imageURL;
-    }},
-    isUser(){
+    }
+  },
+  getTagline(){
+      if(BrewFiles.findOne({user: FlowRouter.getParam('userName')})){
+          return BrewFiles.findOne({user: FlowRouter.getParam('userName')}).tagline;
+      }
+  },  
+  isUser(){
       if(!!Meteor.user()){
         if(Meteor.user().username == FlowRouter.getParam('userName')){
           return "modal";
@@ -58,6 +69,6 @@ Template.mebrew.helpers({
           return "";
         }
       }
-    }
+  }
 
   });
