@@ -16,13 +16,14 @@
           {{/if}}
       </div>
   </div>
+  {{#if currentUser}}
   <div class="container">
   <p> </p>
       <form class="newbrew text-center">
           <div class="form-group">
               <input required type="text" name="name" placeholder="What shall we call this delicious brew?" />
           </div>
-          
+
           <!--Roast Select Option  1 -->
           <!--<div class="form-group">
               <input type="text" name="roast" placeholder="What type of roast is it?" />
@@ -73,7 +74,7 @@
                   </div>
               </div>
           </div>-->
-       
+
           <!--Roast Select Option  4 -->
           <div class="form-group">
               <h5 style="color:#a9a9a9;">What type of roast is it?</h5>
@@ -94,4 +95,5 @@
           <button type="submit" class="btn btn-primary btn-lg center-block" style="margin-bottom:30px;">Submit</button>
       </form>
   </div>
+  {{/if}}
 </template>

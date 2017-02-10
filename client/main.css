@@ -1,5 +1,7 @@
 /* CSS declarations go here */
-body{ margin:0px 0px; }
+body{ margin:0px 0px;
+  background-color: #f5f5f5;
+}
 
 #hero{
   background-image:url(/img/bg.jpg);

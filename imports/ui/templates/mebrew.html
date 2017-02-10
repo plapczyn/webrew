@@ -1,15 +1,20 @@
 <template name="mebrew">
-  <div id="hero">
+  <div id="{{#if currentUser}}hero{{else}}hero-login{{/if}}">
     <ul class="nav nav-pills pull-right">
       <li role="presentation"><a href="/">Home</a></li>
       <li role="presentation"><a href="/new">New Brew</a></li>
       <li role="presentation" class="active"><a class="goMe" style="cursor:pointer">Me</a></li>
     </ul>
     <div class="header">
-      <h1>meBrew</h1>
+      <h1><a id="title">meBrew</a></h1>
+      {{#if currentUser}}
       <p>{{name}}'s Profile</p>
+      {{else}}
+      <p> I'm a member, <span style="a:link{color: white}">{{> loginButtons }}</span></p>
+      {{/if}}
     </div>
   </div>
+  {{#if currentUser}}
   <div class="modal fade" id="meBrewModal" role="dialog">
     <div class="modal-dialog modal-sm">
       <div class="modal-content">
@@ -86,4 +91,5 @@
       </div>
     </div>
   </div>
+  {{/if}}
 </template>
