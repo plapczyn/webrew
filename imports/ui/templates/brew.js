@@ -120,6 +120,8 @@ Template.brew.events({
     const reviewdate = Date.now();
     let brew = FlowRouter.getParam('brewId');
 
+
+
     //insert into database
     Rebrews.insert({
       user: user,
@@ -129,6 +131,13 @@ Template.brew.events({
       title: title,
       reviewdate: reviewdate
     });
+
+    // Recalculate average
+    let allreviews = Rebrews.find({brew:brew}).fetch();
+    let ratings = _.pluck(allreviews, "rating");
+    let sum = ratings.reduce(function(a, b){return parseFloat(a) + parseFloat(b);});
+    let average = (sum / ratings.length).toFixed(1);
+    Coffees.update(Coffees.findOne({name:brew})._id, {$set: {averageRating: average}});
 
       //resetform and refresh page
     $("#reBrewingModal").modal("hide");
