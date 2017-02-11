@@ -22,6 +22,9 @@
   <div class="container" >
     <h1> Recently Added </h1>
     <div class="row v-align">
+      <div class="pull-right">
+        <input type="text" name="search" class="form-control" width="250px" placeholder="Find an album...">
+      </div>
       {{#each coffees}}
       {{> coffee}}
       {{/each}}
