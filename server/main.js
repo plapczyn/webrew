@@ -17,16 +17,18 @@ if (Meteor.isServer) {
 
     if ( search ) {
       let regex = new RegExp( search, 'i' );
+      let regex2 = new RegExp( search, 'i' );
 
       query = {
-        $or: [
-          { name: regex },
+         $or: [
+          { name: {$regex: regex} },
+          { roast: {$regex: regex}}
         ]
       };
 
       projection.limit = 99;
 
-    return Coffees.find({name: {$regex: new RegExp(search, 'i')}});
+    return Coffees.find(query);
     }
 
   return Coffees.find();
