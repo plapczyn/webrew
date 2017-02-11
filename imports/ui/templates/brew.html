@@ -35,6 +35,10 @@
         {{/if}}
         <h3>Brew Summary</h3>
         <p class="newlines">{{description}}</p>
+        {{#if averageRating}}
+        <h3>Average Rating</h3>
+        <p> {{averageRating}} </p>
+        {{/if}}
       </div>
       <div class="col-md-4">
         {{#if imageURL}}
