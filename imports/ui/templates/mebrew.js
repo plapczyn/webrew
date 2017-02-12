@@ -35,26 +35,16 @@ Template.mebrew.events({
     event.preventDefault();
     var url = event.target.url.value;
     var Tagline = event.target.tagline.value;
-    var secure = Promise.resolve(Meteor.user()).then(function(data){
-      if(Meteor.user().username == FlowRouter.getParam('userName')){
-        var id = BrewFiles.findOne({user: Meteor.user().username})._id;
-        try{
-          BrewFiles.update({_id: id}, {$set: {imageURL: url}})
-        }
-        catch(e){
-          BrewFiles.insert({user: Meteor.user().username, imageURL: url});
-        }
 
-        try{
-          BrewFiles.update({_id: id}, {$set: {tagline: Tagline}})
-        }
-        catch(e){
-          BrewFiles.insert({user: Meteor.user().username, tagline: Tagline});
-        }
+  var secure = Promise.resolve(Meteor.user()).then(function(data){
+    var user = Meteor.user().username;
+    if(Meteor.user().username == FlowRouter.getParam('userName')){
+      Meteor.call('brewfile.updateImage',{url: url, tagline: Tagline, user: user}, (err, res) => {
         $("#meBrewModal").modal("hide");
-      }
-    })
-  }
+      });
+    }
+  })
+}
 });
 
 Template.mebrew.helpers({
