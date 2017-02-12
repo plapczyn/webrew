@@ -26,4 +26,8 @@ if (Meteor.isServer) {
     // console.log(Coffees.find({username:user}));
     return Coffees.find({username: user});
   });
+
+  Meteor.publish('brew', (brewName) => {
+    return Coffees.find({name: brewName});
+  })
 }
