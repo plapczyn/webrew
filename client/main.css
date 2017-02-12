@@ -75,3 +75,7 @@ body{ margin:0px 0px;
 .newlines {
   white-space: pre-line;
 }
+
+.search {
+  height: 40px;
+}

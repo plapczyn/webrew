@@ -2,6 +2,7 @@
   <div id="{{#if currentUser}}hero{{else}}hero-login{{/if}}">
     {{#if currentUser}}
     <ul class="nav nav-pills pull-right">
+      <li role="presentation"><input type="text" name="search" class="form-control search" width="250px" placeholder="Find a brew..."></li>
       <li role="presentation" class="active"><a href="/">Home</a></li>
       <li role="presentation"><a href="/new">New Brew</a></li>
       <li role="presentation"><a class="goMe" style="cursor:pointer">Me</a></li>
@@ -23,7 +24,6 @@
     <h1> Recently Added </h1>
     <div class="row v-align">
       <div class="pull-right">
-        <input type="text" name="search" class="form-control" width="250px" placeholder="Find an album...">
       </div>
       {{#each coffees}}
       {{> coffee}}
