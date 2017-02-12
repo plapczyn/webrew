@@ -27,7 +27,7 @@ Template.brew.helpers({
     }
     return false;
   },
-  reBrewCount(){
+  reBrew(){
 
     Meteor.call('reBrewCount',FlowRouter.getParam('brewId'), (err, res) => {
       if(err){
