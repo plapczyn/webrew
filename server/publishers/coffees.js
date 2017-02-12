@@ -23,6 +23,7 @@ if (Meteor.isServer) {
   });
 
   Meteor.publish('coffeesForBrewfile', (user) => {
+    // console.log(Coffees.find({username:user}));
     return Coffees.find({username: user});
   });
 }
