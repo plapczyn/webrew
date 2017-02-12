@@ -5,18 +5,33 @@ import { Favorites } from '../../api/collections/coffees.js';
 import { Rebrews } from '../../api/collections/coffees.js';
 
 Template.brew.onCreated(function (){
-  var instance = this;
-  instance.isReBrewing = new ReactiveVar(false);
+  var template = Template.instance();
+  template.isReBrewing = new ReactiveVar(false);
+  var brewName = FlowRouter.getParam('brewId');
+  template.autorun( () => {
+    template.subscribe( 'brew',brewName, () => {
+      setTimeout( () => {
+      }, 300 );
+    });
+
+    template.subscribe('rebrews', brewName, () => {
+        setTimeout( () => {
+      }, 300 );
+    })
+  });
+
 });
 
 Template.brew.helpers({
   addingRebrew: false,
   brew () {
-    return Coffees.find({name: FlowRouter.getParam("brewId")});
+    return Coffees.find();
   },
+
   isOwner(){
     return this.owner === Meteor.userId();
   },
+
   InFavorites(){
     let username = Meteor.user().username;
     let brew = FlowRouter.getParam("brewId");
@@ -27,20 +42,11 @@ Template.brew.helpers({
     }
     return false;
   },
-  reBrew(){
 
-    Meteor.call('reBrewCount',FlowRouter.getParam('brewId'), (err, res) => {
-      if(err){
-        alert("GG");
-      }
-      else{
-        console.log(res);
-      }
-    });
-  },
   reBrew(){
-    return Rebrews.find({brew: FlowRouter.getParam('brewId')},{ sort: { reviewdate: -1 } });
+    return Rebrews.find();
   },
+
   rebrewing(){
     return Template.instance().isReBrewing.get();
   }
