@@ -1,11 +1,12 @@
 <template name="newbrew">
   <div id="{{#if currentUser}}hero{{else}}hero-login{{/if}}">
-    <ul class="nav nav-pills pull-right">
-      <li role="presentation"><a href="/">Home</a></li>
-      <li role="presentation" class="active"><a href="/new">New Brew</a></li>
-      <li role="presentation"><a class="goMe" style="cursor:pointer">Me</a></li>
+      <ul class="nav nav-pills pull-right">
+          <li role="presentation"><input type="text" name="search" class="form-control search" width="250px" placeholder="Find a brew..."></li>
+          <li role="presentation"><a href="/">Home</a></li>
+          <li role="presentation" class="active"><a href="/new">New Brew</a></li>
+          <li role="presentation"><a class="goMe" style="cursor:pointer">Me</a></li>
 
-    </ul>
+      </ul>
       <div class="header">
           <h1><a id="title">newBrew</a></h1>
           <p>The world's foremost coffee network.</p>
