@@ -10,7 +10,7 @@ Template.Home.onCreated(()=>{
   template.searching   = new ReactiveVar( false );
 
   template.autorun( () => {
-    template.subscribe( 'coffees', template.searchQuery.get(), () => {
+    template.subscribe( 'coffeeSearch', template.searchQuery.get(), () => {
       setTimeout( () => {
         template.searching.set( false );
       }, 300 );
