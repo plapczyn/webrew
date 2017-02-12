@@ -6,16 +6,16 @@ import { Coffees } from '../../api/collections/coffees.js';
 Template.Home.onCreated(()=>{
   let template = Template.instance();
 
-template.searchQuery = new ReactiveVar();
-template.searching   = new ReactiveVar( false );
+  template.searchQuery = new ReactiveVar();
+  template.searching   = new ReactiveVar( false );
 
-template.autorun( () => {
-  template.subscribe( 'coffees', template.searchQuery.get(), () => {
-    setTimeout( () => {
-      template.searching.set( false );
-    }, 300 );
+  template.autorun( () => {
+    template.subscribe( 'coffees', template.searchQuery.get(), () => {
+      setTimeout( () => {
+        template.searching.set( false );
+      }, 300 );
+    });
   });
-});
 })
 
 
@@ -37,7 +37,7 @@ Template.Home.events({
   'keyup [name="search"]' ( event) {
     let value = event.target.value.trim();
     Template.instance().searchQuery.set(value)
-      // Template.instance().searching.set( true );
+    // Template.instance().searching.set( true );
 
     if ( value === '' ) {
       Template.instance().searchQuery.curValue =  value;

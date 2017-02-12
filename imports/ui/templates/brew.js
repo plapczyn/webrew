@@ -28,7 +28,15 @@ Template.brew.helpers({
     return false;
   },
   reBrewCount(){
-    return Rebrews.find({brew: FlowRouter.getParam('brewId')}).count();
+
+    Meteor.call('reBrewCount',FlowRouter.getParam('brewId'), (err, res) => {
+      if(err){
+        alert("GG");
+      }
+      else{
+        console.log(res);
+      }
+    });
   },
   reBrew(){
     return Rebrews.find({brew: FlowRouter.getParam('brewId')},{ sort: { reviewdate: -1 } });
