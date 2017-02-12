@@ -1,5 +1,6 @@
 import './brew.html';
 import './brew.css';
+import Chart from 'chart.js';
 import { Coffees } from '../../api/collections/coffees.js';
 import { Favorites } from '../../api/collections/coffees.js';
 import { Rebrews } from '../../api/collections/coffees.js';
@@ -35,7 +36,7 @@ Template.brew.helpers({
   },
   rebrewing(){
     return Template.instance().isReBrewing.get();
-  }
+  },
 });
 
 Template.brew.events({
@@ -156,5 +157,45 @@ Template.brew.events({
     const value = $(event.target).val();
     $("#irating").val(value);
   }
+});
 
+
+Template.canvas.onRendered(function() {
+  let data = {
+    labels: ["Aftertaste", "Complexity", "Sweetness", "Bitterness", "Drinkability"],
+    datasets: [
+      {
+        label: "Average Review",
+        backgroundColor: "rgba(179,181,198,0.2)",
+        borderColor: "rgba(179,181,198,1)",
+        pointBackgroundColor: "rgba(179,181,198,1)",
+        pointBorderColor: "#fff",
+        pointHoverBackgroundColor: "#fff",
+        pointHoverBorderColor: "rgba(179,181,198,1)",
+        data: [6, 5, 9, 8, 5]
+      },
+      {
+        label: "This Brew",
+        backgroundColor: "rgba(255,99,132,0.2)",
+        borderColor: "rgba(255,99,132,1)",
+        pointBackgroundColor: "rgba(255,99,132,1)",
+        pointBorderColor: "#fff",
+        pointHoverBackgroundColor: "#fff",
+        pointHoverBorderColor: "rgba(255,99,132,1)",
+        data: [2, 4, 4, 1, 9]
+      }
+    ]
+  };
+  let myRadarChart = new Chart(document.getElementById('myChart'), {
+    type: 'radar',
+    data: data,
+    options: {
+        title: {
+            display: true,
+            text: 'Brew Profile'
+        },
+        backgroundColor: "rgba(0,0,0,0)",
+        fontSize: 16,
+    }
+  });
 });

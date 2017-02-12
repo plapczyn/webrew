@@ -48,6 +48,10 @@
       </div>
     </div>
 
+    <div class="col-lg-6">
+      {{> canvas}}
+    </div>
+
     {{#if reBrewCount}}
     <div class="row">
       <div class="col-md-12">
@@ -125,4 +129,8 @@
   </div>
 </div>
 {{/if}}
+</template>
+
+<template name ='canvas'>
+  <canvas id='myChart' width="400" height="400" ></canvas>
 </template>
