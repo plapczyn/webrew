@@ -3,15 +3,17 @@ import { BrewFiles } from '../../imports/api/collections/coffees.js';
 if(Meteor.isServer){
   Meteor.methods({
     'brewfile.updateImage'(brewfile){
+      console.log(brewfile);
+      try{
         var id = BrewFiles.findOne({user: brewfile.user})._id;
-        try{
-          BrewFiles.update({_id: id}, {$set: {imageURL: brewfile.url}})
-        }
-        catch(e){
-          BrewFiles.insert({user: brewfile.user, imageURL: brewfile.url});
-        }
+        BrewFiles.update({_id: id}, {$set: {imageURL: brewfile.url}})
 
-        try{
+      }
+      catch(e){
+        BrewFiles.insert({user: brewfile.user, imageURL: brewfile.url});
+      }
+
+      try{
           BrewFiles.update({_id: id}, {$set: {tagline: brewfile.tagline}})
         }
         catch(e){
