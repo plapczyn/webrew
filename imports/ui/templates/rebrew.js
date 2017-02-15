@@ -1,5 +1,18 @@
 import './rebrew.html'
 import { BrewFiles } from '../../api/collections/coffees.js';
+
+Template.rebrew.onCreated(() => {
+  var user = Template.instance().data.user;
+  var template = Template.instance();
+  var imageUrl = new ReactiveVar('');
+  template.autorun( () => {
+    template.subscribe( 'brewfile', user, () => {
+      setTimeout( () => {
+      }, 300 );
+    });
+  });
+});
+
 Template.rebrew.helpers({
     ratingFull(count){
     var countArr = [];
@@ -16,7 +29,7 @@ Template.rebrew.helpers({
     return countArr;
   },
   submitterImage(){
-    return BrewFiles.findOne({user:this.user}).imageURL;
+     return BrewFiles.findOne().imageURL;
     console.log(this)
   }
 });

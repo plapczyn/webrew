@@ -2,8 +2,9 @@ import { BrewFiles } from '../../imports/api/collections/coffees.js';
 
 if (Meteor.isServer) {
   Meteor.publish('brewfile', (user) => {
-    check (user, Match.OneOf(String, null, undefined));
     console.log(user);
-    return BrewFiles.find({user: user})
+    let usr = user.trim();
+    check (user, Match.OneOf(String, null, undefined));
+    return BrewFiles.find({user: user});
   });
 }

@@ -10,11 +10,10 @@ Template.mebrew.onCreated(() => {
   template.searching = new ReactiveVar( false );
 
   template.autorun( () => {
-    template.subscribe( 'brewfile', user, () => {
-      setTimeout( () => {
-        template.searching.set( false );
-      }, 300 );
-    });
+    // template.subscribe( 'brewfile', user, () => {
+    //   setTimeout( () => {
+    //   }, 300 );
+    // });
     template.subscribe('favorites', user, () => {
       setTimeout( () => {
       }, 300 );
@@ -56,13 +55,14 @@ Template.mebrew.helpers({
   },
   meBrews (){
     console.log(Coffees.findOne())
-    return Coffees.find({username: FlowRouter.getParam("userName")})
+    return Coffees.find();
   },
 
   brew (element) {
     return Coffees.find({name:element.hash.name.name});
   },
   getImage(){
+    console.log(BrewFiles.find());
     if(BrewFiles.findOne({user: FlowRouter.getParam('userName')})){
       return BrewFiles.findOne({user: FlowRouter.getParam('userName')}).imageURL;
     }
