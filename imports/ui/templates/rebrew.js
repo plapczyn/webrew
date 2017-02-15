@@ -29,8 +29,7 @@ Template.rebrew.helpers({
     return countArr;
   },
   submitterImage(){
-     return BrewFiles.findOne().imageURL;
-    console.log(this)
+    return BrewFiles.findOne({user:this.user}).imageURL;
   }
 });
 
