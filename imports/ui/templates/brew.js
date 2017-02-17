@@ -15,7 +15,11 @@ Template.brew.onCreated(function (){
     });
 
     template.subscribe('rebrews', brewName, () => {
-        setTimeout( () => {
+      setTimeout( () => {
+      }, 300 );
+    })
+    template.subscribe('favorites.isInFavorites', brewName, () => {
+      setTimeout( () => {
       }, 300 );
     })
   });
@@ -73,9 +77,16 @@ Template.brew.events({
         // Hide Modal
         $("#DeleteBrewModal").on("hidden.bs.modal", function (){
             //Remove coffee from the collection
-            Coffees.remove(document.getElementById("brewID").value);
+            let id = document.getElementById("brewID").value
+            Meteor.call('coffees.removeById', id, (err, res) => {
+              if(err){
+                Toast.info(brew + " was not removed successfully");
+              }
+              else{
+                Toast.info(brew + " was removed");
+              }
+            });
             FlowRouter.go('Main');
-            Toast.info(brew + " was removed");
         });
         $("#DeleteBrewModal").modal("hide");
   },
@@ -83,9 +94,19 @@ Template.brew.events({
     'click .addToFavorites'(event){
     var userName = Meteor.user().username;
     var brew = FlowRouter.getParam('brewId')
-    Favorites.insert({user: userName, name:brew });
-    Toast.options = {
-      closeButton: true,
+    var favorite = {user: userName, name: brew};
+
+    Meteor.call('favorites.add', favorite, (err, res) => {
+      if(!err){
+        Toast.info(brew + " was added to your favorites");
+      }
+      else{
+
+        Toast.info(brew + " was not added to your favorites. An error occured");
+      }
+  });
+  Toast.options = {
+    closeButton: true,
       progressBar: true,
       positionClass: 'toast-top-left',
       showEasing: 'swing',
@@ -95,7 +116,6 @@ Template.brew.events({
       timeOut: 1500,
       color: 'red'
     };
-    Toast.info(brew + " was added to your favorites");
   },
 
   'click .removeFromFavorites'(event){
