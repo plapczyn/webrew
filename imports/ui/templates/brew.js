@@ -8,7 +8,14 @@ Template.brew.onCreated(function (){
   var template = Template.instance();
   template.isReBrewing = new ReactiveVar(false);
   var brewName = FlowRouter.getParam('brewId');
+
   template.autorun( () => {
+    let user = "";
+
+    if(Meteor.user()){
+      user = Meteor.user().username;
+    }
+
     template.subscribe( 'brew',brewName, () => {
       setTimeout( () => {
       }, 300 );
@@ -18,7 +25,7 @@ Template.brew.onCreated(function (){
       setTimeout( () => {
       }, 300 );
     })
-    template.subscribe('favorites.isInFavorites', brewName, () => {
+    template.subscribe('favorites.isInFavorites', user, () => {
       setTimeout( () => {
       }, 300 );
     })
@@ -37,9 +44,8 @@ Template.brew.helpers({
   },
 
   InFavorites(){
-    let username = Meteor.user().username;
     let brew = FlowRouter.getParam("brewId");
-    let favorite =  Favorites.findOne({user: username, name: brew});
+    let favorite =  Favorites.findOne({name: brew});
 
     if(!favorite){
       return true;

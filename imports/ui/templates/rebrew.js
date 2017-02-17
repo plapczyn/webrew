@@ -29,7 +29,10 @@ Template.rebrew.helpers({
     return countArr;
   },
   submitterImage(){
-    return BrewFiles.findOne({user:this.user}).imageURL;
+    let brewfile = BrewFiles.findOne({user:this.user});
+    if(brewfile){
+      return brewfile.imageURL;
+    }
   }
 });
 
