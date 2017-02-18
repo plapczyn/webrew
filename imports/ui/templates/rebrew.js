@@ -14,20 +14,6 @@ Template.rebrew.onCreated(() => {
 });
 
 Template.rebrew.helpers({
-    ratingFull(count){
-    var countArr = [];
-    for (var i=0; i<count; i++){
-      countArr.push({});
-    }
-    return countArr;
-  },
-    ratingNone(count){
-    var countArr = [];
-    for (var i=0; i< 5 - count; i++){
-      countArr.push({});
-    }
-    return countArr;
-  },
   submitterImage(){
     let brewfile = BrewFiles.findOne({user:this.user});
     if(brewfile){
