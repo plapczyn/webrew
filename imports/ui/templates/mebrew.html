@@ -1,11 +1,5 @@
 <template name="mebrew">
   <div id="{{#if currentUser}}hero{{else}}hero-login{{/if}}">
-      <ul class="nav nav-pills pull-right">
-          <li role="presentation"><input type="text" name="search" class="form-control search" width="250px" placeholder="Find a brew..."></li>
-          <li role="presentation"><a href="/">Home</a></li>
-          <li role="presentation"><a href="/new">New Brew</a></li>
-          <li role="presentation" class="active"><a class="goMe" style="cursor:pointer">Me</a></li>
-      </ul>
     <div class="header">
       <h1><a id="title">meBrew</a></h1>
       {{#if currentUser}}
@@ -14,6 +8,14 @@
       <p> I'm a member, <span style="a:link{color: white}">{{> loginButtons }}</span></p>
       {{/if}}
     </div>
+    {{if currentUser}}
+    <ul class="nav nav-pills pull-right">
+      <li role="presentation"><input type="text" name="search" class="form-control search" width="250px" placeholder="Find a brew..."></li>
+      <li role="presentation"><a href="/">Home</a></li>
+      <li role="presentation"><a href="/new">New Brew</a></li>
+      <li role="presentation" class="active"><a class="goMe" style="cursor:pointer">Me</a></li>
+    </ul>
+    {{/if}}
   </div>
   {{#if currentUser}}
   <div class="modal fade" id="meBrewModal" role="dialog">
