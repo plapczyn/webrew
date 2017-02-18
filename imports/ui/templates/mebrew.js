@@ -8,12 +8,18 @@ Template.mebrew.onCreated(() => {
   let template = Template.instance();
   let user = FlowRouter.getParam('userName');
   template.searching = new ReactiveVar( false );
+  template.searchText = new ReactiveVar("");
 
   template.autorun( () => {
     // template.subscribe( 'brewfile', user, () => {
     //   setTimeout( () => {
     //   }, 300 );
     // });
+    // Gather
+    // this.register('myPost', Meteor.subscribe('brewfile', params.userName));
+    // this.register('coffeesForBrewfileClient', Meteor.subscribe('coffees.myCoffees', params.userName));
+    template.subscribe('coffees.mebrew', user, template.searchText.get());
+
     template.subscribe('favorites', user, () => {
       setTimeout( () => {
       }, 300 );
@@ -38,6 +44,13 @@ Template.mebrew.events({
       });
     }
   })
+},
+'keyup [name="search"]' ( event) {
+  let value = event.target.value.trim();
+  Template.instance().searchText.set(value)
+  if ( value === '' ) {
+    Template.instance().searchText.curValue =  value;
+  }
 }
 });
 

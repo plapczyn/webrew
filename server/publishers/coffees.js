@@ -27,12 +27,28 @@ if (Meteor.isServer) {
     return Coffees.find({username: user});
   });
 
-  Meteor.publish('coffees.favorites', (user) => {
+  Meteor.publish('coffees.mebrew', (user,search) => {
+    // Gather favorites list
     let favorites = Favorites.find({user: user});
     let coffeeList = [];
+
+    //// Setup if currently Searching
+    let isSearching = false;
+    if(!!search){
+      isSearching = true;
+    }
+    let regex = new RegExp( search, 'i' );
+
     favorites.forEach((e) => {
-      coffeeList.push({name: e.name});
+      let name = (isSearching)? {$regex: regex} : e;
+      coffeeList.push({name: name});
     });
+
+    coffeeList.push(
+      {
+        username: user,
+        name: {$regex: regex}
+      });
 
     let query = {
       $or: coffeeList
