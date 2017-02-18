@@ -168,7 +168,17 @@ Template.brew.events({
     let brew = FlowRouter.getParam('brewId');
 
 
-
+    Toast.options = {
+        closeButton: true,
+        progressBar: true,
+        positionClass: 'toast-top-left',
+        showEasing: 'swing',
+        hideEasing: 'linear',
+        showMethod: 'fadeIn',
+        hideMethod: 'fadeOut',
+        timeOut: 1500,
+        color: 'red'
+    };
     //insert into database
     var rebrewToInsert = {
       user: user,
@@ -180,7 +190,7 @@ Template.brew.events({
     }
     Meteor.call('rebrews.add', rebrewToInsert, (err, res) => {
       if(!err){
-        Toast.info('Your rebrew was added successfully');
+        Toast.info("New reBrew added to " + brew);
       }
       else{
         Toast.info('Your rebrew was not submitted successfully');
@@ -200,7 +210,6 @@ Template.brew.events({
     Template.instance().isReBrewing.set(false);
     let name = FlowRouter.getParam('brewId');
     FlowRouter.go('brew', {brewId: name});
-    Toast.info("New reBrew added to " + brew);
   },
     //Goto Profile
   'click .goMe' (event){

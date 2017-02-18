@@ -15,50 +15,50 @@ Template.newbrew.events({
     const description = target.description.value;
     const imageURL = target.imageURL.value;
 
-    // Check if brew exists in collection
-    var isFound = Coffees.findOne({name: name.trim(),});
-    if (isFound == null){
-        // Insert a new coffee into the collection
-        Coffees.insert({
-            name: name.trim(),
-            roast: roast.trim(),
-            description: description,
-            imageURL: imageURL.trim(),
-            createdAt: new Date(),
-            owner: Meteor.userId(),
-            username: Meteor.user().username,
-        });
+    // Insert a new coffee into the collection
+    let brew = {
+      name: name.trim(),
+      roast: roast.trim(),
+      description: description.trim(),
+      imageURL: imageURL.trim(),
+    };
 
-        // Clear form
+    Meteor.call('coffees.add', brew, (err, res) => {
+      if(!err){
+        Toast.info("Brew was successfully added!");
         FlowRouter.go('Main');
-    } else {
+      }
+      else {
         Toast.options = {
-            closeButton: true,
-            progressBar: true,
-            positionClass: 'toast-bottom-center',
-            showDuration: '5000',
-            hideDuration: '5000',
-            timeOut: '5000',
-            showEasing: 'swing',
-            hideEasing: 'linear',
-            showMethod: 'fadeIn',
-            hideMethod: 'fadeOut',
-            color: 'red',
-            onclick: function () {FlowRouter.go('/brew/' + isFound.name);}
+          closeButton: true,
+          progressBar: true,
+          positionClass: 'toast-bottom-center',
+          showDuration: '5000',
+          hideDuration: '5000',
+          timeOut: '5000',
+          showEasing: 'swing',
+          hideEasing: 'linear',
+          showMethod: 'fadeIn',
+          hideMethod: 'fadeOut',
+          color: 'red',
+          onclick: function () {FlowRouter.go('/brew/' + brew.name);}
         };
-        Toast.error(isFound.name + " was already added by " + isFound.username + '. Click to check it out.' );
-    }
+        Toast.error(brew.name + ' already exists. click to check it out.' );
+      }
+    });
+
+    // Clear form
   },
 
   //Goto Profile
   'click .goMe' (event){
-      FlowRouter.go('mebrew', {userName: Meteor.user().username})
+    FlowRouter.go('mebrew', {userName: Meteor.user().username})
   }
 
 });
 
 Template.newbrew.helpers({
-//    submitterImage(){
+  //    submitterImage(){
 //        return BrewFiles.findOne({user:this.user}).imageURL;
 //        console.log(this)
 //    }
