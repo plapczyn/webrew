@@ -49,7 +49,6 @@ Template.mebrew.helpers({
     return Favorites.find();
   },
   meBrews (){
-    console.log(Coffees.findOne())
     return Coffees.find();
   },
 

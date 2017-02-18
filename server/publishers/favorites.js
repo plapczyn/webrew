@@ -9,7 +9,7 @@ import { Favorites } from '../../imports/api/collections/coffees.js';
 
 
     Meteor.publish('favorites.isInFavorites', (user) => {
-      console.log(Favorites.find({user: user}))
+      // console.log(Favorites.find({user: user}))
       return Favorites.find({user: user});
     });
 }

@@ -163,14 +163,23 @@ Template.brew.events({
 
 
     //insert into database
-    Rebrews.insert({
+    var rebrewToInsert = {
       user: user,
       brew: brew,
       rebrew: rebrew,
       rating: rating,
       title: title,
       reviewdate: reviewdate
+    }
+    Meteor.call('rebrews.add', rebrewToInsert, (err, res) => {
+      if(!err){
+        Toast.info('Your rebrew was added successfully');
+      }
+      else{
+        Toast.info('Your rebrew was not submitted successfully');
+      }
     });
+
 
     // Recalculate average
     let allreviews = Rebrews.find({brew:brew}).fetch();
