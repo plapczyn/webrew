@@ -24,6 +24,9 @@
       <div class="col-md-8">
         <h1>{{name}}</h1>
         <h3>{{roast}}</h3>
+        {{#if averageRating}}
+        <h3>Average Rating ({{averageRating}})</h3>
+        {{/if}}
         <p> Added {{tm_now createdAt}} by <a href="/mebrew/{{username}}" class="">{{username}}</a></p>
         <button type="button" class="addRebrew btn btn-info" data-toggle="modal" data-target="#reBrewingModal" data-keyboard="true">Add a reBrew</button>
         {{#if InFavorites}}
