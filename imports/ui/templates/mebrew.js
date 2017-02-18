@@ -18,11 +18,6 @@ Template.mebrew.onCreated(() => {
       setTimeout( () => {
       }, 300 );
     });
-
-    template.subscribe('coffeesForBrewfile', user, () => {
-      setTimeout( () => {
-      }, 300 );
-    });
   });
 });
 

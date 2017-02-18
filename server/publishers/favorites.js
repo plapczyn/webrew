@@ -6,4 +6,10 @@ import { Favorites } from '../../imports/api/collections/coffees.js';
       check( user, Match.OneOf( String, null, undefined ) );
       return Favorites.find({user: user});
     });
+
+
+    Meteor.publish('favorites.isInFavorites', (user) => {
+      console.log(Favorites.find({user: user}))
+      return Favorites.find({user: user});
+    });
 }
