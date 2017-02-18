@@ -16,15 +16,15 @@ Template.brew.onCreated(function (){
       user = Meteor.user().username;
     }
 
-    template.subscribe( 'brew',brewName, () => {
-      setTimeout( () => {
-      }, 300 );
-    });
-
-    template.subscribe('rebrews', brewName, () => {
-      setTimeout( () => {
-      }, 300 );
-    })
+    // template.subscribe( 'brew',brewName, () => {
+    //   setTimeout( () => {
+    //   }, 300 );
+    // });
+    //
+    // template.subscribe('rebrews', brewName, () => {
+    //   setTimeout( () => {
+    //   }, 300 );
+    // })
     template.subscribe('favorites.isInFavorites', user, () => {
       setTimeout( () => {
       }, 300 );
@@ -34,6 +34,13 @@ Template.brew.onCreated(function (){
 });
 
 Template.brew.helpers({
+  isReady: function(sub) {
+    if(sub) {
+      return FlowRouter.subsReady(sub);
+    } else {
+      return FlowRouter.subsReady();
+    }
+  },
   addingRebrew: false,
   brew () {
     return Coffees.find();
