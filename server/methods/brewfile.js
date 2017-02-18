@@ -3,7 +3,6 @@ import { BrewFiles } from '../../imports/api/collections/coffees.js';
 if(Meteor.isServer){
   Meteor.methods({
     'brewfile.updateImage'(brewfile){
-      console.log(brewfile);
       try{
         var id = BrewFiles.findOne({user: brewfile.user})._id;
         BrewFiles.update({_id: id}, {$set: {imageURL: brewfile.url}})

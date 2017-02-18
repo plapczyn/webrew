@@ -42,6 +42,5 @@ Template.Home.events({
     if ( value === '' ) {
       Template.instance().searchQuery.curValue =  value;
     }
-    console.log(Template.instance().searchQuery)
   }
 });

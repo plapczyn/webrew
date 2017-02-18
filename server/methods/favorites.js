@@ -8,7 +8,6 @@ if(Meteor.isServer){
       Favorites.insert(favorite);
     },
     'favorites.isInFavorites'(user) {
-      console.log(Favorites.find({user: user}).count)
       return Favorites.find({user: user});
     }
   });

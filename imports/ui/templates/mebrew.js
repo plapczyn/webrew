@@ -45,18 +45,20 @@ Template.mebrew.helpers({
   name: FlowRouter.getParam("userName"),
   info: "Tell us a little about yourself and how you like to Brew? Click the image to update!",
   favorites(){
-    console.log(Favorites.findOne());
     return Favorites.find();
   },
   meBrews (){
-    return Coffees.find();
+    let user = "";
+    if(Meteor.user()){
+      user = Meteor.user().username
+    }
+    return Coffees.find({username: user});
   },
 
   brew (element) {
     return Coffees.find({name:element.hash.name.name});
   },
   getImage(){
-    console.log(BrewFiles.find());
     if(BrewFiles.findOne({user: FlowRouter.getParam('userName')})){
       return BrewFiles.findOne({user: FlowRouter.getParam('userName')}).imageURL;
     }
