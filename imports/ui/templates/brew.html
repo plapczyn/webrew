@@ -26,10 +26,13 @@
     <div class="row">
       <div class="col-md-8">
         <h1>{{name}}</h1>
-        <h3>{{roast}}</h3>
         {{#if averageRating}}
-        <h3>Average Rating ({{averageRating}})</h3>
+          <div class="circle">
+            <div class="overall"> Overall </div>
+            <div class="rating-value">{{averageRating}}</div>
+          </div>
         {{/if}}
+        <h3>{{roast}}</h3>
         <p> Added {{tm_now createdAt}} by <a href="/mebrew/{{username}}" class="">{{username}}</a></p>
         <button type="button" class="addRebrew btn btn-info" data-toggle="modal" data-target="#reBrewingModal" data-keyboard="true">Add a reBrew</button>
         {{#if InFavorites}}
