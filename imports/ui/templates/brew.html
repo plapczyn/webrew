@@ -22,41 +22,39 @@
   {{#if currentUser}}
   {{#each brew}}
   <div class="container">
-    <p> </p>
     <div class="row">
-      <div class="col-md-8">
+      <div class="col-md-4">
         <h1>{{name}}</h1>
+        {{#if imageURL}}
+        <img src="{{imageURL}}" class="img-responsive" style="margin-bottom: 10px" alt="...">
+        {{else}}
+        <img src="/img/default-brew.jpg" class="img-responsive" style="margin-bottom: 10px" alt="...">
+        {{/if}}
         {{#if averageRating}}
-          <div class="circle">
-            <div class="overall"> Overall </div>
-            <div class="rating-value">{{averageRating}}</div>
-          </div>
+        <div class="circle">
+          <div class="overall"> Overall </div>
+          <div class="rating-value">{{averageRating}}</div>
+        </div>
         {{/if}}
         <h3>{{roast}}</h3>
-        <p> Added {{tm_now createdAt}} by <a href="/mebrew/{{username}}" class="">{{username}}</a></p>
+        <p style="margin-bottom: 25px"> Added {{tm_now createdAt}} by <a href="/mebrew/{{username}}" class="">{{username}}</a></p>
         <button type="button" class="addRebrew btn btn-info" data-toggle="modal" data-target="#reBrewingModal" data-keyboard="true">Add a reBrew</button>
         {{#if InFavorites}}
         <button type="button" class="addToFavorites btn btn-success">Add to Favorites</button>
         {{else}}
-        <button type="button" class="removeFromFavorites btn btn-success">Remove from Favorites</button>
+        <button type="button" class="removeFromFavorites btn btn-success">Not a Favorite</button>
         {{/if}}
         {{#if isOwner}}
         <button type="button" class="btn btn-warning delModal" data-toggle="modal" data-target="#DeleteBrewModal" data-keyboard="true" data-id="my_id_value">Delete Brew</button>
         {{/if}}
+      </div>
+      <div class="col-md-4">
         <h3>Brew Summary</h3>
         <p class="newlines">{{description}}</p>
       </div>
       <div class="col-md-4">
-        {{#if imageURL}}
-        <img src="{{imageURL}}" class="img-responsive" alt="...">
-        {{else}}
-        <img src="/img/default-brew.jpg" class="img-responsive" alt="...">
-        {{/if}}
+        {{> canvas}}
       </div>
-    </div>
-
-    <div class="col-lg-6">
-      {{> canvas}}
     </div>
 
     {{#if reBrewCount}}
@@ -140,5 +138,5 @@
 </template>
 
 <template name ='canvas'>
-  <canvas id='myChart' width="400" height="400" ></canvas>
+  <canvas id='myChart' width="200" height="200" ></canvas>
 </template>
