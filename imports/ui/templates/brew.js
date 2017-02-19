@@ -6,34 +6,65 @@ import { Favorites } from '../../api/collections/coffees.js';
 import { Rebrews } from '../../api/collections/coffees.js';
 
 Template.brew.onCreated(function (){
-  var instance = this;
-  instance.isReBrewing = new ReactiveVar(false);
+  var template = Template.instance();
+  template.isReBrewing = new ReactiveVar(false);
+  var brewName = FlowRouter.getParam('brewId');
+
+  template.autorun( () => {
+    let user = "";
+
+    if(Meteor.user()){
+      user = Meteor.user().username;
+    }
+
+    // template.subscribe( 'brew',brewName, () => {
+    //   setTimeout( () => {
+    //   }, 300 );
+    // });
+    //
+    // template.subscribe('rebrews', brewName, () => {
+    //   setTimeout( () => {
+    //   }, 300 );
+    // })
+    template.subscribe('favorites.isInFavorites', user, () => {
+      setTimeout( () => {
+      }, 300 );
+    })
+  });
+
 });
 
 Template.brew.helpers({
+  isReady: function(sub) {
+    if(sub) {
+      return FlowRouter.subsReady(sub);
+    } else {
+      return FlowRouter.subsReady();
+    }
+  },
   addingRebrew: false,
   brew () {
-    return Coffees.find({name: FlowRouter.getParam("brewId")});
+    return Coffees.find();
   },
+
   isOwner(){
     return this.owner === Meteor.userId();
   },
+
   InFavorites(){
-    let username = Meteor.user().username;
     let brew = FlowRouter.getParam("brewId");
-    let favorite =  Favorites.findOne({user: username, name: brew});
+    let favorite =  Favorites.findOne({name: brew});
 
     if(!favorite){
       return true;
     }
     return false;
   },
-  reBrewCount(){
-    return Rebrews.find({brew: FlowRouter.getParam('brewId')}).count();
-  },
+
   reBrew(){
-    return Rebrews.find({brew: FlowRouter.getParam('brewId')},{ sort: { reviewdate: -1 } });
+    return Rebrews.find();
   },
+
   rebrewing(){
     return Template.instance().isReBrewing.get();
   },
@@ -60,9 +91,16 @@ Template.brew.events({
         // Hide Modal
         $("#DeleteBrewModal").on("hidden.bs.modal", function (){
             //Remove coffee from the collection
-            Coffees.remove(document.getElementById("brewID").value);
+            let id = document.getElementById("brewID").value
+            Meteor.call('coffees.removeById', id, (err, res) => {
+              if(err){
+                Toast.info(brew + " was not removed successfully");
+              }
+              else{
+                Toast.info(brew + " was removed");
+              }
+            });
             FlowRouter.go('Main');
-            Toast.info(brew + " was removed");
         });
         $("#DeleteBrewModal").modal("hide");
   },
@@ -70,9 +108,19 @@ Template.brew.events({
     'click .addToFavorites'(event){
     var userName = Meteor.user().username;
     var brew = FlowRouter.getParam('brewId')
-    Favorites.insert({user: userName, name:brew });
-    Toast.options = {
-      closeButton: true,
+    var favorite = {user: userName, name: brew};
+
+    Meteor.call('favorites.add', favorite, (err, res) => {
+      if(!err){
+        Toast.info(brew + " was added to your favorites");
+      }
+      else{
+
+        Toast.info(brew + " was not added to your favorites. An error occured");
+      }
+  });
+  Toast.options = {
+    closeButton: true,
       progressBar: true,
       positionClass: 'toast-top-left',
       showEasing: 'swing',
@@ -82,7 +130,6 @@ Template.brew.events({
       timeOut: 1500,
       color: 'red'
     };
-    Toast.info(brew + " was added to your favorites");
   },
 
   'click .removeFromFavorites'(event){
@@ -122,16 +169,35 @@ Template.brew.events({
     let brew = FlowRouter.getParam('brewId');
 
 
-
+    Toast.options = {
+        closeButton: true,
+        progressBar: true,
+        positionClass: 'toast-top-left',
+        showEasing: 'swing',
+        hideEasing: 'linear',
+        showMethod: 'fadeIn',
+        hideMethod: 'fadeOut',
+        timeOut: 1500,
+        color: 'red'
+    };
     //insert into database
-    Rebrews.insert({
+    var rebrewToInsert = {
       user: user,
       brew: brew,
       rebrew: rebrew,
       rating: rating,
       title: title,
       reviewdate: reviewdate
+    }
+    Meteor.call('rebrews.add', rebrewToInsert, (err, res) => {
+      if(!err){
+        Toast.info("New reBrew added to " + brew);
+      }
+      else{
+        Toast.info('Your rebrew was not submitted successfully');
+      }
     });
+
 
     // Recalculate average
     let allreviews = Rebrews.find({brew:brew}).fetch();
@@ -145,7 +211,6 @@ Template.brew.events({
     Template.instance().isReBrewing.set(false);
     let name = FlowRouter.getParam('brewId');
     FlowRouter.go('brew', {brewId: name});
-    Toast.info("New reBrew added to " + brew);
   },
     //Goto Profile
   'click .goMe' (event){

@@ -68,10 +68,23 @@ body{ margin:0px 0px;
   color: white;
 }
 
+.nav {
+  margin-top: 10px;
+  margin-right: 10px;
+}
+
 .thumbnail img{
   max-height: 300px;
 }
 
 .newlines {
   white-space: pre-line;
+}
+
+.search {
+  height: 40px;
+}
+
+.tagline {
+  color: white;
 }

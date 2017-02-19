@@ -9,10 +9,16 @@ import './templates/newbrew.js';
 import './templates/brew.js';
 import './templates/rebrew.js';
 
-export var ColorPallete = {
+
+
+
+export const ColorPallet = {
   lightGrey: '#e8e9eb',
   grey: '#a9a9ab',
   lightBrown: '#b69476',
   darkBrown: '#66290b',
-  blackBrown:'#120907'
+  blackBrown:'#120907',
+  'Light Roast': '#b69476',
+  'Medium-Dark Roast': '#66290b',
+  'Dark Roast': '#120907' 
 }

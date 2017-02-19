@@ -1,10 +1,5 @@
 <template name="brew">
   <div id="{{#if currentUser}}hero{{else}}hero-login{{/if}}">
-    <ul class="nav nav-pills pull-right">
-      <li role="presentation" class="active"><a href="/">Home</a></li>
-      <li role="presentation"><a href="/new">New Brew</a></li>
-      <li role="presentation"><a class="goMe" style="cursor:pointer">Me</a></li>
-    </ul>
     <div class="header">
       <h1><a id="title">reBrew</a></h1>
       <p>The world's foremost coffee network.</p>
@@ -14,7 +9,16 @@
       <p> I'm a member, <span style="a:link{color: white}">{{> loginButtons }}</span></p>
       {{/if}}
     </div>
+    {{#if currentUser}}
+      <ul class="nav nav-pills pull-right">
+        <li role="presentation"><input type="text" name="search" class="form-control search" width="250px" placeholder="Find a brew..."></li>
+        <li role="presentation" class="active"><a href="/">Home</a></li>
+        <li role="presentation"><a href="/new">New Brew</a></li>
+        <li role="presentation"><a class="goMe" style="cursor:pointer">Me</a></li>
+      </ul>
+    {{/if}}
   </div>
+  {{#if isReady}}
   {{#if currentUser}}
   {{#each brew}}
   <div class="container">
@@ -22,10 +26,13 @@
     <div class="row">
       <div class="col-md-8">
         <h1>{{name}}</h1>
-        <h3>{{roast}}</h3>
         {{#if averageRating}}
-        <h3>Average Rating ({{averageRating}})</h3>
+          <div class="circle">
+            <div class="overall"> Overall </div>
+            <div class="rating-value">{{averageRating}}</div>
+          </div>
         {{/if}}
+        <h3>{{roast}}</h3>
         <p> Added {{tm_now createdAt}} by <a href="/mebrew/{{username}}" class="">{{username}}</a></p>
         <button type="button" class="addRebrew btn btn-info" data-toggle="modal" data-target="#reBrewingModal" data-keyboard="true">Add a reBrew</button>
         {{#if InFavorites}}
@@ -128,6 +135,7 @@
     </div>
   </div>
 </div>
+{{/if}}
 {{/if}}
 </template>
 

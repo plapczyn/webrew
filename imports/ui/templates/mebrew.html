@@ -1,10 +1,5 @@
 <template name="mebrew">
   <div id="{{#if currentUser}}hero{{else}}hero-login{{/if}}">
-    <ul class="nav nav-pills pull-right">
-      <li role="presentation"><a href="/">Home</a></li>
-      <li role="presentation"><a href="/new">New Brew</a></li>
-      <li role="presentation" class="active"><a class="goMe" style="cursor:pointer">Me</a></li>
-    </ul>
     <div class="header">
       <h1><a id="title">meBrew</a></h1>
       {{#if currentUser}}
@@ -13,6 +8,14 @@
       <p> I'm a member, <span style="a:link{color: white}">{{> loginButtons }}</span></p>
       {{/if}}
     </div>
+    {{#if currentUser}}
+    <ul class="nav nav-pills pull-right">
+      <li role="presentation"><input type="text" name="search" class="form-control search" width="250px" placeholder="Find a brew..."></li>
+      <li role="presentation"><a href="/">Home</a></li>
+      <li role="presentation"><a href="/new">New Brew</a></li>
+      <li role="presentation" class="active"><a class="goMe" style="cursor:pointer">Me</a></li>
+    </ul>
+    {{/if}}
   </div>
   {{#if currentUser}}
   <div class="modal fade" id="meBrewModal" role="dialog">
@@ -48,25 +51,18 @@
     </div>
   </div>
   <div class="container">
-    <div class="row">
-      <div class="profile-box">
-        <!-- <div class="col-xs-11 col-xs-offset-1"> -->
-        <img src="{{getImage}}" class="btn img-thumbnail profile-picture offset-top" data-toggle="{{isUser}}" data-target="#meBrewModal" data-keyboard="true" />
-        <div class="row offset-top">
-          <div class="col-xs-2">
-            <div class="user-info thumbnail profile-info">
-              <p>
-              {{#if getTagline}}
-                {{getTagline}}
-              {{else}}
-                {{info}}
-              {{/if}}
-              </p>
-            </div>
+    <div class="profile-box" data-toggle="{{isUser}}" data-target="#meBrewModal" data-keyboard="true" >
+      <img src="{{getImage}}" class="img-thumbnail profile-picture offset-top" />
+      <div class="row offset-top">
+        <div class="col-xs-2">
+          <div class="user-info profile-info">
+            <p class="text-center tagline"> {{#if getTagline}} "{{getTagline}}" {{else}} {{info}} {{/if}} </p>
           </div>
         </div>
       </div>
     </div>
+  </div>
+  <div class="container">
     <div class="row">
       <h1>Added by {{name}}</h1>
       <div class="row" style="margin-bottom:0px">
