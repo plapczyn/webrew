@@ -61,10 +61,7 @@ Template.mebrew.helpers({
     return Favorites.find();
   },
   meBrews (){
-    let user = "";
-    if(Meteor.user()){
-      user = Meteor.user().username
-    }
+    let user = FlowRouter.getParam('userName');
     return Coffees.find({username: user});
   },
 
