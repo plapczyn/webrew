@@ -22,14 +22,9 @@
   {{#if currentUser}}
   {{#each brew}}
   <div class="container">
+        <h1>{{name}}</h1>
     <div class="row">
       <div class="col-md-4">
-        <h1>{{name}}</h1>
-        {{#if imageURL}}
-        <img src="{{imageURL}}" class="img-responsive" style="margin-bottom: 10px" alt="...">
-        {{else}}
-        <img src="/img/default-brew.jpg" class="img-responsive" style="margin-bottom: 10px" alt="...">
-        {{/if}}
         {{#if averageRating}}
         <div class="circle">
           <div class="overall"> Overall </div>
@@ -38,6 +33,11 @@
         {{/if}}
         <h3>{{roast}}</h3>
         <p style="margin-bottom: 25px"> Added {{tm_now createdAt}} by <a href="/mebrew/{{username}}" class="">{{username}}</a></p>
+        {{#if imageURL}}
+        <img src="{{imageURL}}" class="img-responsive" style="margin-bottom: 10px; max-height: 300px; object-fit:cover; width:100%" alt="...">
+        {{else}}
+        <img src="/img/default-brew.jpg" class="img-responsive" style="margin-bottom: 10px" alt="...">
+        {{/if}}
         <button type="button" class="addRebrew btn btn-info" data-toggle="modal" data-target="#reBrewingModal" data-keyboard="true">Add a reBrew</button>
         {{#if InFavorites}}
         <button type="button" class="addToFavorites btn btn-success">Add to Favorites</button>
@@ -48,7 +48,7 @@
         <button type="button" class="btn btn-warning delModal" data-toggle="modal" data-target="#DeleteBrewModal" data-keyboard="true" data-id="my_id_value">Delete Brew</button>
         {{/if}}
       </div>
-      <div class="col-md-4">
+      <div class="col-md-4" style="max-height: 500px; overflow: auto;">
         <h3>Brew Summary</h3>
         <p class="newlines">{{description}}</p>
       </div>
@@ -57,13 +57,11 @@
       </div>
     </div>
 
-    {{#if reBrewCount}}
     <div class="row">
       <div class="col-md-12">
-        <h3>reBrew Details <span class="badge">{{reBrewCount}}</span></h3>
+        <h3>Reviews <span class="badge">{{reBrewCount}}</span></h3>
       </div>
     </div>
-    {{/if}}
 
     <div class="row v-align">
       {{#each reBrew}}
