@@ -41,7 +41,7 @@
         <button type="button" class="removeFromFavorites btn btn-success">Remove from Favorites</button>
         {{/if}}
         {{#if isOwner}}
-        <button type="button" class="btn btn-warning delModal" data-toggle="modal" data-target="#DeleteBrewModal" data-keyboard="true" data-id="my_id_value">Delete Brew</button>
+        <button type="button" class="btn btn-warning delModal" data-toggle="modal" data-target="#DeleteBrewModal" data-keyboard="true">Delete Brew</button>
         {{/if}}
         <h3>Brew Summary</h3>
         <p class="newlines">{{description}}</p>
@@ -65,7 +65,7 @@
 
     <div class="row v-align">
       {{#each reBrew}}
-      {{> rebrew title=title rebrew=rebrew user=user createdAt=reviewdate ratingNum=rating}}
+      {{> rebrew title=title rebrew=rebrew user=user createdAt=reviewdate ratingNum=rating owner=owner id=_id}}
       {{/each}}
     </div>
   </div>

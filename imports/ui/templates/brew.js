@@ -102,7 +102,7 @@ Template.brew.events({
             FlowRouter.go('Main');
         });
         $("#DeleteBrewModal").modal("hide");
-  },
+    },
 
     'click .addToFavorites'(event){
     var userName = Meteor.user().username;

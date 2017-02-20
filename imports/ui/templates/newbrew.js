@@ -60,6 +60,6 @@ Template.newbrew.events({
 Template.newbrew.helpers({
   //    submitterImage(){
 //        return BrewFiles.findOne({user:this.user}).imageURL;
-//        console.log(this)
-//    }
+  //    }
+
 });

@@ -39,7 +39,7 @@ Template.mebrew.events({
   var secure = Promise.resolve(Meteor.user()).then(function(data){
     var user = Meteor.user().username;
     if(Meteor.user().username == FlowRouter.getParam('userName')){
-      Meteor.call('brewfile.updateImage',{url: url, tagline: Tagline, user: user}, (err, res) => {
+      Meteor.call('brewfile.updateProfile',{url: url, tagline: Tagline, user: user}, (err, res) => {
         $("#meBrewModal").modal("hide");
       });
     }
