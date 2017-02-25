@@ -21,8 +21,6 @@ Template.mebrew.onCreated(() => {
     template.subscribe('coffees.mebrew', user, template.searchText.get());
 
     template.subscribe('favorites', user, () => {
-      setTimeout( () => {
-      }, 300 );
     });
   });
 });
@@ -58,7 +56,10 @@ Template.mebrew.helpers({
   name: FlowRouter.getParam("userName"),
   info: "Tell us a little about yourself and how you like to Brew? Click the image to update!",
   favorites(){
+    if(!!Favorites.find() && Favorites.find().fetch().length !== 0){
+      console.log(Favorites.find().fetch());
       return Favorites.find();
+    }
   },
   meBrews (){
     let user = FlowRouter.getParam('userName');
@@ -68,7 +69,7 @@ Template.mebrew.helpers({
       return Coffees.find({_id:element.hash.name._id});
   },
   Favbrew (element) {
-    return Coffees.find({_id:element.hash.name.brewid});
+    return Coffees.find({_id: element.hash.name.brewid});
   },
   getImage(){
     if(BrewFiles.findOne({user: FlowRouter.getParam('userName')})){

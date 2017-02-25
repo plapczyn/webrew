@@ -137,8 +137,6 @@ Template.brew.events({
     var user = Meteor.user().username;
     var brew = FlowRouter.getParam('brewId');
     var brewid = this._id;
-    var favoriteId = Favorites.findOne({user: user, brewid: brewid})._id;
-    Favorites.remove({_id: favoriteId});
     Toast.options = {
       closeButton: true,
       progressBar: true,
@@ -150,7 +148,17 @@ Template.brew.events({
       timeOut: 1500,
       color: 'red'
     };
-    Toast.info(brew + " was removed from your favorites");
+    Meteor.call('favorites.remove', brewid, user,  (err, res) => {
+      if(!err){
+        Toast.info(brew + " was removed from your favorites");
+      }
+      else{
+
+        Toast.error(brew + " was not removed from your favorites and error has occured");
+      }
+    });
+
+
   },
   'click .addRebrew'(event){
     var instance = Template.instance();
@@ -160,8 +168,8 @@ Template.brew.events({
     //prevent the refresh page and put params in
     event.preventDefault();
 
-      //grab form data 
-    let rebrewToInsert = {}; 
+      //grab form data
+    let rebrewToInsert = {};
     const target = event.target;
     rebrewToInsert.title = target.title.value;
     rebrewToInsert.rebrew = target.rebrew.value;
@@ -199,7 +207,7 @@ Template.brew.events({
     let name = FlowRouter.getParam('brewId');
     FlowRouter.go('brew', {brewId: name});
   },
-  
+
   //Edit Brew
   'click .editModal'(event) {
       document.getElementById("editbrewID").value = this._id;
@@ -255,6 +263,21 @@ Template.brew.events({
 
 
 Template.canvas.onRendered(function() {
+  let data2 = {
+    labels: ["Aroma", "Body", "Acidity", "Flavour", "Balance"],
+    datasets: [
+      {
+        label: "Average Review",
+        backgroundColor: "rgba(179,181,198,0.2)",
+        borderColor: "rgba(179,181,198,1)",
+        pointBackgroundColor: "rgba(179,181,198,1)",
+        pointBorderColor: "#fff",
+        pointHoverBackgroundColor: "#fff",
+        pointHoverBorderColor: "rgba(179,181,198,1)",
+        data: [6, 5, 10, 8, 5]
+      }
+    ]};
+
   let data = {
     labels: ["Aftertaste", "Complexity", "Sweetness", "Bitterness", "Drinkability"],
     datasets: [
@@ -282,7 +305,7 @@ Template.canvas.onRendered(function() {
   };
   let myRadarChart = new Chart(document.getElementById('myChart'), {
     type: 'radar',
-    data: data,
+    data: data2,
     options: {
         title: {
             display: true,
