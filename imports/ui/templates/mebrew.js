@@ -58,6 +58,7 @@ Template.mebrew.helpers({
   name: FlowRouter.getParam("userName"),
   info: "Tell us a little about yourself and how you like to Brew? Click the image to update!",
   favorites(){
+    console.log(Favorites.find().fetch());
     return Favorites.find();
   },
   meBrews (){
@@ -66,6 +67,7 @@ Template.mebrew.helpers({
   },
 
   brew (element) {
+    console.log("element",element)
     return Coffees.find({name:element.hash.name.name});
   },
   getImage(){

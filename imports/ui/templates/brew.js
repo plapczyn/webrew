@@ -218,6 +218,21 @@ Template.brew.events({
 
 
 Template.canvas.onRendered(function() {
+  let data2 = {
+    labels: ["Aroma", "Body", "Acidity", "Flavour", "Balance"],
+    datasets: [
+      {
+        label: "Average Review",
+        backgroundColor: "rgba(179,181,198,0.2)",
+        borderColor: "rgba(179,181,198,1)",
+        pointBackgroundColor: "rgba(179,181,198,1)",
+        pointBorderColor: "#fff",
+        pointHoverBackgroundColor: "#fff",
+        pointHoverBorderColor: "rgba(179,181,198,1)",
+        data: [6, 5, 10, 8, 5]
+      }
+    ]};
+
   let data = {
     labels: ["Aftertaste", "Complexity", "Sweetness", "Bitterness", "Drinkability"],
     datasets: [
@@ -245,7 +260,7 @@ Template.canvas.onRendered(function() {
   };
   let myRadarChart = new Chart(document.getElementById('myChart'), {
     type: 'radar',
-    data: data,
+    data: data2,
     options: {
         title: {
             display: true,
