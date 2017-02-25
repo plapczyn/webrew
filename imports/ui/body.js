@@ -19,6 +19,7 @@ export const ColorPallet = {
   darkBrown: '#66290b',
   blackBrown:'#120907',
   'Light Roast': '#b69476',
+  'Medium Roast': '#825d43',
   'Medium-Dark Roast': '#66290b',
   'Dark Roast': '#120907' 
 }

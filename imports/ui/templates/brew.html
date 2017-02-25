@@ -45,12 +45,22 @@
         <button type="button" class="removeFromFavorites btn btn-success">Not a Favorite</button>
         {{/if}}
         {{#if isOwner}}
-        <button type="button" class="btn btn-warning delModal" data-toggle="modal" data-target="#DeleteBrewModal" data-keyboard="true" data-id="my_id_value">Delete Brew</button>
+          <!-- <button type="button" class="btn btn-info editModal" data-toggle="modal" data-target="#EditBrewModal" data-keyboard="true">Edit Brew</button>
+          <button type="button" class="btn btn-warning delModal" data-toggle="modal" data-target="#DeleteBrewModal" data-keyboard="true">Delete Brew</button> -->
+          <div class="dropdown" style="position: absolute;top: 0px; right: 15px;">
+              <i class="fa fa-pencil-square-o fa-2 dropdown-toggle" aria-hidden="true" data-toggle="dropdown" aria-expanded="false"></i>
+              <ul class="dropdown-menu" style="position:relative">
+                  <li><a class="editModal" data-toggle="modal" data-target="#EditBrewModal" data-keyboard="true">Edit</a></li>
+                  <li><a class="delModal" data-toggle="modal" data-target="#DeleteBrewModal" data-keyboard="true">Delete</a></li>
+              </ul>
+          </div>
         {{/if}}
       </div>
       <div class="col-md-4" style="max-height: 500px; overflow: auto;">
         <h3>Brew Summary</h3>
         <p class="newlines">{{description}}</p>
+        
+
       </div>
       <div class="col-md-4">
         {{> canvas}}
@@ -65,12 +75,11 @@
 
     <div class="row v-align">
       {{#each reBrew}}
-      {{> rebrew title=title rebrew=rebrew user=user createdAt=reviewdate ratingNum=rating}}
+      {{> rebrew title=title rebrew=rebrew user=user createdAt=reviewdate ratingNum=rating owner=owner id=_id}}
       {{/each}}
     </div>
   </div>
-  {{/each}}
-
+  
   <!--Rebrewing Modal-->
   <div class="modal fade" id="reBrewingModal" role="dialog">
     <div class="modal-dialog modal-sm">
@@ -101,9 +110,6 @@
             </div>
           </form>
         </div>
-        <!--<div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>-->
     </div>
   </div>
 </div>
@@ -131,6 +137,48 @@
     </div>
   </div>
 </div>
+
+  <!--Edit brew Modal-->
+<div class="modal fade" id="EditBrewModal" role="dialog">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content" style="padding-bottom:15px">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Edit the Brew</h4>
+      </div>
+      <div class="modal-body">
+          <form class="submitEditBrew thumbnail">
+              <div class="form-group">
+                  <label>Name</label>
+                  <input required type="text" name="title" class="form-control" value="{{name}}">
+              </div>
+              <div class="form-group">
+                  <label>Roast</label>
+                  <select required class="form-control" style="width:auto; height:auto; padding:10px; border-radius:10px;" id="roast" name="roast" value="{{roast}}">
+                      <option style="color: #b69476" value="Light Roast">Light Roast</option>
+                      <option style="color: #825d43" value="Medium Roast">Medium Roast</option>
+                      <option style="color: #66290b" value="Medium-Dark Roast">Medium-Dark Roast</option>
+                      <option style="color: #120907" value="Dark Roast">Dark Roast</option>
+                  </select>
+              </div>
+              <div class="form-group">
+                  <label>Image URL</label>
+                  <input type="text" name="imageURL" class="form-control" value="{{imageURL}}" />
+              </div>
+              <div class="form-group">
+                  <label>Description</label>
+                  <textarea required class="form-control" value="{{description}}" rows="3" name="description"></textarea>
+              </div>
+              <input id="editbrewID" type="hidden" value="">
+              <button class="btn btn-info" type="submit" style="float:right">
+                  <i class="fa fa-2x fa-coffee" aria-hidden="true"></i>
+              </button>
+          </form>
+      </div>
+    </div>
+  </div>
+</div>
+{{/each}}
 {{/if}}
 {{/if}}
 </template>

@@ -5,7 +5,11 @@ if(Meteor.isServer){
     ///favorite structure:
     ///{user: String, name: String}
     'favorites.add'(favorite){
-      Favorites.insert(favorite);
+        favoriteInsert = {};
+        favoriteInsert.user = favorite.user;
+        favoriteInsert.brewid = favorite.brewid;
+
+        Favorites.insert(favoriteInsert);
     },
     'favorites.isInFavorites'(user) {
       return Favorites.find({user: user});
