@@ -13,6 +13,15 @@ if(Meteor.isServer){
     },
     'favorites.isInFavorites'(user) {
       return Favorites.find({user: user});
+    },
+    'favorites.remove'(brewid, user){
+      try{
+        var favoriteId = Favorites.findOne({user: user, brewid: brewid})._id;
+        Favorites.remove({_id: favoriteId});
+      }
+      catch(e){
+        throw e.message;
+      }
     }
   });
 }
