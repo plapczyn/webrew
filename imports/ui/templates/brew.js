@@ -51,8 +51,7 @@ Template.brew.helpers({
   },
 
   InFavorites(){
-    let brew = FlowRouter.getParam("brewId");
-    let favorite =  Favorites.findOne({name: brew});
+    let favorite =  Favorites.findOne({brewid: this._id});
 
     if(!favorite){
       return true;
@@ -106,8 +105,9 @@ Template.brew.events({
 
     'click .addToFavorites'(event){
     var userName = Meteor.user().username;
-    var brew = FlowRouter.getParam('brewId')
-    var favorite = {user: userName, name: brew};
+    var brew = FlowRouter.getParam('brewId');
+    var brewid = this._id;
+    var favorite = {user: userName, brewid: brewid};
 
     Meteor.call('favorites.add', favorite, (err, res) => {
       if(!err){
@@ -135,7 +135,8 @@ Template.brew.events({
     event.preventDefault();
     var user = Meteor.user().username;
     var brew = FlowRouter.getParam('brewId');
-    var favoriteId = Favorites.findOne({user: user, name: brew})._id;
+    var brewid = this._id;
+    var favoriteId = Favorites.findOne({user: user, brewid: brewid})._id;
     Favorites.remove({_id: favoriteId});
     Toast.options = {
       closeButton: true,
@@ -155,17 +156,19 @@ Template.brew.events({
     instance.isReBrewing.set(!instance.isReBrewing.get());
   },
   'submit .submitRebrew'(event){
-    //prevent the stupid refresh page and put params in
+    //prevent the refresh page and put params in
     event.preventDefault();
 
-    //grab form data
+      //grab form data 
+    let rebrewToInsert = {}; 
     const target = event.target;
-    const title = target.title.value;
-    const rebrew = target.rebrew.value;
-    const rating = target.rating.value;
-    const user = Meteor.user().username;
-    const reviewdate = Date.now();
-    let brew = FlowRouter.getParam('brewId');
+    rebrewToInsert.title = target.title.value;
+    rebrewToInsert.rebrew = target.rebrew.value;
+    rebrewToInsert.rating = target.rating.value;
+    rebrewToInsert.user = Meteor.user().username;
+    rebrewToInsert.reviewdate = Date.now();
+    rebrewToInsert.brew = FlowRouter.getParam('brewId');
+    rebrewToInsert.brewid = this._id;
 
 
     Toast.options = {
@@ -180,14 +183,6 @@ Template.brew.events({
         color: 'red'
     };
     //insert into database
-    var rebrewToInsert = {
-      user: user,
-      brew: brew,
-      rebrew: rebrew,
-      rating: rating,
-      title: title,
-      reviewdate: reviewdate
-    }
     Meteor.call('rebrews.add', rebrewToInsert, (err, res) => {
       if(!err){
         Toast.info("New reBrew added to " + brew);
@@ -203,9 +198,51 @@ Template.brew.events({
     let name = FlowRouter.getParam('brewId');
     FlowRouter.go('brew', {brewId: name});
   },
-    //Goto Profile
+  
+  //Edit Brew
+  'click .editModal'(event) {
+      document.getElementById("editbrewID").value = this._id;
+
+  },
+  'submit .submitEditBrew'(event){
+      //prevent the refresh page and put params in
+      event.preventDefault();
+
+      //update database
+      let editBrew = {};
+      const target = event.target;
+      editBrew.name = target.title.value;
+      editBrew.roast = target.roast.value;
+      editBrew.imageURL = target.imageURL.value;
+      editBrew.description = target.description.value;
+      editBrew.id = document.getElementById("editbrewID").value;
+
+      $("#EditBrewModal").on("hidden.bs.modal", function (){
+          Meteor.call('coffees.edit', editBrew, (err, res) => {
+              if(!err){
+                  FlowRouter.go('/brew/' + editBrew.name);
+              } else {
+                  Toast.options = {
+                      closeButton: true,
+                      progressBar: true,
+                      positionClass: 'toast-bottom-center',
+                      showEasing: 'swing',
+                      hideEasing: 'linear',
+                      showMethod: 'fadeIn',
+                      hideMethod: 'fadeOut',
+                      timeOut: 1500,
+                      color: 'red'
+                  };
+                  Toast.error(editBrew.name + " already exists.");
+              }
+          });
+      });
+      $("#EditBrewModal").modal("hide");
+  },
+
+  //Goto Profile
   'click .goMe' (event){
-      FlowRouter.go('mebrew', {userName: Meteor.user().username})
+      FlowRouter.go('mebrew', {userName: Meteor.user().username});
   },
 
   //Star Rating

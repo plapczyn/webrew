@@ -7,7 +7,7 @@ if(Meteor.isServer){
     ///{user: String, name: String}
     'rebrews.add'(rebrew){
       let rebrewInsert = {};
-
+      rebrewInsert.brewid = rebrew.brewid;
       rebrewInsert.brew = rebrew.brew;
       rebrewInsert.rebrew = rebrew.rebrew.trim();
       rebrewInsert.rating = rebrew.rating;
@@ -19,11 +19,11 @@ if(Meteor.isServer){
       Rebrews.insert(rebrewInsert);
 
       //Recalculate Average Rating
-      let allreviews = Rebrews.find({brew: rebrewInsert.brew}).fetch();
+      let allreviews = Rebrews.find({brewid: rebrewInsert.brewid}).fetch();
       let ratings = _.pluck(allreviews, "rating");
       let sum = ratings.reduce(function(a, b){return parseFloat(a) + parseFloat(b);});
       let average = (sum / ratings.length).toFixed(1);
-      Coffees.update(Coffees.findOne({name:rebrewInsert.brew})._id, {$set: {averageRating: average}});
+      Coffees.update({_id: rebrewInsert.brewid}, {$set: {averageRating: average}});
     },
     'rebrews.removeById'(id){
         check( id, Match.OneOf( String, null, undefined ) );
