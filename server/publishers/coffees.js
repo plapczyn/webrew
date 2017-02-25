@@ -40,7 +40,7 @@ if (Meteor.isServer) {
     let regex = new RegExp( search, 'i' );
 
     favorites.forEach((e) => {
-      let name = (isSearching)? {$regex: regex} : e;
+      let name = (!!isSearching)? {$regex: regex} : Coffees.findOne({_id: e.brewid}).name;
       coffeeList.push({name: name});
     });
 
@@ -49,7 +49,6 @@ if (Meteor.isServer) {
         username: user,
         name: {$regex: regex}
       });
-
     let query = {
       $or: coffeeList
     }
