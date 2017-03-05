@@ -2,6 +2,11 @@ import { Coffees } from '../../imports/api/collections/coffees.js';
 import { Rebrews } from '../../imports/api/collections/coffees.js';
 import { Favorites } from '../../imports/api/collections/coffees.js';
 
+import { Coffee } from '../../lib/DatabaseModels.js';
+import { Rebrew } from '../../lib/DatabaseModels.js';
+import { Favorite } from '../../lib/DatabaseModels.js';
+
+
 if(Meteor.isServer){
   Meteor.methods({
     'coffees.removeById'(id){
@@ -12,51 +17,42 @@ if(Meteor.isServer){
     },
 
     'coffees.add'(brew){
-      if(!Coffees.findOne({name: brew.name.trim()})){
-        let brewInsert = {};
+      let createdAt = new Date();
+      let coffeeOwner = Meteor.userId();
+      let username = Meteor.user().username;
+      let newbrew = Object.assign({},brew,{createdAt: createdAt, coffeeOwner: coffeeOwner, username: username })
+      let coffee = new Coffee(newbrew);
 
-        brewInsert.name = brew.name.trim();
-        brewInsert.roast =  brew.roast.trim();
-        brewInsert.description =  brew.description.trim();
-        brewInsert.imageURL =  brew.imageURL.trim();
-        brewInsert.createdAt = new Date();
-        brewInsert.owner = Meteor.userId();
-        brewInsert.username = Meteor.user().username;
-
-        Coffees.insert(brewInsert);
+      if(!Coffees.findOne(coffee.OnlyCoffeeName())){
+        Coffees.insert(coffee.Get());
         return;
       }
       throw "Brew Not Found";
-
     },
     'coffees.edit'(brew){
-        let brewUpd = {};
-        brewUpd.id = brew.id;
-        brewUpd.name = brew.name.trim();
-        brewUpd.roast = brew.roast.trim();
-        brewUpd.imageURL = brew.imageURL.trim();
-        brewUpd.description = brew.description.trim();
+      let coffee = new Coffee(brew);
 
-        if(Coffees.findOne({name: brewUpd.name})){
-            if(Coffees.findOne({name: brewUpd.name})._id == brewUpd.id){
-                //Update Coffee-no name update
-                Coffees.update({_id: brewUpd.id}, {$set: {roast: brewUpd.roast}});
-                Coffees.update({_id: brewUpd.id}, {$set: {imageURL: brewUpd.imageURL}});
-                Coffees.update({_id: brewUpd.id}, {$set: {description: brewUpd.description}});
-                return;
-            }else {
-                throw "Duplicate";
-            }
+      if(Coffees.findOne(coffee.OnlyCoffeeName())){
+        if(Coffees.findOne(coffee.OnlyCoffeeName())._id == coffee.Only_id()){
+          //Update Coffee-no name update
+          Coffees.update(coffee.Only_id(), {$set: coffee.OnlyCoffeeRoast()});
+          Coffees.update(coffee.Only_id(), {$set: coffee.OnlyImageUrl()});
+          Coffees.update(coffee.Only_id(), {$set: coffee.OnlyCoffeeDescription()});
+          return;
         }else {
-            //Update Coffee-name update
-            Coffees.update({_id: brewUpd.id}, {$set: {name: brewUpd.name}});
-            Coffees.update({_id: brewUpd.id}, {$set: {roast: brewUpd.roast}});
-            Coffees.update({_id: brewUpd.id}, {$set: {imageURL: brewUpd.imageURL}});
-            Coffees.update({_id: brewUpd.id}, {$set: {description: brewUpd.description}});
-            //Update reBrews
-            Rebrews.update({brewid: brewUpd.id}, {$set: {brew: brewUpd.name}},{multi: true});
-            return;
+          throw "Duplicate";
         }
+      }else {
+        //Update Coffee-name update
+        Coffees.update(coffee.Only_id(), {$set: coffee.OnlyCoffeeName()});
+        Coffees.update(coffee.Only_id(), {$set: coffee.OnlyCoffeeRoast()});
+        Coffees.update(coffee.Only_id(), {$set: coffee.OnlyImageUrl()});
+        Coffees.update(coffee.Only_id(), {$set: coffee.OnlyCoffeeDescription()});
+        //Update reBrews
+        let rebrew = new Rebrew({CoffeeId: coffee.Only_id(), CoffeeName: coffee.OnlyCoffeeName()});
+        Rebrews.update(rebrew.OnlyCoffeeId(), {$set: rebrew.OnlyCoffeeName()},{multi: true});
+        return;
+      }
     }
   });
 }

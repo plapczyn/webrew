@@ -63,9 +63,11 @@ Template.mebrew.helpers({
   },
   meBrews (){
     let user = FlowRouter.getParam('userName');
-    return Coffees.find({username: user});
+    let coffeeCriteria = new Coffee({username: user});
+    return Coffees.find(coffeeCriteria);
   },
   brew (element) {
+    console.log(element.hash.name._id);
       return Coffees.find({_id:element.hash.name._id});
   },
   Favbrew (element) {

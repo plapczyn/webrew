@@ -46,6 +46,7 @@ Template.brew.helpers({
   },
   addingRebrew: false,
   brew () {
+    console.log(Coffees.find().fetch())
     return Coffees.find();
   },
 

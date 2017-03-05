@@ -1,6 +1,7 @@
 import {Coffees } from '../../imports/api/collections/coffees.js';
 import { Favorites } from '../../imports/api/collections/coffees.js';
-
+import { Favorite } from '../../lib/DatabaseModels.js';
+import { Coffee } from '../../lib/DatabaseModels.js';
 if (Meteor.isServer) {
   // This code only runs on the server
   Meteor.publish('coffeeSearch', function( search ) {
@@ -12,8 +13,8 @@ if (Meteor.isServer) {
       let regex = new RegExp( search, 'i' );
       query = {
         $or: [
-          { name: {$regex: regex} },
-          { roast: {$regex: regex}}
+          { CoffeeName: {$regex: regex} },
+          { CoffeeRoast: {$regex: regex}}
         ]
       };
 
@@ -24,12 +25,15 @@ if (Meteor.isServer) {
   });
 
   Meteor.publish('coffees.myCoffees', (user) => {
-    return Coffees.find({username: user});
+    let coffee = new Coffee({username: user});
+    console.log(Coffees.find(coffee.Username()))
+    return Coffees.find(coffee.Username());
   });
 
   Meteor.publish('coffees.mebrew', (user,search) => {
     // Gather favorites list
-    let favorites = Favorites.find({user: user});
+    let favorite = new Favorite(user);
+    let favorites = Favorites.find(favorite.OnlyUsername());
     let coffeeList = [];
 
     //// Setup if currently Searching
@@ -40,15 +44,16 @@ if (Meteor.isServer) {
     let regex = new RegExp( search, 'i' );
 
     favorites.forEach((e) => {
-      let name = (!!isSearching)? {$regex: regex} : Coffees.findOne({_id: e.brewid}).name;
-      coffeeList.push({name: name});
+      let name = (!!isSearching)? {$regex: regex} : Coffees.findOne({_id: e.CoffeeId}).CoffeeName;
+      coffeeList.push({CoffeeName: name});
     });
 
+    let favoriteRegex = new Coffee({Username: user, CoffeeName: {$regex: regex}})
+
     coffeeList.push(
-      {
-        username: user,
-        name: {$regex: regex}
-      });
+      favoriteRegex.Get()
+    );
+
     let query = {
       $or: coffeeList
     }
@@ -57,6 +62,7 @@ if (Meteor.isServer) {
   });
 
   Meteor.publish('brew', (brewName) => {
-    return Coffees.find({name: brewName});
+    let coffee = new Coffee({CoffeeName: brewName})
+    return Coffees.find(coffee.Get());
   })
 }

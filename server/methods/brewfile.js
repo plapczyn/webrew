@@ -1,4 +1,5 @@
 import { BrewFiles } from '../../imports/api/collections/coffees.js';
+import { Brewfile } from '../../lib/DatabaseModels.js';
 
 if(Meteor.isServer){
   Meteor.methods({
