@@ -63,20 +63,19 @@
     </div>
   </div>
   <div class="container">
-    <div class="row">
       <h1>Added by {{name}}</h1>
-      <div class="row" style="margin-bottom:0px">
+      <div class="row">
         {{#each meBrews}}
         {{#each brew name = .}}
         {{> coffee}}
         {{/each}}
         {{/each}}
       </div>
-      <div class="row">
+      <!-- <div class="row">
         {{#each coffeeReviews}}
         {{> coffee }}
         {{/each}}
-      </div>
+      </div> -->
       <h1>{{name}}'s Favorites</h1>
       <div class="row">
         {{#each favorites}}
@@ -85,7 +84,6 @@
         {{/each}}
         {{/each}}
       </div>
-    </div>
   </div>
   {{/if}}
 </template>

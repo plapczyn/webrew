@@ -4,6 +4,8 @@ import Chart from 'chart.js';
 import { Coffees } from '../../api/collections/coffees.js';
 import { Favorites } from '../../api/collections/coffees.js';
 import { Rebrews } from '../../api/collections/coffees.js';
+import { Favorite } from '../../../lib/DatabaseModels.js';
+import { AdvancedRebrew } from '../../../lib/DatabaseModels.js';
 
 Template.brew.onCreated(function (){
   var template = Template.instance();
@@ -109,7 +111,6 @@ Template.brew.events({
     var brew = FlowRouter.getParam('brewId');
     var brewid = this._id;
     var favorite = {user: userName, brewid: brewid};
-
     Meteor.call('favorites.add', favorite, (err, res) => {
       if(!err){
         Toast.info(brew + " was added to your favorites");
