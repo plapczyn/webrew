@@ -26,7 +26,6 @@ if (Meteor.isServer) {
 
   Meteor.publish('coffees.myCoffees', (user) => {
     let coffee = new Coffee({username: user});
-    console.log(Coffees.find(coffee.Username()))
     return Coffees.find(coffee.Username());
   });
 

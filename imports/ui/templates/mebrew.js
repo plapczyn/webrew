@@ -3,6 +3,8 @@ import './mebrew.css';
 import { Coffees } from '../../api/collections/coffees.js';
 import { Favorites } from '../../api/collections/coffees.js';
 import { BrewFiles } from '../../api/collections/coffees.js';
+import { Coffee } from '../../../lib/DatabaseModels.js';
+import { Brewfile } from '../../../lib/DatabaseModels.js';
 Template.mebrew.onCreated(() => {
   // var t = Meteor.user().username;
   let template = Template.instance();
@@ -37,7 +39,8 @@ Template.mebrew.events({
   var secure = Promise.resolve(Meteor.user()).then(function(data){
     var user = Meteor.user().username;
     if(Meteor.user().username == FlowRouter.getParam('userName')){
-      Meteor.call('brewfile.updateProfile',{url: url, tagline: Tagline, user: user}, (err, res) => {
+      let brewfile = new Brewfile({username: user, tagline: Tagline, imageurl: url});
+      Meteor.call('brewfile.updateProfile',brewfile.Get(), (err, res) => {
         $("#meBrewModal").modal("hide");
       });
     }
@@ -74,13 +77,18 @@ Template.mebrew.helpers({
     return Coffees.find({_id: element.hash.name.brewid});
   },
   getImage(){
-    if(BrewFiles.findOne({user: FlowRouter.getParam('userName')})){
-      return BrewFiles.findOne({user: FlowRouter.getParam('userName')}).imageURL;
+    if(BrewFiles.findOne()){
+      let user = FlowRouter.getParam('userName')
+      let brewfile = new Brewfile(BrewFiles.findOne());
+      console.log("onyl", brewfile.OnlyImageUrl().ImageUrl);
+      return brewfile.OnlyImageUrl().ImageUrl;
     }
   },
   getTagline(){
-    if(BrewFiles.findOne({user: FlowRouter.getParam('userName')})){
-      return BrewFiles.findOne({user: FlowRouter.getParam('userName')}).tagline;
+    var brewfile = new Brewfile({username: FlowRouter.getParam('userName')});
+    if(BrewFiles.findOne(brewfile.OnlyUsername()))
+    {
+      return BrewFiles.findOne(brewfile.OnlyUsername()).Tagline;
     }
   },
   isUser(){
