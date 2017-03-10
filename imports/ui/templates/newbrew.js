@@ -3,6 +3,7 @@ import './newbrew.css';
 
 import { Coffees } from '../../api/collections/coffees.js';
 
+import { Coffee } from '../../../lib/DatabaseModels.js';
 Template.newbrew.events({
   'submit .newbrew'(event) {
     // Prevent default browser form submit
@@ -16,14 +17,14 @@ Template.newbrew.events({
     const imageURL = target.imageURL.value;
 
     // Insert a new coffee into the collection
-    let brew = {
-      name: name.trim(),
-      roast: roast.trim(),
-      description: description.trim(),
+    let obj = {
+      coffeename: name.trim(),
+      coffeeroast: roast.trim(),
+      coffeedescription: description.trim(),
       imageURL: imageURL.trim(),
     };
 
-    Meteor.call('coffees.add', brew, (err, res) => {
+    Meteor.call('coffees.add', obj , (err, res) => {
       if(!err){
         Toast.info("Brew was successfully added!");
         FlowRouter.go('Main');
@@ -41,9 +42,9 @@ Template.newbrew.events({
           showMethod: 'fadeIn',
           hideMethod: 'fadeOut',
           color: 'red',
-          onclick: function () {FlowRouter.go('/brew/' + brew.name);}
+          onclick: function () {FlowRouter.go('/brew/' + obj.coffeename);}
         };
-        Toast.error(brew.name + ' already exists. click to check it out.' );
+        Toast.error(obj.coffeename + ' already exists. click to check it out.' );
       }
     });
 

@@ -6,6 +6,7 @@ import { Favorites } from '../../api/collections/coffees.js';
 import { Rebrews } from '../../api/collections/coffees.js';
 import { Favorite } from '../../../lib/DatabaseModels.js';
 import { AdvancedRebrew } from '../../../lib/DatabaseModels.js';
+import { Rebrew } from '../../../lib/DatabaseModels.js';
 
 Template.brew.onCreated(function (){
   var template = Template.instance();
@@ -46,6 +47,7 @@ Template.brew.helpers({
   },
   addingRebrew: false,
   brew () {
+    console.log(Coffees.find().fetch())
     return Coffees.find();
   },
 
@@ -170,15 +172,37 @@ Template.brew.events({
     event.preventDefault();
 
       //grab form data
-    let rebrewToInsert = {};
+
+
+    console.log("EVENT", event.target);
+    /*
+    this._id = _id
+    this.CoffeeId = coffeeId;
+    this.CoffeeName = coffeeName;
+    this.Rebrew = rebrew;
+    this.Rating = rating;
+    this.Title = title;
+    this.ReviewDate = reviewDate;
+    this.Owner = owner;
+    this.User = user;
+    */
     const target = event.target;
-    rebrewToInsert.title = target.title.value;
-    rebrewToInsert.rebrew = target.rebrew.value;
-    rebrewToInsert.rating = target.rating.value;
-    rebrewToInsert.user = Meteor.user().username;
-    rebrewToInsert.reviewdate = Date.now();
-    rebrewToInsert.brew = FlowRouter.getParam('brewId');
-    rebrewToInsert.brewid = this._id;
+    rebrewToInsert = new Rebrew({
+      Title: target.title.value,
+      Rebrew: target.rebrew.value,
+      Rating: target.rating.value,
+      Username: Meteor.user().username,
+      ReviewDate: Date.now(),
+      CoffeeName: FlowRouter.getParam('brewId'),
+      CoffeeId: this._id
+    })
+    // rebrewToInsert.title = target.title.value;
+    // rebrewToInsert.rebrew = target.rebrew.value;
+    // rebrewToInsert.rating = target.rating.value;
+    // rebrewToInsert.user = Meteor.user().username;
+    // rebrewToInsert.reviewdate = Date.now();
+    // rebrewToInsert.brew = FlowRouter.getParam('brewId');
+    // rebrewToInsert.brewid = this._id;
 
 
     Toast.options = {
@@ -195,7 +219,7 @@ Template.brew.events({
     //insert into database
     Meteor.call('rebrews.add', rebrewToInsert, (err, res) => {
       if(!err){
-        Toast.info("New reBrew added to " + brew);
+        Toast.info("New reBrew added to " + rebrewToInsert.CoffeeName);
       }
       else{
         Toast.info('Your rebrew was not submitted successfully');
