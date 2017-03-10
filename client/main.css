@@ -8,6 +8,8 @@ body{ margin:0px 0px;
   background-size:cover;
   position:relative;
   height:50vh;
+  width:100%;
+  box-sizing: border-box;
 }
 
 #hero-login{
@@ -15,6 +17,8 @@ body{ margin:0px 0px;
   background-size:cover;
   position:relative;
   height:100vh;
+  width:100%;
+  box-sizing: border-box;
 }
 .header{
   position:absolute;
