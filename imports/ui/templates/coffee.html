@@ -1,19 +1,19 @@
 <template name="coffee">
   <div class="col-xs-12 col-sm-6 col-md-4">
     <div class="thumbnail">
-      <a href="/brew/{{name}}" class="">
-        {{#if imageURL}}
-        <img src="{{imageURL}}" class="img-responsive" alt="..." style="max-height:25vh; min-height:25vh">
+      <a href="/brew/{{CoffeeName}}" class="">
+        {{#if ImageUrl}}
+        <img src="{{ImageUrl}}" class="img-responsive" alt="..." style="max-height:25vh; min-height:25vh">
         {{else}}
         <img src="/img/default-brew.jpg" class="img-responsive" alt="..." style="max-height:25vh; min-height:25vh">
         {{/if}}
         <div class="caption">
-          <h3>{{name}} </h3>
-          <h4><span class="label label-default">New</span> <span class="label label-default" style="background-color:{{coffeeColor(roast)}};">{{roast}}</span></h4>
+          <h3>{{CoffeeName}} </h3>
+          <h4><span class="label label-default">New</span> <span class="label label-default" style="background-color:{{coffeeColor(CoffeeRoast)}};">{{roast}}</span></h4>
         </div>
       </a>
       <div class="caption">
-        <p> Added {{tm_now createdAt}} by <a href="/mebrew/{{username}}" class="">{{username}}</a></p>
+        <p> Added {{tm_now CreatedAt}} by <a href="/mebrew/{{Username}}" class="">{{Username}}</a></p>
       </div>
     </div>
   </div>

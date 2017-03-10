@@ -1,5 +1,6 @@
 import './rebrew.html'
 import { BrewFiles } from '../../api/collections/coffees.js';
+import { Brewfile } from '../../../lib/DatabaseModels.js';
 
 Template.rebrew.onCreated(() => {
   var user = Template.instance().data.user;
@@ -15,9 +16,11 @@ Template.rebrew.onCreated(() => {
 
 Template.rebrew.helpers({
   submitterImage(){
-    let brewfile = BrewFiles.findOne({user:this.user});
+    let brewfile = BrewFiles.findOne({Username: this.user});
     if(brewfile){
-      return brewfile.imageURL;
+      let returnValue = new Brewfile(brewfile);
+      console.log('returnValue',returnValue.OnlyImageUrl());
+      return returnValue.OnlyImageUrl().ImageUrl;
     }
   },
   isOwner(){
@@ -31,7 +34,7 @@ Template.rebrew.events({
     },
     'click .editRebrewModal'(event) {
         document.getElementById("EditrebrewID").value = this.id;
-    },    
+    },
     'click .delete'(event) {
 
         var brew = FlowRouter.getParam('brewId')

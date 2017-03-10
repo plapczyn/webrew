@@ -22,19 +22,19 @@
   {{#if currentUser}}
   {{#each brew}}
   <div class="container">
-        <h1>{{name}}</h1>
+        <h1>{{BrewName}}</h1>
     <div class="row">
       <div class="col-md-4">
-        {{#if averageRating}}
+        {{#if AverageRating}}
         <div class="circle">
           <div class="overall"> Overall </div>
-          <div class="rating-value">{{averageRating}}</div>
+          <div class="rating-value">{{AverageRating}}</div>
         </div>
         {{/if}}
-        <h3>{{roast}}</h3>
-        <p style="margin-bottom: 25px"> Added {{tm_now createdAt}} by <a href="/mebrew/{{username}}" class="">{{username}}</a></p>
-        {{#if imageURL}}
-        <img src="{{imageURL}}" class="img-responsive" style="margin-bottom: 10px; max-height: 300px; object-fit:cover; width:100%" alt="...">
+        <h3>{{CoffeeRoast}}</h3>
+        <p style="margin-bottom: 25px"> Added {{tm_now CreatedAt}} by <a href="/mebrew/{{Username}}" class="">{{Username}}</a></p>
+        {{#if ImageUrl}}
+        <img src="{{ImageUrl}}" class="img-responsive" style="margin-bottom: 10px; max-height: 300px; object-fit:cover; width:100%" alt="...">
         {{else}}
         <img src="/img/default-brew.jpg" class="img-responsive" style="margin-bottom: 10px" alt="...">
         {{/if}}
@@ -58,8 +58,8 @@
       </div>
       <div class="col-md-4" style="max-height: 500px; overflow: auto;">
         <h3>Brew Summary</h3>
-        <p class="newlines">{{description}}</p>
-        
+        <p class="newlines">{{CoffeeDescription}}</p>
+
 
       </div>
       <div class="col-md-4">
@@ -79,7 +79,7 @@
       {{/each}}
     </div>
   </div>
-  
+
   <!--Rebrewing Modal-->
   <div class="modal fade" id="reBrewingModal" role="dialog">
     <div class="modal-dialog modal-sm">
