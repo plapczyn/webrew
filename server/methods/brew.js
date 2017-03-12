@@ -21,8 +21,9 @@ if(Meteor.isServer){
       let coffeeOwner = Meteor.userId();
       let username = Meteor.user().username;
       let newbrew = Object.assign({},brew,{createdAt: createdAt, coffeeOwner: coffeeOwner, username: username })
-      let coffee = new Coffee(newbrew);
 
+      let coffee = new Coffee(newbrew);
+      console.log('GGGGGG',coffee.Get())
       if(!Coffees.findOne(coffee.OnlyCoffeeName())){
         Coffees.insert(coffee.Get());
         return;
