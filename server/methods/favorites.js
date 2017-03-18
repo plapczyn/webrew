@@ -6,17 +6,17 @@ if(Meteor.isServer){
     ///{user: String, name: String}
     'favorites.add'(favorite){
         favoriteInsert = {};
-        favoriteInsert.user = favorite.user;
-        favoriteInsert.brewid = favorite.brewid;
+        favoriteInsert.Username = favorite.Username;
+        favoriteInsert.CoffeeId = favorite.CoffeeId;
 
         Favorites.insert(favoriteInsert);
     },
     'favorites.isInFavorites'(user) {
-      return Favorites.find({user: user});
+      return Favorites.find({Username: user});
     },
     'favorites.remove'(brewid, user){
       try{
-        var favoriteId = Favorites.findOne({user: user, brewid: brewid})._id;
+        var favoriteId = Favorites.findOne({Username: user, CoffeeId: brewid})._id;
         Favorites.remove({_id: favoriteId});
       }
       catch(e){

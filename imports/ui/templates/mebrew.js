@@ -72,7 +72,8 @@ Template.mebrew.helpers({
       return Coffees.find({_id:element.hash.name._id});
   },
   Favbrew (element) {
-    return Coffees.find({_id: element.hash.name.brewid});
+    console.log(element);
+    return Coffees.find({_id: element.hash.name.CoffeeId});
   },
   getImage(){
     if(BrewFiles.findOne()){

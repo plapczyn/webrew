@@ -55,7 +55,7 @@ Template.brew.helpers({
   },
 
   InFavorites(){
-    let favorite =  Favorites.findOne({brewid: this._id});
+    let favorite =  Favorites.findOne({CoffeeId: this._id});
 
     if(!favorite){
       return true;
@@ -111,7 +111,7 @@ Template.brew.events({
     var userName = Meteor.user().username;
     var brew = FlowRouter.getParam('brewId');
     var brewid = this._id;
-    var favorite = {user: userName, brewid: brewid};
+    var favorite = {Username: userName, CoffeeId: brewid};
     Meteor.call('favorites.add', favorite, (err, res) => {
       if(!err){
         Toast.info(brew + " was added to your favorites");
