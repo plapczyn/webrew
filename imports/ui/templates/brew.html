@@ -22,7 +22,7 @@
   {{#if currentUser}}
   {{#each brew}}
   <div class="container">
-        <h1>{{BrewName}}</h1>
+        <h1>{{CoffeeName}}</h1>
     <div class="row">
       <div class="col-md-4">
         {{#if AverageRating}}
@@ -108,7 +108,7 @@
               <label class="advlabel">Flavor</label>
               <input id="adrating4" class="form-group" type="range" min="0" max="10" value="5">
               <label class="advlabel">Balance</label>
-              <input id="adrating5" class="form-group" type="range" min="0" max="10" value="5">        
+              <input id="adrating5" class="form-group" type="range" min="0" max="10" value="5">
               <label>Overall rating</label><br />
               <input id="irating" required class="form-group" type="hidden" name="rating" value="">
               <!-- https://atmospherejs.com/kosst/css-star-rating -->
@@ -160,11 +160,11 @@
           <form class="submitEditBrew thumbnail">
               <div class="form-group">
                   <label>Name</label>
-                  <input required type="text" name="title" class="form-control" value="{{name}}">
+                  <input required type="text" name="title" class="form-control" value="{{CoffeeName}}">
               </div>
               <div class="form-group">
                   <label>Roast</label>
-                  <select required class="form-control" style="width:auto; height:auto; padding:10px; border-radius:10px;" id="roast" name="roast" value="{{roast}}">
+                  <select required class="form-control" style="width:auto; height:auto; padding:10px; border-radius:10px;" id="roast" name="roast" value="{{CoffeeRoast}}">
                       <option style="color: #b69476" value="Light Roast">Light Roast</option>
                       <option style="color: #825d43" value="Medium Roast">Medium Roast</option>
                       <option style="color: #66290b" value="Medium-Dark Roast">Medium-Dark Roast</option>
@@ -173,11 +173,11 @@
               </div>
               <div class="form-group">
                   <label>Image URL</label>
-                  <input type="text" name="imageURL" class="form-control" value="{{imageURL}}" />
+                  <input type="text" name="imageURL" class="form-control" value="{{ImageUrl}}" />
               </div>
               <div class="form-group">
                   <label>Description</label>
-                  <textarea required class="form-control" value="{{description}}" rows="3" name="description"></textarea>
+                  <textarea required class="form-control" value="{{CoffeeDescription}}" rows="3" name="description"></textarea>
               </div>
               <input id="editbrewID" type="hidden" value="">
               <button class="btn btn-info" type="submit" style="float:right">

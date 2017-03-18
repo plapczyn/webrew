@@ -19,7 +19,6 @@ Template.rebrew.helpers({
     let brewfile = BrewFiles.findOne({Username: this.user});
     if(brewfile){
       let returnValue = new Brewfile(brewfile);
-      console.log('returnValue',returnValue.OnlyImageUrl());
       return returnValue.OnlyImageUrl().ImageUrl;
     }
   },

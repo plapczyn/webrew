@@ -7,6 +7,7 @@ import { Rebrews } from '../../api/collections/coffees.js';
 import { Favorite } from '../../../lib/DatabaseModels.js';
 import { AdvancedRebrew } from '../../../lib/DatabaseModels.js';
 import { Rebrew } from '../../../lib/DatabaseModels.js';
+import { Coffee } from '../../../lib/DatabaseModels.js';
 
 Template.brew.onCreated(function (){
   var template = Template.instance();
@@ -46,7 +47,6 @@ Template.brew.helpers({
   },
   addingRebrew: false,
   brew () {
-    console.log(Coffees.find().fetch())
     return Coffees.find();
   },
 
@@ -173,7 +173,6 @@ Template.brew.events({
       //grab form data
 
 
-    console.log("EVENT", event.target);
     /*
     this._id = _id
     this.CoffeeId = coffeeId;
@@ -244,16 +243,18 @@ Template.brew.events({
       //update database
       let editBrew = {};
       const target = event.target;
-      editBrew.name = target.title.value;
-      editBrew.roast = target.roast.value;
+      editBrew.coffeename = target.title.value;
+      editBrew.coffeeroast = target.roast.value;
       editBrew.imageURL = target.imageURL.value;
-      editBrew.description = target.description.value;
-      editBrew.id = document.getElementById("editbrewID").value;
+      editBrew.coffeedescription = target.description.value;
+      editBrew._id = document.getElementById("editbrewID").value;
+      let coffee = new Coffee(editBrew);
+
 
       $("#EditBrewModal").on("hidden.bs.modal", function (){
-          Meteor.call('coffees.edit', editBrew, (err, res) => {
+          Meteor.call('coffees.edit', coffee.Get(), (err, res) => {
               if(!err){
-                  FlowRouter.go('/brew/' + editBrew.name);
+                  FlowRouter.go('/brew/' + editBrew.coffeename);
               } else {
                   Toast.options = {
                       closeButton: true,

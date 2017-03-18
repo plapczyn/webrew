@@ -23,7 +23,6 @@ if(Meteor.isServer){
       let newbrew = Object.assign({},brew,{createdAt: createdAt, coffeeOwner: coffeeOwner, username: username })
 
       let coffee = new Coffee(newbrew);
-      console.log('GGGGGG',coffee.Get())
       if(!Coffees.findOne(coffee.OnlyCoffeeName())){
         Coffees.insert(coffee.Get());
         return;
@@ -32,7 +31,6 @@ if(Meteor.isServer){
     },
     'coffees.edit'(brew){
       let coffee = new Coffee(brew);
-
       if(Coffees.findOne(coffee.OnlyCoffeeName())){
         if(Coffees.findOne(coffee.OnlyCoffeeName())._id == coffee.Only_id()){
           //Update Coffee-no name update
