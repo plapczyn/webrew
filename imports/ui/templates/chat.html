@@ -1,0 +1,66 @@
+<template name="chat">
+  <div id="{{#if currentUser}}hero{{else}}hero-login{{/if}}">
+    <div class="header">
+      <h1><a id="title">BrewChat</a></h1>
+      <p>The world's foremost coffee network.</p>
+      {{#if currentUser}}
+      <p> My name is {{> loginButtons }} and I love coffee! </p>
+      {{else}}
+      <p> I'm a member, <span style="a:link{color: white}">{{> loginButtons }}</span></p>
+      {{/if}}
+    </div>
+    {{#if currentUser}}
+      <ul class="nav nav-pills pull-right">
+        <li role="presentation" class="active"><a href="/chat">Brew Chat</a></li>
+        <li role="presentation"><input type="text" name="search" class="form-control search" width="250px" placeholder="Find a brew..."></li>
+        <li role="presentation"><a href="/">Home</a></li>
+        <li role="presentation"><a href="/new">New Brew</a></li>
+        <li role="presentation"><a class="goMe" style="cursor:pointer">Me</a></li>
+      </ul>
+    {{/if}}
+  </div>
+  
+  {{#if currentUser}}
+  <div class="container" style="width:80%;margin:15px auto;">
+    <div class="row">
+      <div class="messages-container">
+        <div class="messages">
+          {{#if messages}}
+            {{#each messages}}
+              <p>
+                <span class="username">{{user}}:</span>
+                  {{content}}
+                  <span class="timestamp">&ndash; {{tm_now creation_date}}</span>
+              </p>
+            {{/each}}
+          {{/if}}
+        </div>
+          <ul class="user-list">
+            {{#if roomusers}}
+              {{#each roomusers}}
+                {{#if away}}
+                  <li class="away">{{user}} <span>&ndash; away</span></li>
+                {{else}}
+                  <li>{{user}}</li>
+                {{/if}}
+              {{/each}}
+            {{/if}}
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        <div class="add-message">
+          <div class="form-group">
+            <textarea id="messagebox" class="form-control message" placeholder="Write a message"></textarea>
+          </div>
+          <div class="form-group clearfix">
+            <input type="submit" class="btn btn-primary pull-right send-message" style="margin-left: 10px;" value="Send message">
+            <input type="button" class="btn btn-info pull-right send-away" style="margin-left: 10px;" value="Set Away">
+            <input type="button" class="btn btn-info pull-right send-disconnect" style="margin-left: 10px;" value="Disconnect">
+            <input type="button" class="btn btn-danger pull-right send-clearmessages" style="margin-left: 10px;" value="Clear messages">
+          </div>
+        </div>
+      </div>
+    </div>
+    {{/if}}
+</template>

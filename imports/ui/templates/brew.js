@@ -51,7 +51,7 @@ Template.brew.helpers({
   },
 
   isOwner(){
-    return this.owner === Meteor.userId();
+      return this.CoffeeOwner === Meteor.userId();
   },
 
   InFavorites(){

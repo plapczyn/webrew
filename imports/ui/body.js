@@ -8,9 +8,7 @@ import './templates/mebrew.js';
 import './templates/newbrew.js';
 import './templates/brew.js';
 import './templates/rebrew.js';
-
-
-
+import './templates/chat.js';
 
 export const ColorPallet = {
   lightGrey: '#e8e9eb',
