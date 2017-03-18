@@ -23,19 +23,19 @@ if(Meteor.isServer){
     },
     'rebrews.removeById'(id){
         check( id, Match.OneOf( String, null, undefined ) );
-        let brew = Rebrews.findOne({_id: id}).brew;
-        let brewcount = Rebrews.find({brew: brew}).count() - 1;
+        let brew = Rebrews.findOne({_id: id}).CoffeeName;
+        let brewcount = Rebrews.find({CoffeeName: brew}).count() - 1;
         Rebrews.remove(id);
 
         //Recalculate Average Rating
         if (brewcount > 0 ) {
-          let allreviews = Rebrews.find({brew: brew}).fetch();
-          let ratings = _.pluck(allreviews, "rating");
+          let allreviews = Rebrews.find({CoffeeName: brew}).fetch();
+          let ratings = _.pluck(allreviews, "Rating");
           let sum = ratings.reduce(function(a, b){return parseFloat(a) + parseFloat(b);});
           let average = (sum / ratings.length).toFixed(1);
-          Coffees.update(Coffees.findOne({name:brew})._id, {$set: {averageRating: average}});
+          Coffees.update(Coffees.findOne({CoffeeName:brew})._id, {$set: {AverageRating: average}});
         } else {
-            Coffees.update(Coffees.findOne({name:brew})._id, {$set: {averageRating: brewcount}});
+            Coffees.update(Coffees.findOne({CoffeeName:brew})._id, {$set: {AverageRating: brewcount}});
         }
     },
     'rebrews.updateRebrew'(rebrew){

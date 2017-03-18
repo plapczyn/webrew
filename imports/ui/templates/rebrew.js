@@ -36,7 +36,7 @@ Template.rebrew.events({
         document.getElementById("EditrebrewID" + this.id).value = this.id;
     },
     'click .delete'(event) {
-
+      console.log(this);
         var brew = FlowRouter.getParam('brewId')
         Toast.options = {
             closeButton: true,
@@ -50,14 +50,16 @@ Template.rebrew.events({
             color: 'red'
         };
         // Hide Modal
-        $("#DeletereBrewModal").on("hidden.bs.modal", function (){
+        var ID = this.id;
+        $("#DeletereBrewModal" + ID).on("hidden.bs.modal", function (){
             //Remove reBrew from the collection
-            let id = document.getElementById("DelrebrewID" + this.id).value
-            Meteor.call('rebrews.removeById', id, (err, res) => {
+            // let id = document.getElementById("DelrebrewID" + Template.instance().id).value
+            // var idd = Template.instance().data.id;
+            Meteor.call('rebrews.removeById', ID, (err, res) => {
 
             });
         });
-        $("#DeletereBrewModal").modal("hide");
+        $("#DeletereBrewModal" + Template.instance().data.id).modal("hide");
     },
     'submit .EditsubmitRebrew'(event){
         event.preventDefault();

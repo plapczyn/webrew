@@ -12,7 +12,7 @@
             <i class="fa fa-pencil-square-o fa-2 dropdown-toggle" aria-hidden="true" data-toggle="dropdown" aria-expanded="false"></i>
             <ul class="dropdown-menu" style="position:relative">
               <li><a class="editRebrewModal" data-toggle="modal" data-target="#EditreBrewingModal{{id}}" data-keyboard="true">Edit</a></li>
-              <li><a class="delRebrewModal" data-toggle="modal" data-target="#DeletereBrewModal" data-keyboard="true">Delete</a></li>
+              <li><a class="delRebrewModal" data-toggle="modal" data-target="#DeletereBrewModal{{id}}" data-keyboard="true">Delete</a></li>
             </ul>
           </div>
             <!--Edit reBrew Modal-->
@@ -68,7 +68,7 @@
                         </div>
                         <div class="modal-body">
                             <h6 class="modal-body">Are you sure you want to remove this reBrew?</h6>
-                            <input id="DelrebrewID" type="hidden" value="">
+                            <input id="DelrebrewID{{id}}" type="hidden" value="">
                         </div>
                         <div class="modal-footer">
                             <button class="btn btn-warning delete" type="button">
