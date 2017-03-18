@@ -5,3 +5,5 @@ export const Favorites = new Mongo.Collection('favorites');
 export const Coffees = new Mongo.Collection('coffees');
 export const Rebrews = new Mongo.Collection('rebrew');
 export const BrewFiles = new Mongo.Collection('brewfile');
+export const Messages = new Mongo.Collection('messages');
+export const RoomUsers = new Mongo.Collection('roomusers');

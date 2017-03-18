@@ -34,7 +34,6 @@ Template.brew.onCreated(function (){
       }, 300 );
     })
   });
-
 });
 
 Template.brew.helpers({
@@ -52,7 +51,7 @@ Template.brew.helpers({
   },
 
   isOwner(){
-    return this.owner === Meteor.userId();
+      return this.CoffeeOwner === Meteor.userId();
   },
 
   InFavorites(){
@@ -287,11 +286,12 @@ Template.brew.events({
 });
 
 
-Template.canvas.onRendered(function() {
-  let data2 = {
-    labels: ["Aroma", "Body", "Acidity", "Flavour", "Balance"],
-    datasets: [
-      {
+//Populate Chart - ID = myChart onRendered
+Template.canvas.onRendered (function() {
+   let data2 = {
+        labels: ["Aroma", "Body", "Acidity", "Flavour", "Balance"],
+        datasets: [
+        {
         label: "Average Review",
         backgroundColor: "rgba(179,181,198,0.2)",
         borderColor: "rgba(179,181,198,1)",
