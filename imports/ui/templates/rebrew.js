@@ -1,6 +1,7 @@
 import './rebrew.html'
 import { BrewFiles } from '../../api/collections/coffees.js';
 import { Brewfile } from '../../../lib/DatabaseModels.js';
+import { Rebrew } from '../../../lib/DatabaseModels.js';
 
 Template.rebrew.onCreated(() => {
   var user = Template.instance().data.user;
@@ -29,10 +30,10 @@ Template.rebrew.helpers({
 
 Template.rebrew.events({
     'click .delRebrewModal'(event) {
-        document.getElementById("DelrebrewID").value = this.id;
+        document.getElementById("DelrebrewID" + this.id).value = this.id;
     },
     'click .editRebrewModal'(event) {
-        document.getElementById("EditrebrewID").value = this.id;
+        document.getElementById("EditrebrewID" + this.id).value = this.id;
     },
     'click .delete'(event) {
 
@@ -51,7 +52,7 @@ Template.rebrew.events({
         // Hide Modal
         $("#DeletereBrewModal").on("hidden.bs.modal", function (){
             //Remove reBrew from the collection
-            let id = document.getElementById("DelrebrewID").value
+            let id = document.getElementById("DelrebrewID" + this.id).value
             Meteor.call('rebrews.removeById', id, (err, res) => {
 
             });
@@ -61,12 +62,13 @@ Template.rebrew.events({
     'submit .EditsubmitRebrew'(event){
         event.preventDefault();
         let rebrew = {};
-        rebrew.id = document.getElementById("EditrebrewID").value;
+        rebrew._id = document.getElementById("EditrebrewID" + this.id).value;
         rebrew.title = event.target.title.value;
         rebrew.rebrew = event.target.rebrew.value;
-        rebrew.rating = event.target.erating.value;
-        Meteor.call('rebrews.updateRebrew',rebrew, (err, res) => {
-            $("#EditreBrewingModal").modal("hide");
+        rebrew.rating = event.target.rating.value;
+        let updateRebrew = new Rebrew(rebrew);
+        Meteor.call('rebrews.updateRebrew',updateRebrew.Get(), (err, res) => {
+            $("#EditreBrewingModal" + this.id).modal("hide");
         });
     },
     //Goto Profile
@@ -76,6 +78,6 @@ Template.rebrew.events({
     //Star Rating
     'click .rating'(event) {
         const value = $(event.target).val();
-        $("#erating").val(value);
+        $("#erating" + Template.instance().data.id).val(value);
     }
 });

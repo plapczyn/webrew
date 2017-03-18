@@ -12,8 +12,8 @@ if(Meteor.isServer){
     'coffees.removeById'(id){
       check( id, Match.OneOf( String, null, undefined ) );
       Coffees.remove(id);
-      Rebrews.remove({brewid: id});
-      Favorites.remove({brewid: id});
+      Rebrews.remove({CoffeeId: id});
+      Favorites.remove({CoffeeId: id});
     },
 
     'coffees.add'(brew){

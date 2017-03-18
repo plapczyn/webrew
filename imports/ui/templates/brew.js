@@ -215,7 +215,7 @@ Template.brew.events({
         color: 'red'
     };
     //insert into database
-    Meteor.call('rebrews.add', rebrewToInsert, (err, res) => {
+    Meteor.call('rebrews.add', rebrewToInsert.Get(), (err, res) => {
       if(!err){
         Toast.info("New reBrew added to " + rebrewToInsert.CoffeeName);
       }
