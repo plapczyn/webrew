@@ -60,7 +60,6 @@ Template.mebrew.helpers({
   info: "Tell us a little about yourself and how you like to Brew? Click the image to update!",
   favorites(){
     if(!!Favorites.find() && Favorites.find().fetch().length !== 0){
-      console.log(Favorites.find().fetch());
       return Favorites.find();
     }
   },
@@ -70,17 +69,16 @@ Template.mebrew.helpers({
     return Coffees.find(coffeeCriteria);
   },
   brew (element) {
-    console.log(element.hash.name._id);
       return Coffees.find({_id:element.hash.name._id});
   },
   Favbrew (element) {
-    return Coffees.find({_id: element.hash.name.brewid});
+    console.log(element);
+    return Coffees.find({_id: element.hash.name.CoffeeId});
   },
   getImage(){
     if(BrewFiles.findOne()){
       let user = FlowRouter.getParam('userName')
       let brewfile = new Brewfile(BrewFiles.findOne());
-      console.log("onyl", brewfile.OnlyImageUrl().ImageUrl);
       return brewfile.OnlyImageUrl().ImageUrl;
     }
   },

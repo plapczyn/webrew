@@ -12,8 +12,8 @@ if(Meteor.isServer){
     'coffees.removeById'(id){
       check( id, Match.OneOf( String, null, undefined ) );
       Coffees.remove(id);
-      Rebrews.remove({brewid: id});
-      Favorites.remove({brewid: id});
+      Rebrews.remove({CoffeeId: id});
+      Favorites.remove({CoffeeId: id});
     },
 
     'coffees.add'(brew){
@@ -23,7 +23,6 @@ if(Meteor.isServer){
       let newbrew = Object.assign({},brew,{createdAt: createdAt, coffeeOwner: coffeeOwner, username: username })
 
       let coffee = new Coffee(newbrew);
-      console.log('GGGGGG',coffee.Get())
       if(!Coffees.findOne(coffee.OnlyCoffeeName())){
         Coffees.insert(coffee.Get());
         return;
@@ -32,7 +31,6 @@ if(Meteor.isServer){
     },
     'coffees.edit'(brew){
       let coffee = new Coffee(brew);
-
       if(Coffees.findOne(coffee.OnlyCoffeeName())){
         if(Coffees.findOne(coffee.OnlyCoffeeName())._id == coffee.Only_id()){
           //Update Coffee-no name update

@@ -11,12 +11,12 @@
             <div class="dropdown" style="position: absolute;right: 15px;">
             <i class="fa fa-pencil-square-o fa-2 dropdown-toggle" aria-hidden="true" data-toggle="dropdown" aria-expanded="false"></i>
             <ul class="dropdown-menu" style="position:relative">
-              <li><a class="editRebrewModal" data-toggle="modal" data-target="#EditreBrewingModal" data-keyboard="true">Edit</a></li>
-              <li><a class="delRebrewModal" data-toggle="modal" data-target="#DeletereBrewModal" data-keyboard="true">Delete</a></li>
+              <li><a class="editRebrewModal" data-toggle="modal" data-target="#EditreBrewingModal{{id}}" data-keyboard="true">Edit</a></li>
+              <li><a class="delRebrewModal" data-toggle="modal" data-target="#DeletereBrewModal{{id}}" data-keyboard="true">Delete</a></li>
             </ul>
           </div>
             <!--Edit reBrew Modal-->
-            <div class="modal fade" id="EditreBrewingModal" role="dialog">
+            <div class="modal fade" id="EditreBrewingModal{{id}}" role="dialog">
               <div class="modal-dialog modal-sm">
                 <div class="modal-content">
                   <div class="modal-header">
@@ -35,20 +35,20 @@
                       </div>
                       <div class="form-group">
                         <label class="advlabel">Aroma</label>
-                        <input id="adrating1" class="form-group" type="range" min="0" max="10" value="5">
+                        <input id="adrating1{{id}}" class="form-group" type="range" min="0" max="10" value="5">
                         <label class="advlabel">Body</label>
-                        <input id="adrating2" class="form-group" type="range" min="0" max="10" value="5">
+                        <input id="adrating2{{id}}" class="form-group" type="range" min="0" max="10" value="5">
                         <label class="advlabel">Acidity</label>
-                        <input id="adrating3" class="form-group" type="range" min="0" max="10" value="5">
+                        <input id="adrating3{{id}}" class="form-group" type="range" min="0" max="10" value="5">
                         <label class="advlabel">Flavor</label>
-                        <input id="adrating4" class="form-group" type="range" min="0" max="10" value="5">
+                        <input id="adrating4{{id}}" class="form-group" type="range" min="0" max="10" value="5">
                         <label class="advlabel">Balance</label>
-                        <input id="adrating5" class="form-group" type="range" min="0" max="10" value="5"> 
+                        <input id="adrating5{{id}}" class="form-group" type="range" min="0" max="10" value="5">
                         <label>Overall rating</label><br />
-                        <input id="erating" required class="form-group" type="hidden" name="rating" value="{{ratingNum}}">
+                        <input id="erating{{id}}" required class="form-group" type="hidden" name="rating" value="{{ratingNum}}">
                         <!-- https://atmospherejs.com/kosst/css-star-rating -->
                         {{> rating value=ratingNum }}
-                        <input id="EditrebrewID" type="hidden" value="">
+                        <input id="EditrebrewID{{id}}" type="hidden" value="">
                         <button class="btn btn-info" type="submit" style="float:right">
                           <i class="fa fa-2x fa-coffee" aria-hidden="true"></i>
                         </button>
@@ -59,7 +59,7 @@
              </div>
             </div>
             <!--Delete reBrew Modal-->
-            <div class="modal fade" id="DeletereBrewModal" role="dialog">
+            <div class="modal fade" id="DeletereBrewModal{{id}}" role="dialog">
                 <div class="modal-dialog modal-sm">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -68,7 +68,7 @@
                         </div>
                         <div class="modal-body">
                             <h6 class="modal-body">Are you sure you want to remove this reBrew?</h6>
-                            <input id="DelrebrewID" type="hidden" value="">
+                            <input id="DelrebrewID{{id}}" type="hidden" value="">
                         </div>
                         <div class="modal-footer">
                             <button class="btn btn-warning delete" type="button">
