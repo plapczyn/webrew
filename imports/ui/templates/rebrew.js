@@ -36,7 +36,6 @@ Template.rebrew.events({
         document.getElementById("EditrebrewID" + this.id).value = this.id;
     },
     'click .delete'(event) {
-      console.log(this);
         var brew = FlowRouter.getParam('brewId')
         Toast.options = {
             closeButton: true,

@@ -7,8 +7,6 @@ if (Meteor.isServer) {
     check (user, Match.OneOf(String, null, undefined));
     let brewfile = new Brewfile({username: user})
     let crit = brewfile.Get();
-    console.log("ok", BrewFiles.findOne(crit));
-    // console.log("AERAER",brewfile.Get())
     return BrewFiles.find(brewfile.Get());
   });
 }
