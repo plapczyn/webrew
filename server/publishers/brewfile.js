@@ -6,7 +6,6 @@ if (Meteor.isServer) {
     let usr = user.trim();
     check (user, Match.OneOf(String, null, undefined));
     let brewfile = new Brewfile({username: user})
-    let crit = brewfile.Get();
     return BrewFiles.find(brewfile.Get());
   });
 }

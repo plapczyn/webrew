@@ -80,5 +80,10 @@ Template.rebrew.events({
     'click .rating'(event) {
         const value = $(event.target).val();
         $("#erating" + Template.instance().data.id).val(value);
-    }
+    },
+    //Range Value
+    'change .slider'(event) {
+      let slider = event.target.id;
+      $("#b" + slider).text( $("#" + slider).val() );
+    }    
 });

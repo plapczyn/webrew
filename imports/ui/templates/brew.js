@@ -66,10 +66,12 @@ Template.brew.helpers({
   reBrew(){
     return Rebrews.find();
   },
-
+  reBrewCount(){
+    return Rebrews.find().count();
+  },
   rebrewing(){
     return Template.instance().isReBrewing.get();
-  },
+  }
 });
 
 Template.brew.events({
@@ -283,6 +285,11 @@ Template.brew.events({
   'click .rating'(event) {
     const value = $(event.target).val();
     $("#irating").val(value);
+  },
+  //Range Value
+  'change .slider'(event) {
+    let slider = event.target.id;
+    $("#b" + slider).text( $("#" + slider).val() );
   }
 });
 

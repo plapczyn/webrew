@@ -56,7 +56,6 @@ if (Meteor.isServer) {
     let query = {
       $or: coffeeList
     }
-    console.log(Coffees.find(query).fetch());
     return Coffees.find(query);
   });
 
