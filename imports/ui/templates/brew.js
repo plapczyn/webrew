@@ -12,6 +12,7 @@ import { Coffee } from '../../../lib/DatabaseModels.js';
 Template.brew.onCreated(function (){
   var template = Template.instance();
   template.isReBrewing = new ReactiveVar(false);
+  template.isAdvanced = new ReactiveVar(false);
   var brewName = FlowRouter.getParam('brewId');
 
   template.autorun( () => {
@@ -71,10 +72,19 @@ Template.brew.helpers({
   },
   rebrewing(){
     return Template.instance().isReBrewing.get();
+  },
+  isAdvanced(){
+    return Template.instance().isAdvanced.get();
+  },
+  setAdvanced(advanced){
+    Template.instance().isAdvanced.set(advanced);
   }
 });
 
 Template.brew.events({
+    'click .toggleAdvanced'(event){
+      Template.instance().isAdvanced.set(!Template.instance().isAdvanced.get());
+    },
     'click .delModal'(event) {
         document.getElementById("brewID").value = this._id;
     },
