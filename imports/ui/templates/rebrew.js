@@ -36,7 +36,6 @@ Template.rebrew.events({
         document.getElementById("EditrebrewID" + this.id).value = this.id;
     },
     'click .delete'(event) {
-      console.log(this);
         var brew = FlowRouter.getParam('brewId')
         Toast.options = {
             closeButton: true,
@@ -81,5 +80,10 @@ Template.rebrew.events({
     'click .rating'(event) {
         const value = $(event.target).val();
         $("#erating" + Template.instance().data.id).val(value);
-    }
+    },
+    //Range Value
+    'change .slider'(event) {
+      let slider = event.target.id;
+      $("#b" + slider).text( $("#" + slider).val() );
+    }    
 });

@@ -1,14 +1,3 @@
-#mehero{
-  background-image:url(/img/bg.jpg);
-  background-size:cover;
-  position:relative;
-  height:50vh;
-}
-.fit-width{
-  padding-left:0px;
-  padding-right:0px;
-}
-
 .profile-box {
   position: absolute;
   top: 30px;
@@ -26,10 +15,6 @@
 }
 .offset-top{
   position:relative;
-}
-.card{
-  box-shadow: 2px 2px 7px grey;
-  margin: 5px;
 }
 .glyphicon-star {
   font-size: 20px;
@@ -74,11 +59,4 @@
       left: 0;
     }
   }
-}
-.rating{
-
-}
-.coffee-review{
-  height: 200px!important;
-  width: 200px!important;
 }

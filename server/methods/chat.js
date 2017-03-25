@@ -55,4 +55,27 @@ if(Meteor.isServer){
       return;
     },
   });
+
+  //Make Users Away after Timeout Interval
+  function usersAwayInterval(){
+      console.log("making users away");
+      let expireDate = new Date();
+      console.log(expireDate);
+      expireDate.setSeconds(expireDate.getSeconds()-300);
+      console.log(expireDate);
+      RoomUsers.update({creation_date: {$lt: expireDate }}, {$set: {away: true}});
+  };
+
+  //Remove Users after Timeout Interval
+  function usersRemoveInterval(){
+      console.log("removing users");
+      let expireDate = new Date();
+      console.log(expireDate);
+      expireDate.setSeconds(expireDate.getSeconds()-3000);
+      console.log(expireDate);
+      RoomUsers.remove({creation_date: {$lt: expireDate }});
+  };
+
+  setInterval(Meteor.bindEnvironment(usersAwayInterval),300000);
+  setInterval(Meteor.bindEnvironment(usersRemoveInterval),600000);
 }

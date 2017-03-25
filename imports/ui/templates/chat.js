@@ -121,5 +121,23 @@ Template.chat.helpers({
   messages: function (){
     console.log(Messages.find());
     return Messages.find();
+  },
+  isConnected(){
+    if (RoomUsers.findOne({userid: Meteor.userId()})) {
+      console.log("connected true");
+      return true;
+    } else {
+      console.log("connected false");
+      return false;
+    }
+  },
+  isPresent(){
+    if (RoomUsers.find({userid: Meteor.userId()}).away == false) {
+      console.log("isPresent true");
+      return true;
+    } else {
+      console.log("isPresent false");
+      return false;
+    }
   }
 });

@@ -66,6 +66,6 @@ if(Meteor.isServer){
         let sum = ratings.reduce(function(a, b){return parseFloat(a) + parseFloat(b);});
         let average = (sum / ratings.length).toFixed(1);
         Coffees.update(Coffees.findOne({CoffeeName: brew})._id, {$set: {AverageRating: average}});
-    }
-  });
+    }     
+  }); 
 }

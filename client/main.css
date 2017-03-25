@@ -1,6 +1,8 @@
 /* CSS declarations go here */
-body{ margin:0px 0px;
+body{ 
+  margin:0px 0px;
   background-color: #f5f5f5;
+  overflow-y: scroll;
 }
 
 #hero{
@@ -45,10 +47,6 @@ body{ margin:0px 0px;
   text-decoration: none;
 }
 
-.thumbnail a{
-  text-decoration: none;
-}
-
 #title a:hover, #title a:focus {
     color: white;
 }
@@ -76,6 +74,9 @@ body{ margin:0px 0px;
   margin-top: 10px;
   margin-right: 10px;
 }
+.thumbnail a{
+  text-decoration: none;
+}
 
 .thumbnail img{
   max-height: 300px;
@@ -87,8 +88,4 @@ body{ margin:0px 0px;
 
 .search {
   height: 40px;
-}
-
-.tagline {
-  color: white;
 }
