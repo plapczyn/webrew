@@ -3,9 +3,8 @@ import { RoomUsers } from '../../imports/api/collections/coffees.js';
 
 if (Meteor.isServer) {
   Meteor.publish('roommessages', function() {
-    return Messages.find();
+    return Messages.find({}, {sort: {creation_date: -1}, limit: 100});
   });
-  /* Publish room users by room id */
   Meteor.publish('roomusers', function() {
     return RoomUsers.find();
   });
