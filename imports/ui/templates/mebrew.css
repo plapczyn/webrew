@@ -5,13 +5,14 @@
   cursor: pointer;
 }
 .profile-picture{
-  height: 200px;
-  width: 200px;
+  height: 17vw;
+  width: 17vw;
   box-shadow: 1px 1px 7px grey;
 }
 
 .profile-info{
-  width: 200px;
+  width: 17vw;
+  color:white
 }
 .offset-top{
   position:relative;

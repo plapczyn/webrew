@@ -4,15 +4,7 @@ import { Messages } from '../../api/collections/coffees.js';
 import { RoomUsers } from '../../api/collections/coffees.js';
 
 Template.chat.onRendered( function() {
-  console.log("onRendered");
-  //Add user
-  Meteor.call('chat.addUser', {id: "id"}, (err, res) => {
-    if(!err){
-      console.log("added roomuser");
-    } else {
-      console.log("error adding roomuser");
-    }
-  });
+  //console.log("onRendered");
 });
 
 Template.chat.events({
@@ -31,11 +23,9 @@ Template.chat.events({
     
     Meteor.call('chat.addMessage', message, (err, res) => {
       if(!err){
-        console.log("added message");   
         //Set messages scroll to bottom
         $(".messages").scrollTop($(".messages")[0].scrollHeight);             
       } else {
-        console.log("error adding message");
         $('#messagebox').val(message.content);
       }
     });    
@@ -53,90 +43,73 @@ Template.chat.events({
       
       Meteor.call('chat.addMessage', message, (err, res) => {
         if(!err){
-          console.log("added message");
           //Set messages scroll to bottom
           $(".messages").scrollTop($(".messages")[0].scrollHeight);                       
         } else {
-          console.log("error adding message");
           $('#messagebox').val(message.content);
         }
       });       
     }
   },
-  'click .send-disconnect'(event){
-    event.preventDefault();
-    Meteor.call('chat.removeUser', {id: "id"}, (err, res) => {
-      if(!err){
-        console.log("removed user");
-      } else {
-        console.log("error removing user");
-      }
-    });   
-  },
-  'click .send-clearmessages'(event){
-    event.preventDefault();
-    Meteor.call('chat.removeMessages', {id: "id"}, (err, res) => {
-      if(!err){
-        console.log("removed messages");
-      } else {
-        console.log("error removing messages");
-      }
-    });   
-  },  
   'click .send-away'(event){
-    console.log($('.send-away').val());
-    if($('.send-away').val() == 'Set Away'){
+    let status = $('.send-away').val();
+    
+    if(status == 'Set Away'){
       //Set User away
-      console.log('Setting user away');
       Meteor.call('chat.updateUser', true, (err, res) => {
         if(!err){
-          console.log("user is away");
+          //console.log("user is away");
           $('.send-away').val('Set Back');
         } else {
           console.log("error setting user away");
         }
-    });
-    } else {
+      });
+    } 
+    
+    if(status == 'Set Back') {
       //Set User not away
-      console.log('Setting user back');
       Meteor.call('chat.updateUser', false, (err, res) => {
         if(!err){
-          console.log("user is back");
+          //console.log("user is back");
           $('.send-away').val('Set Away');
         } else {
           console.log("error setting user back");
-      
         }
       });
     }
+
+    if(status == 'Reconnect') {
+      //Reconnect User
+      Meteor.call('chat.addUser', {id: "id"}, (err, res) => {
+        if(!err){
+          //console.log("added roomuser");
+        } else {
+          console.log("error adding roomuser");
+        }
+      });
+    }    
   }
 });
 
 Template.chat.helpers({
   name: FlowRouter.getParam("userName"),
   roomusers: function (){
-    console.log(RoomUsers.find());
     return RoomUsers.find();
   },
   messages: function (){
-    console.log(Messages.find());
     return Messages.find();
   },
   isConnected(){
     if (RoomUsers.findOne({userid: Meteor.userId()})) {
-      console.log("connected true");
       return true;
     } else {
-      console.log("connected false");
       return false;
     }
   },
   isPresent(){
     if (RoomUsers.find({userid: Meteor.userId()}).away == false) {
-      console.log("isPresent true");
       return true;
     } else {
-      console.log("isPresent false");
       return false;
     }
   }

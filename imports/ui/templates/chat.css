@@ -1,27 +1,21 @@
 .messages-container {
-    height: 25vh;
-    border: 1px solid #DDD;
+    height: 100%;
     position: relative;
-
 }
 .messages {
     box-sizing: border-box;
+    border: 1px solid #DDD;
     padding: 20px;
     overflow: auto;
     height: 25vh;
-    width: 80%;
 }
 .user-list {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 20%;
-    height: 25vh;
+    height: 100%;
     overflow: auto;
     background: #EFEFEF;
     margin: 0;
+    border: 1px solid #DDD;
     padding: 20px;
-    border-left: 1px solid #DDD;
 }
 .user-list li {
     display: block;
@@ -46,4 +40,16 @@ li.away {
     color: #a9a9ab;
     font-style: italic;
     font-weight: normal;
+}
+
+@media (min-width:992px){
+    .col-md-3 {
+        float:right;
+    }
+    .user-list {
+        height: 25vh;
+    }
+    .messages-container {
+        height: 25vh;
+    }
 }
