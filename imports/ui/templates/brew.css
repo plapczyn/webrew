@@ -26,7 +26,7 @@
 /* Sliders */
 input[type=range] {
     /*removes default webkit styles*/
-    -webkit-appearance: none; 
+    -webkit-appearance: none;
     /*fix for FF unable to apply focus style bug */
     border: 1px solid white;
 }
@@ -71,7 +71,7 @@ input[type=range]:-moz-focusring{
     outline-offset: -1px;
 }
 input[type=range]::-ms-track {
-    height: 5px;  
+    height: 5px;
     /*remove bg colour from the track, we'll use ms-fill-lower and ms-fill-upper instead */
     background: transparent;
     /*leave room for the larger thumb to overflow with a transparent border */
@@ -100,4 +100,7 @@ input[type=range]:focus::-ms-fill-lower {
 }
 input[type=range]:focus::-ms-fill-upper {
     background: #ccc;
+}
+div {
+  transition: width 1s, height 1s, transform 1s;
 }

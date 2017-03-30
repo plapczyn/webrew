@@ -1,5 +1,6 @@
 import './brew.html';
 import './brew.css';
+import './modals/rebrew/advancedRebrewModal.js';
 import Chart from 'chart.js';
 import { Coffees } from '../../api/collections/coffees.js';
 import { Favorites } from '../../api/collections/coffees.js';
@@ -9,10 +10,14 @@ import { AdvancedRebrew } from '../../../lib/DatabaseModels.js';
 import { Rebrew } from '../../../lib/DatabaseModels.js';
 import { Coffee } from '../../../lib/DatabaseModels.js';
 
+Template.brew.onRendered(() => {
+});
 Template.brew.onCreated(function (){
+
+  $('#tagsInput').tagsinput();
   var template = Template.instance();
   template.isReBrewing = new ReactiveVar(false);
-  template.isAdvanced = new ReactiveVar(false);
+
   var brewName = FlowRouter.getParam('brewId');
 
   template.autorun( () => {
@@ -73,18 +78,13 @@ Template.brew.helpers({
   rebrewing(){
     return Template.instance().isReBrewing.get();
   },
-  isAdvanced(){
-    return Template.instance().isAdvanced.get();
-  },
+
   setAdvanced(advanced){
     Template.instance().isAdvanced.set(advanced);
   }
 });
 
 Template.brew.events({
-    'click .toggleAdvanced'(event){
-      Template.instance().isAdvanced.set(!Template.instance().isAdvanced.get());
-    },
     'click .delModal'(event) {
         document.getElementById("brewID").value = this._id;
     },
@@ -178,70 +178,7 @@ Template.brew.events({
     var instance = Template.instance();
     instance.isReBrewing.set(!instance.isReBrewing.get());
   },
-  'submit .submitRebrew'(event){
-    //prevent the refresh page and put params in
-    event.preventDefault();
 
-      //grab form data
-
-
-    /*
-    this._id = _id
-    this.CoffeeId = coffeeId;
-    this.CoffeeName = coffeeName;
-    this.Rebrew = rebrew;
-    this.Rating = rating;
-    this.Title = title;
-    this.ReviewDate = reviewDate;
-    this.Owner = owner;
-    this.User = user;
-    */
-    const target = event.target;
-    rebrewToInsert = new Rebrew({
-      Title: target.title.value,
-      Rebrew: target.rebrew.value,
-      Rating: target.rating.value,
-      Username: Meteor.user().username,
-      ReviewDate: Date.now(),
-      CoffeeName: FlowRouter.getParam('brewId'),
-      CoffeeId: this._id
-    })
-    // rebrewToInsert.title = target.title.value;
-    // rebrewToInsert.rebrew = target.rebrew.value;
-    // rebrewToInsert.rating = target.rating.value;
-    // rebrewToInsert.user = Meteor.user().username;
-    // rebrewToInsert.reviewdate = Date.now();
-    // rebrewToInsert.brew = FlowRouter.getParam('brewId');
-    // rebrewToInsert.brewid = this._id;
-
-
-    Toast.options = {
-        closeButton: true,
-        progressBar: true,
-        positionClass: 'toast-top-left',
-        showEasing: 'swing',
-        hideEasing: 'linear',
-        showMethod: 'fadeIn',
-        hideMethod: 'fadeOut',
-        timeOut: 1500,
-        color: 'red'
-    };
-    //insert into database
-    Meteor.call('rebrews.add', rebrewToInsert.Get(), (err, res) => {
-      if(!err){
-        Toast.info("New reBrew added to " + rebrewToInsert.CoffeeName);
-      }
-      else{
-        Toast.info('Your rebrew was not submitted successfully');
-      }
-    });
-
-    //resetform and refresh page
-    $("#reBrewingModal").modal("hide");
-    Template.instance().isReBrewing.set(false);
-    let name = FlowRouter.getParam('brewId');
-    FlowRouter.go('brew', {brewId: name});
-  },
 
   //Edit Brew
   'click .editModal'(event) {
