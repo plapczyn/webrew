@@ -17,8 +17,8 @@
 .offset-top{
   position:relative;
 }
-.glyphicon-star {
-  font-size: 20px;
+/*.glyphicon-star {
+  font-size: 1.25em;
   color: brown;
   &.half {
     position: relative;
@@ -40,7 +40,7 @@
   }
 }
 .glyphicon-star-empty {
-  font-size: 20px;
+  font-size: 1.25em;
   color: brown;
   &.half {
     position: relative;
@@ -60,4 +60,4 @@
       left: 0;
     }
   }
-}
+}*/

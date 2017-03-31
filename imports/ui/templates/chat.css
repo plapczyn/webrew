@@ -27,7 +27,7 @@
     color: #b69476;
 }
 .timestamp {
-    font-size: 12px;
+    font-size: 0.75em;
     color: #CCC;
 }
 .add-message {
@@ -42,8 +42,8 @@ li.away {
     font-weight: normal;
 }
 
-@media (min-width:992px){
-    .col-md-3 {
+@media (min-width:768px){
+    .col-sm-3 {
         float:right;
     }
     .user-list {

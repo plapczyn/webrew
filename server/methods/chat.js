@@ -56,7 +56,6 @@ if(Meteor.isServer){
 
   //Remove Users after Timeout Interval
   function usersRemoveInterval(){
-      console.log("usersRemoveInterval");
       let expireDate = new Date();
       expireDate.setSeconds(expireDate.getSeconds()-600);
       RoomUsers.remove({creation_date: {$lt: expireDate }});
