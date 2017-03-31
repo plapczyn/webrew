@@ -7,22 +7,44 @@ if(Meteor.isServer){
     ///favorite structure:
     ///{user: String, name: String}
     'rebrews.add'(rebrew){
-      let newRebrew = new Rebrew(rebrew);
+      let newRebrew = {};
+      newRebrew.Advanced = rebrew.Advanced;
+      newRebrew.Rebrew = rebrew.Rebrew;
       newRebrew.Username = Meteor.user().username;
       newRebrew.Owner = Meteor.userId();
       newRebrew.ReviewDate = new Date();
+<<<<<<< HEAD
       if (newRebrew.Rating=='') {
           newRebrew.Rating = 0;
       }
+=======
+      newRebrew.Aroma = rebrew.Aroma;
+      newRebrew.Acidity = rebrew.Acidity;
+      newRebrew.Balance = rebrew.Balance;
+      newRebrew.Flavour = rebrew.Flavour;
+      newRebrew.Body = rebrew.Body;
+      newRebrew.CoffeeId = rebrew.CoffeeId;
+      newRebrew.CoffeeName = rebrew.CoffeeName;
+      newRebrew.Title = rebrew.Title;
+>>>>>>> fb5419a18494996b86a5761efba4eb51e50ba9ed
 
-      Rebrews.insert(newRebrew.Get());
+      if(newRebrew.Advanced){
+      newRebrew.Rating = parseFloat(sumAdvancedRebrew(newRebrew));
+      }
+      else{
+        newRebrew.Rating = rebrew.Rating;
+      }
+      console.log(newRebrew);
+      Rebrews.insert(newRebrew);
 
       //Recalculate Average Rating
-      let allreviews = Rebrews.find({CoffeeId: newRebrew.OnlyCoffeeId().CoffeeId}).fetch();
-      let ratings = _.pluck(allreviews, "Rating");
-      let sum = ratings.reduce(function(a, b){return parseFloat(a) + parseFloat(b);});
-      let average = (sum / ratings.length).toFixed(1);
-      Coffees.update({_id: newRebrew.OnlyCoffeeId().CoffeeId}, {$set: {AverageRating: average}});
+      let advancedRebrews = Rebrews.find({CoffeeId: newRebrew.CoffeeId, Advanced: true}).fetch();
+      let simpleRebrews = Rebrews.find({CoffeeId: newRebrew.CoffeeId, Advanced: false}).fetch();
+
+      let average = calculateCoffeeRating(simpleRebrews, advancedRebrews);
+
+      console.log("AVERAGE",average);
+      Coffees.update({_id: newRebrew.CoffeeId}, {$set: {AverageRating: average}});
     },
     'rebrews.removeById'(id){
         check( id, Match.OneOf( String, null, undefined ) );
@@ -72,6 +94,39 @@ if(Meteor.isServer){
         let sum = ratings.reduce(function(a, b){return parseFloat(a) + parseFloat(b);});
         let average = (sum / ratings.length).toFixed(1);
         Coffees.update(Coffees.findOne({CoffeeName: brew})._id, {$set: {AverageRating: average}});
-    }     
-  }); 
+    }
+  });
+}
+
+function calculateCoffeeRating(allSimple, allAdvanced){
+  let simpleRatings = _.pluck(allSimple, "Rating");
+  let advancedRatings = allAdvanced.map((v,i) => {
+    return sumAdvancedRebrew(v);
+  });
+  console.log(simpleRatings, advancedRatings);
+  let sum = 0;
+  let sum2 = 0;
+  console.log(advancedRatings);
+  if(simpleRatings.length < 1){
+    sum = 0;
+  }
+  else{
+    sum = simpleRatings.reduce(function(a, b){return parseFloat(a) + parseFloat(b);});
+  }
+
+  if(advancedRatings.length > 0){
+    sum2 = advancedRatings.reduce(function(a, b){return parseFloat(a) + parseFloat(b);});
+  }
+  let average = ((sum + sum2) / (simpleRatings.length + advancedRatings.length)).toFixed(1);
+  return average;
+}
+
+function sumAdvancedRebrew(rebrew){
+  return Math.round((
+      (parseFloat(rebrew.Aroma) +
+       parseFloat(rebrew.Balance) +
+       parseFloat(rebrew.Body) +
+       parseFloat(rebrew.Flavour) +
+       parseFloat(rebrew.Acidity)) / 10) * 2
+     ).toFixed(1) / 2;
 }
