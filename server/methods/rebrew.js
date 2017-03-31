@@ -11,6 +11,9 @@ if(Meteor.isServer){
       newRebrew.Username = Meteor.user().username;
       newRebrew.Owner = Meteor.userId();
       newRebrew.ReviewDate = new Date();
+      if (newRebrew.Rating=='') {
+          newRebrew.Rating = 0;
+      }
 
       Rebrews.insert(newRebrew.Get());
 
@@ -41,6 +44,9 @@ if(Meteor.isServer){
     'rebrews.updateRebrew'(rebrew){
 
         let rebrewUpdate = new Rebrew(rebrew);
+        if (rebrewUpdate.Rating=='') {
+          rebrewUpdate.Rating = 0;
+        }
         try{
             Rebrews.update(rebrewUpdate.Only_id(), {$set: rebrewUpdate.OnlyTitle()});
             Rebrews.update(rebrewUpdate.Only_id(), {$set: rebrewUpdate.OnlyRating()});
