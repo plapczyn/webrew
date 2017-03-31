@@ -96,20 +96,22 @@ function calculateCoffeeRating(allSimple, allAdvanced){
   });
   console.log(simpleRatings, advancedRatings);
   let sum = 0;
-  let sum2 = 0;
   console.log(advancedRatings);
-  if(simpleRatings.length < 1){
-    sum = 0;
-  }
-  else{
-    sum = simpleRatings.reduce(function(a, b){return parseFloat(a) + parseFloat(b);});
+  if(simpleRatings.length > 0){
+    sum += simpleRatings.reduce(function(a, b){return parseFloat(a) + parseFloat(b);});
   }
 
   if(advancedRatings.length > 0){
-    sum2 = advancedRatings.reduce(function(a, b){return parseFloat(a) + parseFloat(b);});
+    sum += advancedRatings.reduce(function(a, b){return parseFloat(a) + parseFloat(b);});
   }
-  let average = ((sum + sum2) / (simpleRatings.length + advancedRatings.length)).toFixed(1);
-  return average;
+
+  if(simpleRatings.length + advancedRatings.length < 1){
+    throw "Something in your database is really messed up, sir!"
+  }
+    let average = ((sum) / (simpleRatings.length + advancedRatings.length)).toFixed(1);
+    return average;
+
+
 }
 
 function sumAdvancedRebrew(rebrew){
