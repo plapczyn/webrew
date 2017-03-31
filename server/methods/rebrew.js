@@ -13,11 +13,6 @@ if(Meteor.isServer){
       newRebrew.Username = Meteor.user().username;
       newRebrew.Owner = Meteor.userId();
       newRebrew.ReviewDate = new Date();
-<<<<<<< HEAD
-      if (newRebrew.Rating=='') {
-          newRebrew.Rating = 0;
-      }
-=======
       newRebrew.Aroma = rebrew.Aroma;
       newRebrew.Acidity = rebrew.Acidity;
       newRebrew.Balance = rebrew.Balance;
@@ -26,7 +21,6 @@ if(Meteor.isServer){
       newRebrew.CoffeeId = rebrew.CoffeeId;
       newRebrew.CoffeeName = rebrew.CoffeeName;
       newRebrew.Title = rebrew.Title;
->>>>>>> fb5419a18494996b86a5761efba4eb51e50ba9ed
 
       if(newRebrew.Advanced){
       newRebrew.Rating = parseFloat(sumAdvancedRebrew(newRebrew));
