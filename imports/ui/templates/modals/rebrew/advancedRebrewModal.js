@@ -3,8 +3,8 @@ import './advancedRebrewModal.html';
 
 Template.advancedRebrewModal.onCreated(() => {
   let template = Template.instance();
-    template.isAdvanced = new ReactiveVar(false);
-})
+  template.isAdvanced = new ReactiveVar(false);
+});
 
 Template.advancedRebrewModal.helpers({
   isAdvanced(){
@@ -12,32 +12,40 @@ Template.advancedRebrewModal.helpers({
     return adv;
   }});
 
-Template.advancedRebrewModal.events({
+  Template.advancedRebrewModal.events({
     'click .toggleAdvanced'(event){
+      let isAdvanced = Template.instance().isAdvanced.get()
       console.log('asdasd');
-      Template.instance().isAdvanced.set(!Template.instance().isAdvanced.get());
+      Template.instance().isAdvanced.set(!isAdvanced);
     },
 
     'submit .submitRebrew'(event){
-    //prevent the refresh page and put params in
-    event.preventDefault();
+      console.log(event);
+      console.log(event.target.title.value);
+      //prevent the refresh page and put params in
 
-    let advancedRebrew = prepareAdvancedRebrew();
-    advancedRebrew.CoffeeName = FlowRouter.getParam('brewId');
-    advancedRebrew.CoffeeId = this._id;
+      let isAdvanced = Template.instance().isAdvanced.get();
+      event.preventDefault();
+      var advancedRebrew = {};
 
-    const target = event.target;
-    rebrewToInsert = new Rebrew({
-      Title: target.title.value,
-      Rebrew: target.rebrew.value,
-      Rating: target.rating.value,
-      Username: Meteor.user().username,
-      ReviewDate: Date.now(),
-      CoffeeName: FlowRouter.getParam('brewId'),
-      CoffeeId: this._id
-    })
+      if(isAdvanced){
+        advancedRebrew = prepareAdvancedRebrew(event);
+      }
+      advancedRebrew.CoffeeName = FlowRouter.getParam('brewId');
+      advancedRebrew.CoffeeId = this._id;
+      advancedRebrew.Advanced = isAdvanced;
 
-    Toast.options = {
+      const target = event.target;
+      advancedRebrew.Title = target.title.value;
+      advancedRebrew.Rebrew = target.rebrew.value;
+
+      if(!isAdvanced){
+        advancedRebrew.Rating = target.rating.value;
+      }
+
+      console.log(advancedRebrew);
+
+      Toast.options = {
         closeButton: true,
         progressBar: true,
         positionClass: 'toast-top-left',
@@ -47,38 +55,31 @@ Template.advancedRebrewModal.events({
         hideMethod: 'fadeOut',
         timeOut: 1499,
         color: 'red'
+      };
+      //insert into database
+      Meteor.call('rebrews.add', advancedRebrew, (err, res) => {
+        if(!err){
+          Toast.info("New reBrew added to " + advancedRebrew.CoffeeName);
+        }
+        else{
+          Toast.info('Your rebrew was not submitted successfully');
+        }
+      });
+
+      //resetform and refresh page
+      $("#reBrewingModal").modal("hide");
+      let name = FlowRouter.getParam('brewId');
+      FlowRouter.go('brew', {brewId: name});
+    },
+  });
+
+  function prepareAdvancedRebrew(test) {
+    let target = test.target;
+    return unstableBrew = {
+      Aroma: target.adrating1.value,
+      Body: target.adrating2.value,
+      Acidity: target.adrating3.value,
+      Flavour: target.adrating4.value,
+      Balance: target.adrating5.value
     };
-    //insert into database
-    Meteor.call('rebrews.add', rebrewToInsert.Get(), (err, res) => {
-      if(!err){
-        Toast.info("New reBrew added to " + rebrewToInsert.CoffeeName);
-      }
-      else{
-        Toast.info('Your rebrew was not submitted successfully');
-      }
-    });
-
-    //resetform and refresh page
-    $("#reBrewingModal").modal("hide");
-    Template.instance().isReBrewing.set(false);
-    let name = FlowRouter.getParam('brewId');
-    FlowRouter.go('brew', {brewId: name});
-  },
-});
-
-
-
-
-
-function prepareAdvancedRebrew(event) {
-  console.log(event);
-  return;
-  let target = event.target;
-  return unstableBrew = {
-    aroma: target.adrating1,
-    body: target.adrating2,
-    acidity: target.adrating3,
-    flavour: target.adrating4,
-    balance: target.adrating5
-  };
-}
+  }

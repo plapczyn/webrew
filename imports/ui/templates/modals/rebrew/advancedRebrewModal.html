@@ -43,7 +43,6 @@
 
             <div class="form-group" style="text-align:right">
               {{#if isAdvanced}}
-            <input id="tagsInput" type="text" value="Amsterdam,Washington,Sydney,Beijing,Cairo" data-role="tagsinput" />
               <label class="advlabel">Aroma</label>
               <div>
                 <input id="adrating1" class="form-group slider" style="display:inline; width:66%" type="range" min="0" max="10" value="5">
@@ -73,7 +72,6 @@
 
               <label>Overall rating</label>
               <input id="irating" required class="form-group" type="hidden" name="rating" value="">
-              {{tagInputBind}}
               <!-- https://atmospherejs.com/kosst/css-star-rating -->
               {{> rating value=0 }}
 
