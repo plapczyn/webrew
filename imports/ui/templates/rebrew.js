@@ -26,14 +26,23 @@ Template.rebrew.helpers({
   isOwner(){
     return this.owner === Meteor.userId();
   },
+  isAdvanced(){
+    return this.advanced;
+  },  
 });
 
 Template.rebrew.events({
     'click .delRebrewModal'(event) {
-        document.getElementById("DelrebrewID" + this.id).value = this.id;
+        document.getElementById("DelrebrewID" + this.id).value =  this.id;
     },
     'click .editRebrewModal'(event) {
         document.getElementById("EditrebrewID" + this.id).value = this.id;
+        document.getElementById("EditrebrewAdv" + this.id).value = this.advanced;
+        document.getElementById("bEadrating1").innerText = this.aroma;
+        document.getElementById("bEadrating2").innerText = this.body;
+        document.getElementById("bEadrating3").innerText = this.acidity;
+        document.getElementById("bEadrating4").innerText = this.flavour;
+        document.getElementById("bEadrating5").innerText = this.balance;
     },
     'click .delete'(event) {
         var brew = FlowRouter.getParam('brewId')
@@ -64,11 +73,23 @@ Template.rebrew.events({
         event.preventDefault();
         let rebrew = {};
         rebrew._id = document.getElementById("EditrebrewID" + this.id).value;
-        rebrew.title = event.target.title.value;
-        rebrew.rebrew = event.target.rebrew.value;
-        rebrew.rating = event.target.rating.value;
-        let updateRebrew = new Rebrew(rebrew);
-        Meteor.call('rebrews.updateRebrew',updateRebrew.Get(), (err, res) => {
+        rebrew.Advanced = document.getElementById("EditrebrewAdv" + this.id).value;
+        rebrew.Title = event.target.title.value;
+        rebrew.Rebrew = event.target.rebrew.value;
+        rebrew.CoffeeId = this.coffeeid;
+        if (rebrew.Advanced == 'true' || rebrew.Advanced == true ){
+          rebrew.Advanced = true;
+          rebrew.Aroma = $('#Eadrating1').val();
+          rebrew.Body = $('#Eadrating2').val();
+          rebrew.Acidity = $('#Eadrating3').val();
+          rebrew.Flavour = $('#Eadrating4').val();
+          rebrew.Balance = $('#Eadrating5').val();
+        }else{
+          rebrew.Advanced = false;
+          rebrew.Rating = event.target.rating.value;
+        }
+
+        Meteor.call('rebrews.updateRebrew',rebrew, (err, res) => {
             $("#EditreBrewingModal" + this.id).modal("hide");
         });
     },

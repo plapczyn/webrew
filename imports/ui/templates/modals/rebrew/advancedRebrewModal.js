@@ -15,13 +15,10 @@ Template.advancedRebrewModal.helpers({
   Template.advancedRebrewModal.events({
     'click .toggleAdvanced'(event){
       let isAdvanced = Template.instance().isAdvanced.get()
-      console.log('asdasd');
       Template.instance().isAdvanced.set(!isAdvanced);
     },
 
     'submit .submitRebrew'(event){
-      console.log(event);
-      console.log(event.target.title.value);
       //prevent the refresh page and put params in
 
       let isAdvanced = Template.instance().isAdvanced.get();
@@ -42,8 +39,6 @@ Template.advancedRebrewModal.helpers({
       if(!isAdvanced){
         advancedRebrew.Rating = target.rating.value;
       }
-
-      console.log(advancedRebrew);
 
       Toast.options = {
         closeButton: true,
@@ -71,6 +66,16 @@ Template.advancedRebrewModal.helpers({
       let name = FlowRouter.getParam('brewId');
       FlowRouter.go('brew', {brewId: name});
     },
+    //Star Rating
+    'click .rating'(event) {
+        const value = $(event.target).val();
+        $("#irating").val(value);
+    },    
+    //Range Value
+    'change .slider'(event) {
+      let slider = event.target.id;
+      $("#b" + slider).text( $("#" + slider).val() );
+    }   
   });
 
   function prepareAdvancedRebrew(test) {

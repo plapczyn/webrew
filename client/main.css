@@ -114,7 +114,24 @@ p{
 .search {
   height: 40px;
 }
+.modal {
+  text-align: center;
+  padding: 0!important;
+}
 
+.modal:before {
+  content: '';
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+  margin-right: -4px; /* Adjusts for spacing */
+}
+
+.modal-dialog {
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle;
+}
 @media (max-width:991px){
     .header {
         font-size: 1.5em;
@@ -129,6 +146,11 @@ p{
     }
     .header h1 {
         font-size: 2.25em;
+    }
+}
+@media (max-width:361px){
+    .modal:before {
+    height: 25%;
     }
 }
 @media (max-height:500px){

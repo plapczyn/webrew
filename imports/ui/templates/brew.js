@@ -11,10 +11,10 @@ import { Rebrew } from '../../../lib/DatabaseModels.js';
 import { Coffee } from '../../../lib/DatabaseModels.js';
 
 Template.brew.onRendered(() => {
+
 });
 Template.brew.onCreated(function (){
 
-  $('#tagsInput').tagsinput();
   var template = Template.instance();
   template.isReBrewing = new ReactiveVar(false);
 
@@ -26,16 +26,6 @@ Template.brew.onCreated(function (){
     if(Meteor.user()){
       user = Meteor.user().username;
     }
-
-    // template.subscribe( 'brew',brewName, () => {
-    //   setTimeout( () => {
-    //   }, 300 );
-    // });
-    //
-    // template.subscribe('rebrews', brewName, () => {
-    //   setTimeout( () => {
-    //   }, 300 );
-    // })
     template.subscribe('favorites.isInFavorites', user, () => {
       setTimeout( () => {
       }, 300 );
@@ -129,7 +119,6 @@ Template.brew.events({
         Toast.info(brew + " was added to your favorites");
       }
       else{
-
         Toast.info(brew + " was not added to your favorites. An error occured");
       }
     });
@@ -171,8 +160,6 @@ Template.brew.events({
         Toast.error(brew + " was not removed from your favorites and error has occured");
       }
     });
-
-
   },
   'click .addRebrew'(event){
     var instance = Template.instance();
@@ -199,7 +186,6 @@ Template.brew.events({
     editBrew._id = document.getElementById("editbrewID").value;
     let coffee = new Coffee(editBrew);
 
-
     $("#EditBrewModal").on("hidden.bs.modal", function (){
       Meteor.call('coffees.edit', coffee.Get(), (err, res) => {
         if(!err){
@@ -222,24 +208,11 @@ Template.brew.events({
     });
     $("#EditBrewModal").modal("hide");
   },
-
   //Goto Profile
   'click .goMe' (event){
     FlowRouter.go('mebrew', {userName: Meteor.user().username});
-  },
-
-  //Star Rating
-  'click .rating'(event) {
-    const value = $(event.target).val();
-    $("#irating").val(value);
-  },
-  //Range Value
-  'change .slider'(event) {
-    let slider = event.target.id;
-    $("#b" + slider).text( $("#" + slider).val() );
   }
 });
-
 
 //Populate Chart - ID = myChart onRendered
 Template.canvas.onRendered (function() {

@@ -26,9 +26,8 @@ if(Meteor.isServer){
       newRebrew.Rating = parseFloat(sumAdvancedRebrew(newRebrew));
       }
       else{
-        newRebrew.Rating = rebrew.Rating;
+        newRebrew.Rating = Number(rebrew.Rating);
       }
-      console.log(newRebrew);
       Rebrews.insert(newRebrew);
 
       //Recalculate Average Rating
@@ -37,7 +36,6 @@ if(Meteor.isServer){
 
       let average = calculateCoffeeRating(simpleRebrews, advancedRebrews);
 
-      console.log("AVERAGE",average);
       Coffees.update({_id: newRebrew.CoffeeId}, {$set: {AverageRating: average}});
     },
     'rebrews.removeById'(id){
@@ -58,36 +56,47 @@ if(Meteor.isServer){
         }
     },
     'rebrews.updateRebrew'(rebrew){
-
-        let rebrewUpdate = new Rebrew(rebrew);
-        if (rebrewUpdate.Rating=='') {
-          rebrewUpdate.Rating = 0;
+        let rebrewUpdate = {};
+        rebrewUpdate._id = rebrew._id;
+        rebrewUpdate.CoffeeId = rebrew.CoffeeId;
+        rebrewUpdate.Title = rebrew.Title;
+        rebrewUpdate.Rebrew = rebrew.Rebrew;
+        rebrewUpdate.Advanced = rebrew.Advanced;
+        rebrewUpdate.Aroma = rebrew.Aroma;
+        rebrewUpdate.Body = rebrew.Body;
+        rebrewUpdate.Acidity = rebrew.Acidity;
+        rebrewUpdate.Flavour = rebrew.Flavour;
+        rebrewUpdate.Balance = rebrew.Balance;
+        
+        if(rebrewUpdate.Advanced == 'true' || rebrewUpdate.Advanced == true){
+          rebrewUpdate.Rating = parseFloat(sumAdvancedRebrew(rebrew));
+        }else{
+          if(rebrew.Rating == '') {
+            rebrewUpdate.Rating = 0;
+          } else {
+            rebrewUpdate.Rating = Number(rebrew.Rating);
+          }
         }
         try{
-            Rebrews.update(rebrewUpdate.Only_id(), {$set: rebrewUpdate.OnlyTitle()});
-            Rebrews.update(rebrewUpdate.Only_id(), {$set: rebrewUpdate.OnlyRating()});
+            Rebrews.update(rebrewUpdate._id, {$set: {Title: rebrewUpdate.Title, Rebrew: rebrewUpdate.Rebrew, Rating: rebrewUpdate.Rating }});
         }
         catch(e){
         }
-
-        try{
-            Rebrews.update(rebrewUpdate.Only_id(), {$set: rebrewUpdate.OnlyRebrew()});
-        }
-        catch(e){
-        }
-        try{
-            Rebrews.update(rebrewUpdate.Only_id(), {$set: rebrewUpdate.OnlyRebrew()});
-        }
-        catch(e){
+        if(rebrewUpdate.Advanced){
+          try{
+            Rebrews.update(rebrewUpdate._id, {$set: {Aroma: rebrewUpdate.Aroma, Body: rebrewUpdate.Body, Acidity: rebrewUpdate.Acidity, Flavour: rebrewUpdate.Flavour, Balance: rebrewUpdate.Balance }});
+          }
+          catch(e){
+          }
         }
 
         //Recalculate Average Rating
-        let brew = Rebrews.findOne(rebrewUpdate.Only_id()).CoffeeName;
-        let allreviews = Rebrews.find({CoffeeName: brew}).fetch();
-        let ratings = _.pluck(allreviews, "Rating");
-        let sum = ratings.reduce(function(a, b){return parseFloat(a) + parseFloat(b);});
-        let average = (sum / ratings.length).toFixed(1);
-        Coffees.update(Coffees.findOne({CoffeeName: brew})._id, {$set: {AverageRating: average}});
+        let advancedRebrews = Rebrews.find({CoffeeId: rebrewUpdate.CoffeeId, Advanced: true}).fetch();
+        let simpleRebrews = Rebrews.find({CoffeeId: rebrewUpdate.CoffeeId, Advanced: false}).fetch();
+
+        let average = calculateCoffeeRating(simpleRebrews, advancedRebrews);
+
+        Coffees.update({_id: rebrewUpdate.CoffeeId}, {$set: {AverageRating: average}});
     }
   });
 }
@@ -97,9 +106,8 @@ function calculateCoffeeRating(allSimple, allAdvanced){
   let advancedRatings = allAdvanced.map((v,i) => {
     return sumAdvancedRebrew(v);
   });
-  console.log(simpleRatings, advancedRatings);
   let sum = 0;
-  console.log(advancedRatings);
+  
   if(simpleRatings.length > 0){
     sum += simpleRatings.reduce(function(a, b){return parseFloat(a) + parseFloat(b);});
   }
@@ -113,8 +121,6 @@ function calculateCoffeeRating(allSimple, allAdvanced){
   }
     let average = ((sum) / (simpleRatings.length + advancedRatings.length)).toFixed(1);
     return average;
-
-
 }
 
 function sumAdvancedRebrew(rebrew){
