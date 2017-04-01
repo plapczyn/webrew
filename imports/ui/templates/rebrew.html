@@ -105,9 +105,28 @@
             <h3 style="display: inline;">{{title}}</h3>
           </div>
           <p class="newlines">{{rebrew}}</p>
+          <!--<br />-->
+          {{#if isAdvanced}}
+          <h4 class="newlines">Brew Profile</h4>
+          <div class="datagrid">
+          <table>
+          <thead>
+            <tr><th>Attribute</th><th>Rating</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Aroma</td><td>{{aroma}}</td></tr>
+            <tr><td>Body</td><td>{{body}}</td></tr>
+            <tr><td>Acidity</td><td>{{acidity}}</td></tr>
+            <tr><td>Flavor</td><td>{{flavour}}</td></tr>
+            <tr><td>Balance</td><td>{{balance}}</td></tr>
+          </tbody>
+          </table>
+          </div>
+          {{else}}
           <br />
+          {{/if}}
           <p style="display:inline-block"> Added {{tm_now createdAt}} by <a href="/mebrew/{{user}}" >{{user}}</a></p>
-          <br />
+          <!--<br />-->
         </div>
       </div>
     </div>
