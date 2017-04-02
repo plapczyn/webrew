@@ -64,7 +64,7 @@
 
       </div>
       <div class="col-md-4">
-        {{> canvas}}
+        {{> canvas AverageBody = AverageBody AverageAroma = AverageAroma AverageAcidity = AverageAcidity AverageFlavour = AverageFlavour AverageBalance = AverageBalance}}
       </div>
     </div>
 
@@ -151,8 +151,4 @@
 {{/each}}
 {{/if}}
 {{/if}}
-</template>
-
-<template name ="canvas">
-  <canvas id="myChart" width="200" height="200" ></canvas>
 </template>
