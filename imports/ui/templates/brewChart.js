@@ -10,14 +10,14 @@ Template.canvas.onCreated(() => {
   template.chartData = new ReactiveVar();
   template.chart = new ReactiveVar();
   template.autorun(() =>{
-    // updateChartData();
+    updateChartData();
     template.subscribe('brew.averageChartData',brew)
 
   })
 });
 Template.canvas.onRendered (function() {
   Template.instance().chart.set(CreateBlankChart());
-  // updateChartData();
+  updateChartData();
   });
 
 Template.canvas.helpers({
@@ -25,10 +25,6 @@ Template.canvas.helpers({
     return Coffees.find();
   }
 })
-
-function render(){
-
-}
 
 function chartDataSet(){
   let data = Template.instance().data;
@@ -38,16 +34,17 @@ function chartDataSet(){
 function updateChartData(){
   let template = Template.instance();
   let coffee = Coffees.findOne();
-  if(!!template.chart.get()){
-    try{
-    template.chart.get().chart.config.data.datasets.data[0] = 1;
-    template.chart.get().reset();
+  try{
+    template.chart.get().config.data.datasets[0].data[0] = coffee.AverageAroma;// = chartDataSet(coffee);
+    template.chart.get().config.data.datasets[0].data[1] = coffee.AverageBody;// = chartDataSet(coffee);
+    template.chart.get().config.data.datasets[0].data[2] = coffee.AverageAcidity;// = chartDataSet(coffee);
+    template.chart.get().config.data.datasets[0].data[3] = coffee.AverageFlavour;// = chartDataSet(coffee);
+    template.chart.get().config.data.datasets[0].data[4] = coffee.AverageBalance;// = chartDataSet(coffee);
     template.chart.get().update();
-    }
-    catch(e){
+  }
+  catch(e){
       console.log(e);
     }
-  }
 }
 
 function CreateBlankChart(){
@@ -70,6 +67,7 @@ function CreateBlankChart(){
   };
 
   return new Chart(document.getElementById('myChart'), {
+    responsive: true,
     type: 'radar',
     data: data2,
     options: {
@@ -78,7 +76,14 @@ function CreateBlankChart(){
           text: 'Brew Profile'
         },
         backgroundColor: "rgba(0,0,0,0)",
-        fontSize: 16
+        fontSize: 16,
+        scale: {
+          ticks:{
+            min:0,
+            max: 10,
+            stepSize: 2
+          }
+        }
       }
     });
 }
