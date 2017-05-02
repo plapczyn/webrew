@@ -19,14 +19,14 @@ if (Meteor.isServer) {
       };
 
       projection.limit = 98;
-      return Coffees.find(query);
+      return Coffees.find(query,{ sort:{ CreatedAt: -1 }});
     }
-    return Coffees.find();
+    return Coffees.find({},{ sort:{ CreatedAt: -1 }});
   });
 
   Meteor.publish('coffees.myCoffees', (user) => {
     let coffee = new Coffee({username: user});
-    return Coffees.find(coffee.Username());
+    return Coffees.find(coffee.Username(),{ sort:{ CreatedAt: -1 }});
   });
 
   Meteor.publish('coffees.mebrew', (user,search) => {
@@ -56,11 +56,11 @@ if (Meteor.isServer) {
     let query = {
       $or: coffeeList
     }
-    return Coffees.find(query);
+    return Coffees.find(query,{ sort:{ CreatedAt: -1 }});
   });
 
   Meteor.publish('brew', (brewName) => {
     let coffee = new Coffee({CoffeeName: brewName})
-    return Coffees.find(coffee.Get());
+    return Coffees.find(coffee.Get(),{ sort:{ CreatedAt: -1 }});
   })
 }

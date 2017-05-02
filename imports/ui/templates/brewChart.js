@@ -18,7 +18,7 @@ Template.canvas.onCreated(() => {
 Template.canvas.onRendered (function() {
   Template.instance().chart.set(CreateBlankChart());
   updateChartData();
-  });
+});
 
 Template.canvas.helpers({
   brew(){
@@ -60,9 +60,7 @@ function CreateBlankChart(){
         pointHoverBackgroundColor: "#fff",
         pointHoverBorderColor: "rgba(179,181,198,1)",
         data: chartDataSet()
-
       }
-
     ]
   };
 
