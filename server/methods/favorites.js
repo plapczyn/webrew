@@ -6,7 +6,7 @@ if(Meteor.isServer){
     ///{user: String, name: String}
     'favorites.add'(favorite){
         favoriteInsert = {};
-        favoriteInsert.Username = favorite.Username;
+        favoriteInsert.Username = Meteor.user().username;
         favoriteInsert.CoffeeId = favorite.CoffeeId;
 
         Favorites.insert(favoriteInsert);
@@ -16,7 +16,7 @@ if(Meteor.isServer){
     },
     'favorites.remove'(brewid, user){
       try{
-        var favoriteId = Favorites.findOne({Username: user, CoffeeId: brewid})._id;
+        var favoriteId = Favorites.findOne({Username: Meteor.user().username, CoffeeId: brewid})._id;
         Favorites.remove({_id: favoriteId});
       }
       catch(e){

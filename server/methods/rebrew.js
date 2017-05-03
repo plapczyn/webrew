@@ -50,7 +50,10 @@ if(Meteor.isServer){
 
     },
     'rebrews.removeById'(id){
-        check( id, Match.OneOf( String, null, undefined ) );
+      check( id, Match.OneOf( String, null, undefined ) );
+      //Check owner and remove rebrew
+      let brewOwner = Rebrews.findOne({_id: id}).Owner;
+      if (brewOwner == Meteor.userId() ){
         let brew = Rebrews.findOne({_id: id}).CoffeeName;
         let brewcount = Rebrews.find({CoffeeName: brew}).count() - 1;
         Rebrews.remove(id);
@@ -75,9 +78,13 @@ if(Meteor.isServer){
         let AvgBody = calculateAdvancedAvg(advancedRebrews, 'Body');
 
         Coffees.update(Coffees.findOne({CoffeeName:brew})._id, {$set: {AverageAroma: AvgAroma, AverageAcidity: AvgAcidity, AverageBalance: AvgBalance, AverageFlavour: AvgFlavour, AverageBody: AvgBody }});
-        
+      } else {
+        console.log("Rebrew Removal Error From: " + Meteor.user().username);
+      }
     },
     'rebrews.updateRebrew'(rebrew){
+      //Check owner and update rebrew
+      if (Rebrews.findOne({_id: rebrew._id}).Owner == Meteor.userId() ) {
         let rebrewUpdate = {};
         rebrewUpdate._id = rebrew._id;
         rebrewUpdate.CoffeeId = rebrew.CoffeeId;
@@ -89,7 +96,7 @@ if(Meteor.isServer){
         rebrewUpdate.Acidity = rebrew.Acidity;
         rebrewUpdate.Flavour = rebrew.Flavour;
         rebrewUpdate.Balance = rebrew.Balance;
-        
+      
         if(rebrewUpdate.Advanced == 'true' || rebrewUpdate.Advanced == true){
           rebrewUpdate.Rating = parseFloat(sumAdvancedRebrew(rebrew));
         }else{
@@ -129,7 +136,10 @@ if(Meteor.isServer){
         let AvgBody = calculateAdvancedAvg(advancedRebrews, 'Body');
 
         Coffees.update({_id: rebrewUpdate.CoffeeId}, {$set: {AverageAroma: AvgAroma, AverageAcidity: AvgAcidity, AverageBalance: AvgBalance, AverageFlavour: AvgFlavour, AverageBody: AvgBody }});
-       
+      
+      } else {
+        console.log("Rebrew Edit Error From: " + Meteor.user().username);
+      }
     }
   });
 }

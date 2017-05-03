@@ -98,11 +98,11 @@ Template.brew.events({
       //Remove coffee from the collection
       let id = document.getElementById("brewID").value
       Meteor.call('coffees.removeById', id, (err, res) => {
-        if(err){
-          Toast.info(brew + " was not removed successfully");
+        if(!err){
+          Toast.info(brew + " was removed");
         }
         else{
-          Toast.info(brew + " was removed");
+          Toast.info(brew + " was not removed successfully");
         }
       });
       FlowRouter.go('Main');
