@@ -35,11 +35,12 @@ Template.mebrew.events({
     event.preventDefault();
     var url = event.target.url.value;
     var Tagline = event.target.tagline.value;
+    var Email = event.target.email.value;
 
   var secure = Promise.resolve(Meteor.user()).then(function(data){
     var user = Meteor.user().username;
     if(Meteor.user().username == FlowRouter.getParam('userName')){
-      let brewfile = new Brewfile({username: user, tagline: Tagline, imageurl: url});
+      let brewfile = new Brewfile({username: user, tagline: Tagline, imageurl: url, email: Email});
       Meteor.call('brewfile.updateProfile',brewfile.Get(), (err, res) => {
         $("#meBrewModal").modal("hide");
       });
@@ -86,6 +87,13 @@ Template.mebrew.helpers({
     if(BrewFiles.findOne(brewfile.OnlyUsername()))
     {
       return BrewFiles.findOne(brewfile.OnlyUsername()).Tagline;
+    }
+  },
+  getEmail(){
+    var brewfile = new Brewfile({username: FlowRouter.getParam('userName')});
+    if(BrewFiles.findOne(brewfile.OnlyUsername()))
+    {
+      return BrewFiles.findOne(brewfile.OnlyUsername()).Email;
     }
   },
   isUser(){

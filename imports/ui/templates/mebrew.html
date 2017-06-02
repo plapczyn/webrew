@@ -3,7 +3,7 @@
     <div class="header">
       <h1><a id="title">meBrew</a></h1>
       {{#if currentUser}}
-      <p>{{name}}'s Profile</p>
+      <p>{{> loginButtons }}'s Profile</p>
       {{else}}
       <p> I'm a member, <span style="a:link{color: white}">{{> loginButtons }}</span></p>
       {{/if}}
@@ -35,6 +35,10 @@
                     <label>Change Tagline</label>
                     <input type="text" name="tagline" class="form-control" placeholder="Add a new tagline" value="{{getTagline}}">
                 </div>
+                <div class="form-group">
+                    <label>Change Email</label>
+                    <input type="text" name="email" class="form-control" placeholder="Add an Email address" value="{{getEmail}}">
+                </div>                
                 <div class="row">
                     <div class="col-sm-1 col-sm-offset-9">
                         <button class="btn btn-info" type="submit">

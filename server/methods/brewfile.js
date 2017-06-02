@@ -4,18 +4,27 @@ import { Brewfile } from '../../lib/DatabaseModels.js';
 if(Meteor.isServer){
   Meteor.methods({
     'brewfile.updateProfile'(brewfile){
+      console.log(brewfile);
       let _brewfile = new Brewfile(brewfile);
+      console.log(_brewfile);
       if (_brewfile.Username == Meteor.user().username ) {
         try{
           var id = BrewFiles.findOne(_brewfile.OnlyUsername())._id;
-          BrewFiles.update({_id: id}, {$set: _brewfile.OnlyImageUrl()})
+          BrewFiles.update({_id: id}, {$set: _brewfile.OnlyImageUrl()});
         }
         catch(e){
           BrewFiles.insert(_brewfile.Get());
         }
         try{
           var id = BrewFiles.findOne(_brewfile.OnlyUsername())._id;
-          BrewFiles.update({_id: id}, {$set: _brewfile.OnlyTagline()})
+          BrewFiles.update({_id: id}, {$set: _brewfile.OnlyTagline()});
+        }
+        catch(e){
+          BrewFiles.insert(_brewfile.Get());
+        }
+        try{
+          var id = BrewFiles.findOne(_brewfile.OnlyUsername())._id;
+          BrewFiles.update({_id: id}, {$set: _brewfile.OnlyEmail()});
         }
         catch(e){
           BrewFiles.insert(_brewfile.Get());
