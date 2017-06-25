@@ -4,9 +4,9 @@
           <h1><a id="title">newBrew</a></h1>
           <p>The world's foremost coffee network.</p>
           {{#if currentUser}}
-          <p> My name is {{> loginButtons }} and I love coffee! </p>
+          <p> My name is {{> loginButtons align="right"}} and I love coffee! </p>
           {{else}}
-          <p> I'm a member, <span style="a:link{color: white}">{{> loginButtons }}</span></p>
+          <p> I'm a member, <span style="a:link{color: white}">{{> loginButtons align="right"}}</span></p>
           {{/if}}
       </div>
       {{#if currentUser}}
@@ -23,61 +23,8 @@
   <p> </p>
       <form class="newbrew text-center">
           <div class="form-group">
-              <input required type="text" name="name" placeholder="What shall we call this delicious brew?" />
+              <input required type="text" name="name" placeholder="What shall we call this delicious brew?" data-toggle="tooltip" data-placement="top" title="What is the name of the brew?" />
           </div>
-
-          <!--Roast Select Option  1 -->
-          <!--<div class="form-group">
-              <input type="text" name="roast" placeholder="What type of roast is it?" />
-          </div>-->
-          <!--Roast Select Option  2 -->
-          <!--<div class="form-group">
-              <h5>Option 2: What type of roast is it?</h5>
-              <label class="radio-inline">
-                  <input style="height:auto;width:auto;" type="radio" name="roast" value="Light Roast">Light Roast
-              </label>
-              <img class="img-thumbnail img-responsive" src="/img/light_roast_bg.png" alt="light roast" width="75" height="75">
-              <label class="radio-inline">
-                  <input style="height:auto;width:auto;" type="radio" name="roast" value="Medium Roast">
-                  Medium Roast
-              </label>
-              <img class="img-thumbnail img-responsive" src="/img/medium_roast_bg.png" alt="light roast" width="75" height="75">
-              <label class="radio-inline">
-                  <input style="height:auto;width:auto;" type="radio" name="roast" value="Medium-Dark Roast">
-                  Medium-Dark Roast
-              </label>
-              <img class="img-thumbnail img-responsive" src="/img/medium-dark_roast_bg.png" alt="light roast" width="75" height="75">
-              <label class="radio-inline">
-                  <input style="height:auto;width:auto;" type="radio" name="roast" value="Dark Roast">
-                  Dark Roast
-              </label>
-              <img class="img-thumbnail img-responsive" src="/img/dark_roast_bg.png" alt="light roast" width="75" height="75">
-          </div>-->
-
-          <!-- Roast Select Option 3 -->
-          <!--<div class="form-group">
-              <h5>Option 3: What type of roast is it?</h5>
-              <div style="display:inline-block; text-align:left;">
-                  <div class="radio">
-                      <img class="img-thumbnail img-responsive" src="/img/light_roast_bg.png" alt="light roast" width="100" height="100">
-                      <label><input style="height:auto;width:auto;" type="radio" name="roast" value="Light Roast">Light Roast</label>
-                  </div>
-                  <div class="radio">
-                      <img class="img-thumbnail img-responsive" src="/img/medium_roast_bg.png" alt="light roast" width="100" height="100">
-                      <label><input style="height:auto;width:auto;" type="radio" name="roast" value="Medium Roast">Medium Roast</label>
-                  </div>
-                  <div class="radio">
-                      <img class="img-thumbnail img-responsive" src="/img/medium-dark_roast_bg.png" alt="light roast" width="100" height="100">
-                      <label><input style="height:auto;width:auto;" type="radio" name="roast" value="Medium-Dark Roast">Medium-Dark Roast</label>
-                  </div>
-                  <div class="radio">
-                      <img class="img-thumbnail img-responsive" src="/img/dark_roast_bg.png" alt="light roast" width="100" height="100">
-                      <label><input style="height:auto;width:auto;" type="radio" name="roast" value="Dark Roast">Dark Roast</label>
-                  </div>
-              </div>
-          </div>-->
-
-          <!--Roast Select Option  4 -->
           <div class="form-group">
               <h5 style="color:#a9a9a9;">What type of roast is it?</h5>
               <select required class="form-group" style="width:auto; padding:10px; border-radius:10px;" name="roast">
@@ -89,10 +36,10 @@
           </div>
 
           <div class="form-group">
-              <input type="text" name="imageURL" placeholder="Where can we find a picture of it?" />
+              <input type="text" name="imageURL" placeholder="Where can we find a picture of it?" data-toggle="tooltip" data-placement="top" title="Where is a picture of the brew?"/>
           </div>
           <div class="form-group">
-              <textarea required placeholder="Are you a fan of delicious flavor and literary commentary? Tell us about this brew" rows="3" id="description"></textarea>
+              <textarea required placeholder="Are you a fan of delicious flavor and literary commentary? Tell us about this brew" rows="3" id="description" data-toggle="tooltip" data-placement="top" title="Tell us about this brew?"></textarea>
           </div>
           <button type="submit" class="btn btn-primary btn-lg center-block" style="margin-bottom:30px;">Submit</button>
       </form>

@@ -54,13 +54,15 @@ Template.newbrew.events({
   //Goto Profile
   'click .goMe' (event){
     FlowRouter.go('mebrew', {userName: Meteor.user().username})
+  },
+  'click .newbrew' (event){
+    console.log("Event nebrew");
+    $('[data-toggle="tooltip"]').tooltip();
   }
-
 });
 
 Template.newbrew.helpers({
   //    submitterImage(){
 //        return BrewFiles.findOne({user:this.user}).imageURL;
   //    }
-
 });

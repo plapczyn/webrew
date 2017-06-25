@@ -3,9 +3,9 @@
     <div class="header">
       <h1><a id="title">meBrew</a></h1>
       {{#if currentUser}}
-      <p>{{> loginButtons }}'s Profile</p>
+      <p>{{> loginButtons align="right"}}'s Profile</p>
       {{else}}
-      <p> I'm a member, <span style="a:link{color: white}">{{> loginButtons }}</span></p>
+      <p> I'm a member, <span style="a:link{color: white}">{{> loginButtons align="right"}}</span></p>
       {{/if}}
     </div>
     {{#if currentUser}}
