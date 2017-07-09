@@ -11,11 +11,11 @@ Meteor.startup(() => {
     ServiceConfiguration.configurations.insert({
         service: "facebook",
         // Development
-        appId: "422461951458041",
-        secret: "55f64372f1df13e4a6d6cd8d38509405"      
+        //appId: "422461951458041",
+        //secret: "55f64372f1df13e4a6d6cd8d38509405"      
         // Live
-        //appId: "1358512727565112",
-        //secret: "e1b213a03536da9d5eabad0d85245e45"    
+        appId: "1358512727565112",
+        secret: "e1b213a03536da9d5eabad0d85245e45"    
     });
     ServiceConfiguration.configurations.remove({
         service: "google"
