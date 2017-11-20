@@ -1,5 +1,5 @@
 import './advancedRebrewModal.html';
-
+import Common from '../../../scripts/common.js';
 
 Template.advancedRebrewModal.onCreated(() => {
   let template = Template.instance();
@@ -39,25 +39,14 @@ Template.advancedRebrewModal.helpers({
       if(!isAdvanced){
         advancedRebrew.Rating = target.rating.value;
       }
-
-      Toast.options = {
-        closeButton: true,
-        progressBar: true,
-        positionClass: 'toast-top-left',
-        showEasing: 'swing',
-        hideEasing: 'linear',
-        showMethod: 'fadeIn',
-        hideMethod: 'fadeOut',
-        timeOut: 1499,
-        color: 'red'
-      };
       //insert into database
       Meteor.call('rebrews.add', advancedRebrew, (err, res) => {
         if(!err){
-          Toast.info("New reBrew added to " + advancedRebrew.CoffeeName);
+          Common.WebrewToast.Show("New reBrew added to " + advancedRebrew.CoffeeName, "New Brew!", "success");
         }
-        else{
-          Toast.info('Your rebrew was not submitted successfully');
+        else
+        {
+          Common.WebrewToast.Show('Your rebrew was not submitted successfully', "Oops!", "error");
         }
       });
 

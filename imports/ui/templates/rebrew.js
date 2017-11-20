@@ -46,17 +46,7 @@ Template.rebrew.events({
     },
     'click .delete'(event) {
         var brew = FlowRouter.getParam('brewId')
-        Toast.options = {
-            closeButton: true,
-            progressBar: true,
-            positionClass: 'toast-top-left',
-            showEasing: 'swing',
-            hideEasing: 'linear',
-            showMethod: 'fadeIn',
-            hideMethod: 'fadeOut',
-            timeOut: 1500,
-            color: 'red'
-        };
+
         // Hide Modal
         var ID = this.id;
         $("#DeletereBrewModal" + ID).on("hidden.bs.modal", function (){

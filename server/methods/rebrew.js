@@ -29,25 +29,27 @@ if(Meteor.isServer){
         newRebrew.Rating = Number(rebrew.Rating);
       }
       Rebrews.insert(newRebrew);
-
       //Recalculate Average Rating
       let advancedRebrews = Rebrews.find({CoffeeId: newRebrew.CoffeeId, Advanced: true}).fetch();
       let simpleRebrews = Rebrews.find({CoffeeId: newRebrew.CoffeeId, Advanced: false}).fetch();
-
+      
       let average = calculateCoffeeRating(simpleRebrews, advancedRebrews);
 
       Coffees.update({_id: newRebrew.CoffeeId}, {$set: {AverageRating: average}});
-
       //Recalculate Advanced Average Ratings
       advancedRebrews = Rebrews.find({CoffeeId: newRebrew.CoffeeId, Advanced: true}).fetch();
+      if(advancedRebrews.length < 1)
+      {
+        return;
+      }
+      
       let AvgAroma = calculateAdvancedAvg(advancedRebrews, 'Aroma');
       let AvgAcidity = calculateAdvancedAvg(advancedRebrews, 'Acidity');
       let AvgBalance = calculateAdvancedAvg(advancedRebrews, 'Balance');
       let AvgFlavour = calculateAdvancedAvg(advancedRebrews, 'Flavour');
       let AvgBody = calculateAdvancedAvg(advancedRebrews, 'Body');
-
+      
       Coffees.update({_id: newRebrew.CoffeeId}, {$set: {AverageAroma: AvgAroma, AverageAcidity: AvgAcidity , AverageBalance: AvgBalance , AverageFlavour: AvgFlavour , AverageBody: AvgBody }});
-
     },
     'rebrews.removeById'(id){
       check( id, Match.OneOf( String, null, undefined ) );
@@ -185,6 +187,7 @@ function calculateAdvancedAvg(allAdvanced, Attribute){
   if(Ratings.length < 1){
     throw "Something in your database is really messed up, sir!"
   }
+  
     let average = ((sum) / (Ratings.length)).toFixed(1);
     return average;
 }

@@ -2,7 +2,7 @@ import './newbrew.html';
 import './newbrew.css';
 
 import { Coffees } from '../../api/collections/coffees.js';
-
+import Common from '../scripts/common.js';
 import { Coffee } from '../../../lib/DatabaseModels.js';
 Template.newbrew.events({
   'submit .newbrew'(event) {
@@ -26,25 +26,11 @@ Template.newbrew.events({
 
     Meteor.call('coffees.add', obj , (err, res) => {
       if(!err){
-        Toast.info("Brew was successfully added!");
+        Common.WebrewToast.Show("New Brew was added!", "It's a Good Brew!", "sucess");
         FlowRouter.go('Main');
       }
       else {
-        Toast.options = {
-          closeButton: true,
-          progressBar: true,
-          positionClass: 'toast-bottom-center',
-          showDuration: '5000',
-          hideDuration: '5000',
-          timeOut: '5000',
-          showEasing: 'swing',
-          hideEasing: 'linear',
-          showMethod: 'fadeIn',
-          hideMethod: 'fadeOut',
-          color: 'red',
-          onclick: function () {FlowRouter.go('/brew/' + obj.coffeename);}
-        };
-        Toast.error(obj.coffeename + ' already exists. click to check it out.' );
+        Common.WebrewToast.Show(obj.coffeename + ' already exists. click to check it out.', null, "error");
       }
     });
 

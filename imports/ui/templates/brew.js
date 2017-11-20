@@ -2,6 +2,7 @@ import './brew.html';
 import './brew.css';
 import './modals/rebrew/advancedRebrewModal.js';
 import './brewChart.js';
+import Common from '../scripts/common.js';
 import Chart from 'chart.js';
 import { Coffees } from '../../api/collections/coffees.js';
 import { Favorites } from '../../api/collections/coffees.js';
@@ -12,7 +13,6 @@ import { Rebrew } from '../../../lib/DatabaseModels.js';
 import { Coffee } from '../../../lib/DatabaseModels.js';
 
 Template.brew.onRendered(() => {
-
 });
 Template.brew.onCreated(function (){
 
@@ -81,28 +81,18 @@ Template.brew.events({
   },
   'click .delete'(event) {
 
-    var brew = FlowRouter.getParam('brewId')
-    Toast.options = {
-      closeButton: true,
-      progressBar: true,
-      positionClass: 'toast-top-left',
-      showEasing: 'swing',
-      hideEasing: 'linear',
-      showMethod: 'fadeIn',
-      hideMethod: 'fadeOut',
-      timeOut: 1500,
-      color: 'red'
-    };
+    var brew = FlowRouter.getParam('brewId');
+
     // Hide Modal
     $("#DeleteBrewModal").on("hidden.bs.modal", function (){
       //Remove coffee from the collection
       let id = document.getElementById("brewID").value
       Meteor.call('coffees.removeById', id, (err, res) => {
         if(!err){
-          Toast.info(brew + " was removed");
+          Common.WebrewToast.Show(brew + " was removed", null, "info")
         }
         else{
-          Toast.info(brew + " was not removed successfully");
+          Common.WebrewToast.Show(brew + " was not removed successfully", "Error", "error")
         }
       });
       FlowRouter.go('Main');
@@ -117,23 +107,12 @@ Template.brew.events({
     var favorite = {Username: userName, CoffeeId: brewid};
     Meteor.call('favorites.add', favorite, (err, res) => {
       if(!err){
-        Toast.info(brew + " was added to your favorites");
+        Common.WebrewToast.Show(brew + " was added to your favorites", "Error", "info")
       }
       else{
-        Toast.info(brew + " was not added to your favorites. An error occured");
+        Common.WebrewToast.Show(brew + " was not added to your favorites. An error occured", "Error", "error")
       }
     });
-    Toast.options = {
-      closeButton: true,
-      progressBar: true,
-      positionClass: 'toast-top-left',
-      showEasing: 'swing',
-      hideEasing: 'linear',
-      showMethod: 'fadeIn',
-      hideMethod: 'fadeOut',
-      timeOut: 1500,
-      color: 'red'
-    };
   },
 
   'click .removeFromFavorites'(event){
@@ -141,24 +120,12 @@ Template.brew.events({
     var user = Meteor.user().username;
     var brew = FlowRouter.getParam('brewId');
     var brewid = this._id;
-    Toast.options = {
-      closeButton: true,
-      progressBar: true,
-      positionClass: 'toast-top-left',
-      showEasing: 'swing',
-      hideEasing: 'linear',
-      showMethod: 'fadeIn',
-      hideMethod: 'fadeOut',
-      timeOut: 1500,
-      color: 'red'
-    };
     Meteor.call('favorites.remove', brewid, user,  (err, res) => {
       if(!err){
-        Toast.info(brew + " was removed from your favorites");
+        Common.WebrewToast.Show(brew + " was removed from your favorites", null, "info")
       }
       else{
-
-        Toast.error(brew + " was not removed from your favorites and error has occured");
+        Common.WebrewToast.Show(brew + " was not removed from your favorites and error has occured", null, "error")
       }
     });
   },
@@ -192,18 +159,7 @@ Template.brew.events({
         if(!err){
           FlowRouter.go('/brew/' + editBrew.coffeename);
         } else {
-          Toast.options = {
-            closeButton: true,
-            progressBar: true,
-            positionClass: 'toast-bottom-center',
-            showEasing: 'swing',
-            hideEasing: 'linear',
-            showMethod: 'fadeIn',
-            hideMethod: 'fadeOut',
-            timeOut: 1500,
-            color: 'red'
-          };
-          Toast.error(editBrew.name + " already exists.");
+          Common.WebrewToast.Show(editBrew.name + " already exists.", null, "error")
         }
       });
     });
