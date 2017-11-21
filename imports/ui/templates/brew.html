@@ -53,6 +53,7 @@
               <ul class="dropdown-menu" style="position:relative">
                   <li><a class="editModal" data-toggle="modal" data-target="#EditBrewModal" data-keyboard="true">Edit</a></li>
                   <li><a class="delModal" data-toggle="modal" data-target="#DeleteBrewModal" data-keyboard="true">Delete</a></li>
+                  <li><a class="testDelete">Delete Test</a></li>
               </ul>
           </div>
         {{/if}}
@@ -151,4 +152,8 @@
 {{/each}}
 {{/if}}
 {{/if}}
+</template>
+
+<template name="testDelete">
+    <h5>Are you sure you want to remove this brew?</h5>
 </template>

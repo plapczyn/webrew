@@ -2,7 +2,7 @@ import './newbrew.html';
 import './newbrew.css';
 
 import { Coffees } from '../../api/collections/coffees.js';
-import Common from '../scripts/common.js';
+import Common from '../common/scripts/common.js';
 import { Coffee } from '../../../lib/DatabaseModels.js';
 Template.newbrew.events({
   'submit .newbrew'(event) {

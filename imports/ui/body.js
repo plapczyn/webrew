@@ -10,6 +10,7 @@ import './templates/brew.js';
 import './templates/rebrew.js';
 import './templates/chat.js';
 import './styles/common.css';
+
 export const ColorPallet = {
   lightGrey: '#e8e9eb',
   grey: '#a9a9ab',

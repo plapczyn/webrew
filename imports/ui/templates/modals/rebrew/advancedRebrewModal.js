@@ -1,5 +1,5 @@
 import './advancedRebrewModal.html';
-import Common from '../../../scripts/common.js';
+import Common from '../../../common/scripts/common.js';
 
 Template.advancedRebrewModal.onCreated(() => {
   let template = Template.instance();

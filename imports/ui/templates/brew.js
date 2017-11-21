@@ -2,7 +2,7 @@ import './brew.html';
 import './brew.css';
 import './modals/rebrew/advancedRebrewModal.js';
 import './brewChart.js';
-import Common from '../scripts/common.js';
+import Common from '../common/scripts/common.js';
 import Chart from 'chart.js';
 import { Coffees } from '../../api/collections/coffees.js';
 import { Favorites } from '../../api/collections/coffees.js';
@@ -78,6 +78,25 @@ Template.brew.helpers({
 Template.brew.events({
   'click .delModal'(event) {
     document.getElementById("brewID").value = this._id;
+  },
+  'click .testDelete': (event) => {
+    Common.WebrewModal.Show({
+      template: "testDelete",
+      title: "Delete this Brew?",
+      okCallback: (evt) => {
+        let id = Coffees.findOne()._id;
+        var brew = FlowRouter.getParam('brewId');
+        Meteor.call('coffees.removeById', id, (err, res) => {
+          if(!err){
+            Common.WebrewToast.Show(brew + " was removed", null, "info")
+          }
+          else{
+            Common.WebrewToast.Show(brew + " was not removed successfully", "Error", "error")
+          }
+        });
+        FlowRouter.go('Main');
+      }
+    })
   },
   'click .delete'(event) {
 
