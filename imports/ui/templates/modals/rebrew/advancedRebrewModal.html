@@ -1,4 +1,4 @@
-<template name="advancedRebrewModalREMOVED">
+<!-- <template name="advancedRebrewModalREMOVED">
   <div form="test">
 
   <div class="modal fade" id="reBrewingModal" role="dialog">
@@ -72,7 +72,7 @@
 
               <label>Overall rating</label>
               <input id="irating" required class="form-group" type="hidden" name="rating" value="">
-              <!-- https://atmospherejs.com/kosst/css-star-rating -->
+              https://atmospherejs.com/kosst/css-star-rating
               {{> rating value=0 }}
 
               {{/if}}
@@ -88,9 +88,10 @@
   </div>
 </div>
   </div>
-</template>
+</template> -->
 
 <template name="advancedRebrewModal">
+  <form id="webrewForm">
     <div class="row">
         <div class="col-md-2">
           {{#if isAdvanced}}
@@ -102,28 +103,19 @@
           <div style="position: absolute; font-size: 8px; cursor: pointer; margin: 0 auto; pointer-events: none; left: 19px; top: 35px;">
             Advanced
           </div>
-
-          <img class="toggleAdvanced btn btn-default" src="/img/advanced.jpg" style="height: 45px; width: 45px"/>
+          <img class="toggleAdvanced btn btn-default" src="/img/advanced.jpg" style="height: 45px; width: 45px; padding-bottom: 10px;"/>
           {{/if}}
-        </div>
-        <div class="col-md-8">
-          <h4 class="modal-title" style="position: relative; top: 7px;">
-            How was the brew?
-          </h4>
-        </div>
-        <div class="col-md-2">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
     </div>
 
       <div class="form-group">
           <label>Rebrew title</label>
           <input required type="text" name="title" class="form-control" placeholder="Add a title">
-        </div>
-        <div class="form-group">
-          <label>Rebrew details</label>
-          <textarea required type="text" name="rebrew" class="form-control" placeholder="Add some details"></textarea>
-        </div>
+      </div>
+      <div class="form-group">
+        <label>Rebrew details</label>
+        <textarea required type="text" name="rebrew" class="form-control" placeholder="Add some details"></textarea>
+      </div>
 
         <div class="form-group" style="text-align:right">
           {{#if isAdvanced}}
@@ -160,9 +152,7 @@
           {{> rating value=0 }}
 
           {{/if}}
-          <button class="btn btn-info" type="submit" style="float:right bottom; position: relative">
-            <i class="fa fa-2x fa-coffee" aria-hidden="true"></i>
-          </button>
-
         </div>
+      <input class="modalOk" type="submit" id="modalOk" style="display: none"/>
+      </form>
 </template>

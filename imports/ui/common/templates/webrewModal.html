@@ -7,7 +7,7 @@
                     <h4 class="modal-title">{{title}}</h4>
                 </div>
                 <div class="modal-body">
-                    {{> Template.dynamic template=modalBody}}
+                    {{> Template.dynamic template=modalBody data=data}}
                 </div>
                 <div class="modal-footer">
                     {{#if coffeeOk}}

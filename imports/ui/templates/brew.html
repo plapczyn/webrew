@@ -39,16 +39,13 @@
         <img src="/img/default-brew.jpg" class="img-responsive" style="margin-bottom: 10px" alt="...">
         {{/if}}
 
-        <button type="button" class="addRebrew btn btn-info" data-toggle="modal" data-target="#reBrewingModal" data-keyboard="true">Add a reBrew</button>
-        <button type="button" class="addRebrewTest btn btn-info">Add a reBrew Testgin</button>
+        <button type="button" class="addRebrew btn btn-info">Add a reBrew</button>
         {{#if InFavorites}}
         <button type="button" class="addToFavorites btn btn-success">Add to Favorites</button>
         {{else}}
         <button type="button" class="removeFromFavorites btn btn-success">Not a Favorite</button>
         {{/if}}
         {{#if isOwner}}
-          <!-- <button type="button" class="btn btn-info editModal" data-toggle="modal" data-target="#EditBrewModal" data-keyboard="true">Edit Brew</button>
-          <button type="button" class="btn btn-warning delModal" data-toggle="modal" data-target="#DeleteBrewModal" data-keyboard="true">Delete Brew</button> -->
           <div class="dropdown" style="position: absolute;top: 0px; right: 15px;">
               <i class="fa fa-pencil-square-o fa-2x dropdown-toggle" aria-hidden="true" data-toggle="dropdown" aria-expanded="false"></i>
               <ul class="dropdown-menu" style="position:relative">
@@ -81,33 +78,6 @@
       {{/each}}
     </div>
   </div>
-
-  <!--Rebrewing Modal-->
-  {{> advancedRebrewModal}}
-
-<!--DeleteBrew Modal-->
-<div class="modal fade" id="DeleteBrewModal" role="dialog">
-  <div class="modal-dialog modal-md">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Delete Brew</h4>
-      </div>
-      <div class="modal-body">
-        <h5 class="modal-body">Are you sure you want to remove this brew?</h5>
-        <input id="brewID" type="hidden" value="">
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-warning delete" type="button">
-          <i class="fa fa-check" aria-hidden="true"></i> OK
-        </button>
-        <button class="btn btn-danger" type="button" data-dismiss="modal">
-          <i class="fa fa-times" aria-hidden="true"></i> Cancel
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
 
   <!--Edit brew Modal-->
 <div class="modal fade" id="EditBrewModal" role="dialog">
@@ -154,7 +124,7 @@
 {{/if}}
 </template>
 
-<template name="testDelete">
+<template name="modalDelete">
     <h5>Are you sure you want to remove this brew?</h5>
     <input class="modalOk" id="modalOk" type="hidden" />
     <input class="modalCancel" id="modalCancel" type="hidden" />

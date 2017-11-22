@@ -78,7 +78,7 @@ Template.brew.helpers({
 Template.brew.events({
   'click .deleteModal' (event){
     Common.WebrewModal.Show({
-      template: "testDelete",
+      template: "modalDelete",
       title: "Delete this Brew?",
       okCallback: (evt, template) => {
         let id = Coffees.findOne()._id;
@@ -145,26 +145,22 @@ Template.brew.events({
       }
     });
   },
-  'click .addRebrew'(event){
-    var instance = Template.instance();
-    instance.isReBrewing.set(!instance.isReBrewing.get());
-  },
-  'click addRebrewTest': (event) => {
+  
+  'click .addRebrew': (event) => {
     var instance = Template.instance();
     instance.isReBrewing.set(!instance.isReBrewing.get());
     Common.WebrewModal.Show({
       template: "advancedRebrewModal",
-      title: "Add a Rebrew",
-      okCallBack: (evt, template) => {
-      }
+      title: "How was the brew?",
+      coffeeOk: true
     });
   },
 
   //Edit Brew
   'click .editModal'(event) {
     document.getElementById("editbrewID").value = this._id;
-
   },
+
   'submit .submitEditBrew'(event){
     //prevent the refresh page and put params in
     event.preventDefault();

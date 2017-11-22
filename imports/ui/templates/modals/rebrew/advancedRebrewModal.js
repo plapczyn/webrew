@@ -18,11 +18,14 @@ Template.advancedRebrewModal.helpers({
       Template.instance().isAdvanced.set(!isAdvanced);
     },
 
-    'submit .submitRebrew'(event){
-      //prevent the refresh page and put params in
-
-      let isAdvanced = Template.instance().isAdvanced.get();
+    'submit .modalOk'(event){
       event.preventDefault();
+      
+      if(!Common.WebrewModal.IsFormValid(event)){
+        return;
+      }
+      
+      let isAdvanced = Template.instance().isAdvanced.get();
       var advancedRebrew = {};
 
       if(isAdvanced){
@@ -32,17 +35,19 @@ Template.advancedRebrewModal.helpers({
       advancedRebrew.CoffeeId = this._id;
       advancedRebrew.Advanced = isAdvanced;
 
-      const target = event.target;
-      advancedRebrew.Title = target.title.value;
-      advancedRebrew.Rebrew = target.rebrew.value;
+      let inputs = Common.WebrewModal.GetForm(event);
+
+      advancedRebrew.Title = inputs.title.value;
+      advancedRebrew.Rebrew = inputs.rebrew.value;
 
       if(!isAdvanced){
-        advancedRebrew.Rating = target.rating.value;
+        advancedRebrew.Rating = inputs.rating.value;
       }
       //insert into database
       Meteor.call('rebrews.add', advancedRebrew, (err, res) => {
         if(!err){
-          Common.WebrewToast.Show("New reBrew added to " + advancedRebrew.CoffeeName, "New Brew!", "success");
+          Common.WebrewToast.Show("Added to " + advancedRebrew.CoffeeName, "New reBrew!", "success");
+          Common.WebrewModal.Hide();
         }
         else
         {
@@ -51,7 +56,6 @@ Template.advancedRebrewModal.helpers({
       });
 
       //resetform and refresh page
-      $("#reBrewingModal").modal("hide");
       let name = FlowRouter.getParam('brewId');
       FlowRouter.go('brew', {brewId: name});
     },
@@ -67,8 +71,8 @@ Template.advancedRebrewModal.helpers({
     }   
   });
 
-  function prepareAdvancedRebrew(test) {
-    let target = test.target;
+  function prepareAdvancedRebrew(event) {
+    let target = Common.WebrewModal.GetForm(event)
     return unstableBrew = {
       Aroma: target.adrating1.value,
       Body: target.adrating2.value,

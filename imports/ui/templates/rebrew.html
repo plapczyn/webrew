@@ -11,72 +11,11 @@
             <div class="dropdown" style="position: absolute;right: 15px;">
             <i class="fa fa-pencil-square-o fa-2x dropdown-toggle" aria-hidden="true" data-toggle="dropdown" aria-expanded="false"></i>
             <ul class="dropdown-menu" style="position:relative">
-              <li><a class="editRebrewModal" data-toggle="modal" data-target="#EditreBrewingModal{{id}}" data-keyboard="true">Edit</a></li>
+              <!-- <li><a class="editRebrewModal" data-toggle="modal" data-target="#EditreBrewingModal{{id}}" data-keyboard="true">Edit</a></li> -->
+              <li><a class="editRebrewModal">Edit</a></li>
               <li><a class="delRebrewModal" data-toggle="modal" data-target="#DeletereBrewModal{{id}}" data-keyboard="true">Delete</a></li>
             </ul>
           </div>
-            <!--Edit reBrew Modal-->
-            <div class="modal fade" id="EditreBrewingModal{{id}}" role="dialog">
-              <div class="modal-dialog modal-md">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Edit the reBrew?</h4>
-                  </div>
-                  <div class="modal-body">
-                    <form class="EditsubmitRebrew thumbnail">
-                      <div class="form-group">
-                        <label>Rebrew title</label>
-                          <input required type="text" name="title" class="form-control" value="{{title}}">
-                      </div>
-                      <div class="form-group">
-                        <label>Rebrew details</label>
-                        <textarea required type="text" name="rebrew" class="form-control" value="{{rebrew}}"></textarea>
-                      </div> 
-                     <div class="form-group" style="text-align:right">
-                     {{#if isAdvanced}}
-                       <label class="advlabel">Aroma</label>
-                       <div>
-                         <input id="Eadrating1" class="form-group slider" style="display:inline; width:66%;" type="range" min="0" max="10" value="{{aroma}}">
-                         <span class="badge" id="bEadrating1"></span>
-                      </div>
-                      <label class="advlabel">Body</label>
-                      <div>
-                        <input id="Eadrating2" class="form-group slider" style="display:inline; width:66%;" type="range" min="0" max="10" value="{{body}}">
-                        <span class="badge" id="bEadrating2"></span>
-                      </div>
-                      <label class="advlabel">Acidity</label>
-                      <div>
-                        <input id="Eadrating3" class="form-group slider" style="display:inline; width:66%;" type="range" min="0" max="10" value="{{acidity}}">
-                        <span class="badge" id="bEadrating3"></span>
-                      </div>
-                      <label class="advlabel">Flavor</label>
-                      <div>
-                        <input id="Eadrating4" class="form-group slider" style="display:inline; width:66%;" type="range" min="0" max="10" value="{{flavour}}">
-                        <span class="badge" id="bEadrating4"></span>
-                      </div>
-                      <label class="advlabel">Balance</label>
-                      <div>
-                        <input id="Eadrating5" class="form-group slider" style="display:inline; width:66%;" type="range" min="0" max="10" value="{{balance}}">
-                        <span class="badge" id="bEadrating5"></span>
-                      </div>
-                      {{else}}
-                      <label>Overall rating</label><br />
-                        <input id="erating{{id}}" required class="form-group" type="hidden" name="rating" value="{{ratingNum}}">
-                        <!-- https://atmospherejs.com/kosst/css-star-rating -->
-                        {{> rating value=ratingNum }}
-                      {{/if}}
-                        <input id="EditrebrewID{{id}}" type="hidden" value="">
-                        <input id="EditrebrewAdv{{id}}" type="hidden" value="">
-                        <button class="btn btn-info" type="submit" style="float:right">
-                          <i class="fa fa-2x fa-coffee" aria-hidden="true"></i>
-                        </button>
-                     </div>
-                   </form>
-                 </div>
-               </div>
-             </div>
-            </div>
             <!--Delete reBrew Modal-->
             <div class="modal fade" id="DeletereBrewModal{{id}}" role="dialog">
                 <div class="modal-dialog modal-md">
@@ -131,4 +70,54 @@
       </div>
     </div>
   </div>
+</template>
+
+<template name="editRebrewModal">
+  <form id="editRebrewForm">
+    <div class="form-group">
+      <label>Rebrew title</label>
+        <input required type="text" name="title" class="form-control" value="{{title}}">
+    </div>
+    <div class="form-group">
+      <label>Rebrew details</label>
+      <textarea required type="text" name="rebrew" class="form-control" value="{{rebrew}}"></textarea>
+    </div> 
+    <div class="form-group" style="text-align:right">
+    {{#if advanced}}
+      <label class="advlabel">Aroma</label>
+      <div>
+        <input id="Eadrating1" class="form-group slider" style="display:inline; width:66%;" type="range" min="0" max="10" value="{{aroma}}">
+        <span class="badge" id="bEadrating1"></span>
+    </div>
+    <label class="advlabel">Body</label>
+    <div>
+      <input id="Eadrating2" class="form-group slider" style="display:inline; width:66%;" type="range" min="0" max="10" value="{{body}}">
+      <span class="badge" id="bEadrating2"></span>
+    </div>
+    <label class="advlabel">Acidity</label>
+    <div>
+      <input id="Eadrating3" class="form-group slider" style="display:inline; width:66%;" type="range" min="0" max="10" value="{{acidity}}">
+      <span class="badge" id="bEadrating3"></span>
+    </div>
+    <label class="advlabel">Flavor</label>
+    <div>
+      <input id="Eadrating4" class="form-group slider" style="display:inline; width:66%;" type="range" min="0" max="10" value="{{flavour}}">
+      <span class="badge" id="bEadrating4"></span>
+    </div>
+    <label class="advlabel">Balance</label>
+    <div>
+      <input id="Eadrating5" class="form-group slider" style="display:inline; width:66%;" type="range" min="0" max="10" value="{{balance}}">
+      <span class="badge" id="bEadrating5"></span>
+    </div>
+    {{else}}
+    <label>Overall rating</label><br />
+      <input id="erating{{id}}" required class="form-group" type="hidden" name="rating" value="{{ratingNum}}">
+      <!-- https://atmospherejs.com/kosst/css-star-rating -->
+      {{> rating value=ratingNum }}
+    {{/if}}
+      <input id="EditrebrewID{{id}}" type="hidden" value="">
+      <input id="EditrebrewAdv{{id}}" type="hidden" value="">
+    </div>
+    <input type="submit" class="modalOk" id="modalOk" style="display: none;" />
+  </form>
 </template>

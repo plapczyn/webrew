@@ -56,7 +56,6 @@ class WebrewModal
 {
     static renderedTemplate;
     static initialized;
-
     /**
      * options: 
      * {
@@ -85,11 +84,7 @@ class WebrewModal
         Blaze.remove(this.renderedTemplate);
         this.renderedTemplate = null;
 
-        Template.webrewModal.helpers({
-            modalBody: options.template,
-            title: options.title || "",
-            coffeeOk: options.coffeeOk || false
-        });
+       this.SetTemplateHelpers(options)
 
         this.renderedTemplate = Blaze.render(Template.webrewModal, $("body")[0]);
     }
@@ -102,21 +97,23 @@ class WebrewModal
                 if(typeof options.okCallback == "function")
                 {
                     options.okCallback(event);
+                    this.Hide();
                 }
                 else
                 {
-                    $("#modalOk").click();
+                    if(!document.getElementById("modalOk").form.checkValidity()){
+                        document.getElementById("modalOk").click();
+                    }
+                    else
+                    {
+                        $("#modalOk").trigger("submit");
+                    }
                 }
-                this.Hide();
             }
         });
 
-        Template.webrewModal.helpers({
-            modalBody: options.template,
-            title: options.title || "",
-            coffeeOk: options.coffeeOk || false
-        });
-        
+        this.SetTemplateHelpers(options)
+
         this.renderedTemplate = Blaze.render(Template.webrewModal, $("body")[0]);
         this.initialized = true;
     }
@@ -131,6 +128,31 @@ class WebrewModal
         {
             console.error("Error: WebrewModal.Show(options)  - You must set options.template to a blaze template name")
         }
+    }
+
+    static GetForm(event)
+    {
+        if(!event)
+        {
+            return [];
+        }
+
+        return event.target.form;
+    }
+
+    static IsFormValid(event)
+    {
+        return event.target.form.checkValidity()
+    }
+
+    static SetTemplateHelpers(options)
+    {
+        Template.webrewModal.helpers({
+            modalBody: options.template,
+            title: options.title || "",
+            coffeeOk: options.coffeeOk || false,
+            data: options.data
+        });
     }
 }
 
