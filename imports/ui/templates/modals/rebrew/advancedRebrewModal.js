@@ -46,12 +46,12 @@ Template.advancedRebrewModal.helpers({
       //insert into database
       Meteor.call('rebrews.add', advancedRebrew, (err, res) => {
         if(!err){
-          Common.WebrewToast.Show("Added to " + advancedRebrew.CoffeeName, "New reBrew!", "success");
+          Common.WebrewToast.Show("Added to " + advancedRebrew.CoffeeName, "success", "New reBrew!");
           Common.WebrewModal.Hide();
         }
         else
         {
-          Common.WebrewToast.Show('Your rebrew was not submitted successfully', "Oops!", "error");
+          Common.WebrewToast.Show('Your rebrew was not submitted successfully', "error", "Oops!");
         }
       });
 

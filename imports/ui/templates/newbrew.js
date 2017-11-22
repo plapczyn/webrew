@@ -30,7 +30,7 @@ Template.newbrew.events({
         FlowRouter.go('Main');
       }
       else {
-        Common.WebrewToast.Show(obj.coffeename + ' already exists. click to check it out.', null, "error");
+        Common.WebrewToast.Show(obj.coffeename + ' already exists. click to check it out.', "error");
       }
     });
 

@@ -144,7 +144,7 @@ Template.editRebrewModal.events({
 
   Meteor.call('rebrews.updateRebrew',rebrew, (err, res) => {
     if(!err){
-      Common.WebrewToast.Show("Rebrew updated Successfully!", rebrew.Title, "success")
+      Common.WebrewToast.Show("Rebrew updated Successfully!", "success", rebrew.Title)
       Common.WebrewModal.Hide();
     }
   });

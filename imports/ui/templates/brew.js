@@ -85,10 +85,10 @@ Template.brew.events({
         var brew = FlowRouter.getParam('brewId');
         Meteor.call('coffees.removeById', id, (err, res) => {
           if(!err){
-            Common.WebrewToast.Show(brew + " was removed", null, "info")
+            Common.WebrewToast.Show(brew + " was removed", "info")
           }
           else{
-            Common.WebrewToast.Show(brew + " was not removed successfully", "Error", "error")
+            Common.WebrewToast.Show(brew + " was not removed successfully", "error", "Error")
           }
         });
         FlowRouter.go('Main');
@@ -105,10 +105,10 @@ Template.brew.events({
       let id = document.getElementById("brewID").value
       Meteor.call('coffees.removeById', id, (err, res) => {
         if(!err){
-          Common.WebrewToast.Show(brew + " was removed", null, "info")
+          Common.WebrewToast.Show(brew + " was removed", "info")
         }
         else{
-          Common.WebrewToast.Show(brew + " was not removed successfully", "Error", "error")
+          Common.WebrewToast.Show(brew + " was not removed successfully", "error", "Error")
         }
       });
       FlowRouter.go('Main');
@@ -123,10 +123,10 @@ Template.brew.events({
     var favorite = {Username: userName, CoffeeId: brewid};
     Meteor.call('favorites.add', favorite, (err, res) => {
       if(!err){
-        Common.WebrewToast.Show(brew + " was added to your favorites", "Error", "info")
+        Common.WebrewToast.Show(brew + " was added to your favorites", "success", "Favorite!")
       }
       else{
-        Common.WebrewToast.Show(brew + " was not added to your favorites. An error occured", "Error", "error")
+        Common.WebrewToast.Show(brew + " was not added to your favorites. An error occured", "error", "Error")
       }
     });
   },
@@ -138,10 +138,10 @@ Template.brew.events({
     var brewid = this._id;
     Meteor.call('favorites.remove', brewid, user,  (err, res) => {
       if(!err){
-        Common.WebrewToast.Show(brew + " was removed from your favorites", null, "info")
+        Common.WebrewToast.Show(brew + " was removed from your favorites", "info")
       }
       else{
-        Common.WebrewToast.Show(brew + " was not removed from your favorites and error has occured", null, "error")
+        Common.WebrewToast.Show(brew + " was not removed from your favorites and error has occured", "error")
       }
     });
   },
@@ -180,7 +180,7 @@ Template.brew.events({
         if(!err){
           FlowRouter.go('/brew/' + editBrew.coffeename);
         } else {
-          Common.WebrewToast.Show(editBrew.name + " already exists.", null, "error")
+          Common.WebrewToast.Show(editBrew.name + " already exists.", "error")
         }
       });
     });

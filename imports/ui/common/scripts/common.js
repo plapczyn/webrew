@@ -11,7 +11,7 @@ class WebrewToast
     /**
      * type: string ('error', 'info', 'success', 'warning')
      */
-    static Show(message, title, type)
+    static Show(message, type, title)
     {
         Toast.options = this.defaultOptions();
         if(type === 'error')
