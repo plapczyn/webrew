@@ -11,10 +11,8 @@ if(Meteor.isServer){
       insertUser.creation_date = new Date();
       if(RoomUsers.findOne({userid: insertUser.userid})){
         RoomUsers.update({userid: insertUser.userid}, {$set: {creation_date: insertUser.creation_date, away: insertUser.away}});
-        console.log("Updated roomuser " + Meteor.userId());
       } else {
         RoomUsers.insert(insertUser);
-        console.log("Added roomuser " + Meteor.userId());
       }
       return;
     },
@@ -27,7 +25,6 @@ if(Meteor.isServer){
     },    
     'chat.removeUser'(id){
       RoomUsers.remove({userid: Meteor.userId()});
-      console.log("Removed roomuser " + Meteor.userId());
       return;
     },
     'chat.addMessage'(message){
@@ -37,12 +34,10 @@ if(Meteor.isServer){
       insertMessage.creation_date = new Date();
       Messages.insert(insertMessage);
       RoomUsers.update({userid: Meteor.userId()}, {$set: {creation_date: insertMessage.creation_date, away: false}});
-      console.log(Meteor.user().username + " added message ");
       return;
     },
     'chat.removeMessages'(id){
       Messages.remove({});
-      console.log(Meteor.user().username + " Removed all messages");
       return;
     },
   });

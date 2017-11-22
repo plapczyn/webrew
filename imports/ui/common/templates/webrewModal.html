@@ -10,12 +10,19 @@
                     {{> Template.dynamic template=modalBody}}
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-warning ok" type="button">
-                    OK
+                    {{#if coffeeOk}}
+                    <button class="btn btn-info ok">
+                            <i class="fa fa-2x fa-coffee" aria-hidden="true"></i>
                     </button>
+                    {{else}}
+                    <button class="btn btn-warning ok" type="button">
+                            OK
+                    </button> 
+                    {{/if}}
                     <button class="btn btn-danger" type="button" data-dismiss="modal">
                     Cancel
                     </button>
+                    
                 </div>
                 </div>
             </div>

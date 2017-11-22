@@ -4,7 +4,6 @@ import { Messages } from '../../api/collections/coffees.js';
 import { RoomUsers } from '../../api/collections/coffees.js';
 
 Template.chat.onRendered( function() {
-  //console.log("onRendered");
 });
 
 Template.chat.events({
@@ -58,7 +57,6 @@ Template.chat.events({
       //Set User away
       Meteor.call('chat.updateUser', true, (err, res) => {
         if(!err){
-          //console.log("user is away");
           $('.send-away').val('Set Back');
         } else {
           console.log("error setting user away");
@@ -70,7 +68,6 @@ Template.chat.events({
       //Set User not away
       Meteor.call('chat.updateUser', false, (err, res) => {
         if(!err){
-          //console.log("user is back");
           $('.send-away').val('Set Away');
         } else {
           console.log("error setting user back");
@@ -82,7 +79,6 @@ Template.chat.events({
       //Reconnect User
       Meteor.call('chat.addUser', {id: "id"}, (err, res) => {
         if(!err){
-          //console.log("added roomuser");
         } else {
           console.log("error adding roomuser");
         }

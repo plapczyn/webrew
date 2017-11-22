@@ -55,6 +55,7 @@ class WebrewToast
 class WebrewModal
 {
     static renderedTemplate;
+    static initialized;
 
     /**
      * options: 
@@ -67,36 +68,57 @@ class WebrewModal
     static Show(options)
     {
         this.verifyOptions(options);
-        this.render(options);
+        if(this.initialized)
+        {
+            this.reRender(options);
+        }
+        else
+        {
+            this.render(options)
+        }
+        
         $("#webrewModalDialog").modal("show");
+    }
+
+    static reRender(options)
+    {
+        Blaze.remove(this.renderedTemplate);
+        this.renderedTemplate = null;
+
+        Template.webrewModal.helpers({
+            modalBody: options.template,
+            title: options.title || "",
+            coffeeOk: options.coffeeOk || false
+        });
+
+        this.renderedTemplate = Blaze.render(Template.webrewModal, $("body")[0]);
     }
 
     static render(options)
     {
-        if(typeof this.renderedTemplate != "undefined")
-        {
-            Blaze.remove(this.renderedTemplate);
-            this.renderedTemplate = null;
-        }
-
         Template.webrewModal.events({
-            'click .ok': (event) => 
+            'click .ok': (event, template) => 
             {
                 if(typeof options.okCallback == "function")
                 {
                     options.okCallback(event);
-                    this.Hide();
                 }
+                else
+                {
+                    $("#modalOk").click();
+                }
+                this.Hide();
             }
         });
 
-        Template[options.template].onRendered = () => {}
         Template.webrewModal.helpers({
             modalBody: options.template,
-            title: options.title || ""
-        })
+            title: options.title || "",
+            coffeeOk: options.coffeeOk || false
+        });
         
         this.renderedTemplate = Blaze.render(Template.webrewModal, $("body")[0]);
+        this.initialized = true;
     }
 
     static Hide()

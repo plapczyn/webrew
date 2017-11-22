@@ -76,14 +76,11 @@ Template.brew.helpers({
 });
 
 Template.brew.events({
-  'click .delModal'(event) {
-    document.getElementById("brewID").value = this._id;
-  },
-  'click .testDelete': (event) => {
+  'click .deleteModal' (event){
     Common.WebrewModal.Show({
       template: "testDelete",
       title: "Delete this Brew?",
-      okCallback: (evt) => {
+      okCallback: (evt, template) => {
         let id = Coffees.findOne()._id;
         var brew = FlowRouter.getParam('brewId');
         Meteor.call('coffees.removeById', id, (err, res) => {
@@ -152,7 +149,16 @@ Template.brew.events({
     var instance = Template.instance();
     instance.isReBrewing.set(!instance.isReBrewing.get());
   },
-
+  'click addRebrewTest': (event) => {
+    var instance = Template.instance();
+    instance.isReBrewing.set(!instance.isReBrewing.get());
+    Common.WebrewModal.Show({
+      template: "advancedRebrewModal",
+      title: "Add a Rebrew",
+      okCallBack: (evt, template) => {
+      }
+    });
+  },
 
   //Edit Brew
   'click .editModal'(event) {

@@ -4,9 +4,7 @@ import { Brewfile } from '../../lib/DatabaseModels.js';
 if(Meteor.isServer){
   Meteor.methods({
     'brewfile.updateProfile'(brewfile){
-      console.log(brewfile);
       let _brewfile = new Brewfile(brewfile);
-      console.log(_brewfile);
       if (_brewfile.Username == Meteor.user().username ) {
         try{
           var id = BrewFiles.findOne(_brewfile.OnlyUsername())._id;

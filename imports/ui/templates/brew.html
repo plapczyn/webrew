@@ -40,6 +40,7 @@
         {{/if}}
 
         <button type="button" class="addRebrew btn btn-info" data-toggle="modal" data-target="#reBrewingModal" data-keyboard="true">Add a reBrew</button>
+        <button type="button" class="addRebrewTest btn btn-info">Add a reBrew Testgin</button>
         {{#if InFavorites}}
         <button type="button" class="addToFavorites btn btn-success">Add to Favorites</button>
         {{else}}
@@ -52,8 +53,7 @@
               <i class="fa fa-pencil-square-o fa-2x dropdown-toggle" aria-hidden="true" data-toggle="dropdown" aria-expanded="false"></i>
               <ul class="dropdown-menu" style="position:relative">
                   <li><a class="editModal" data-toggle="modal" data-target="#EditBrewModal" data-keyboard="true">Edit</a></li>
-                  <li><a class="delModal" data-toggle="modal" data-target="#DeleteBrewModal" data-keyboard="true">Delete</a></li>
-                  <li><a class="testDelete">Delete Test</a></li>
+                  <li><a class="deleteModal">Delete</a></li>
               </ul>
           </div>
         {{/if}}
@@ -156,4 +156,6 @@
 
 <template name="testDelete">
     <h5>Are you sure you want to remove this brew?</h5>
+    <input class="modalOk" id="modalOk" type="hidden" />
+    <input class="modalCancel" id="modalCancel" type="hidden" />
 </template>
