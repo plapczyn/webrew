@@ -85,6 +85,7 @@ if(Meteor.isServer){
       }
     },
     'rebrews.updateRebrew'(rebrew){
+      console.log(rebrew);
       //Check owner and update rebrew
       if (Rebrews.findOne({_id: rebrew._id}).Owner == Meteor.userId() ) {
         let rebrewUpdate = {};
@@ -131,6 +132,9 @@ if(Meteor.isServer){
 
         //Recalculate Advanced Average Ratings
         advancedRebrews = Rebrews.find({CoffeeId: rebrewUpdate.CoffeeId, Advanced: true}).fetch();
+        if(advancedRebrews.length == 0){
+          return;
+        }
         let AvgAroma = calculateAdvancedAvg(advancedRebrews, 'Aroma');
         let AvgAcidity = calculateAdvancedAvg(advancedRebrews, 'Acidity');
         let AvgBalance = calculateAdvancedAvg(advancedRebrews, 'Balance');

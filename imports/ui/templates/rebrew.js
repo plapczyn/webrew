@@ -34,25 +34,34 @@ Template.rebrew.helpers({
 
 Template.rebrew.events({
     'click .delRebrewModal'(event) {
-        document.getElementById("DelrebrewID" + this.id).value =  this.id;
+        Common.WebrewModal.Show({
+          template: "delRebrewModal",
+          title: "Delete this reBrew?",
+          okCallback: (evt, template) => {
+              var brew = FlowRouter.getParam('brewId')
+              var ID = this.id;
+              Meteor.call('rebrews.removeById', ID, (err, res)=> {
+                Common.WebrewToast.Show("reBrew was removed","success");
+              });
+          }});
     },
     'click .editRebrewModal'(event) {
-      let _this = this;
       Common.WebrewModal.Show({
         template: "editRebrewModal",
         title: "Edit Brew",
         coffeeOk: true,
         data: {
-          id: _this.id,
-          advanced: _this.advanced,
-          body: _this.body,
-          acidity: _this.acidity,
-          flavour: _this.flavour,
-          balance: _this.balance,
-          aroma: _this.aroma,
-          title: _this.title,
-          rebrew: _this.rebrew,
-          ratingNum: _this.ratingNum
+          id: this.id,
+          advanced: this.advanced,
+          body: this.body,
+          acidity: this.acidity,
+          flavour: this.flavour,
+          balance: this.balance,
+          aroma: this.aroma,
+          title: this.title,
+          rebrew: this.rebrew,
+          ratingNum: this.ratingNum,
+          coffeeid: this.coffeeid
         }
       });
       return;
@@ -63,21 +72,6 @@ Template.rebrew.events({
         document.getElementById("bEadrating3").innerText = this.acidity;
         document.getElementById("bEadrating4").innerText = this.flavour;
         document.getElementById("bEadrating5").innerText = this.balance;
-    },
-    'click .delete'(event) {
-        var brew = FlowRouter.getParam('brewId')
-
-        // Hide Modal
-        var ID = this.id;
-        $("#DeletereBrewModal" + ID).on("hidden.bs.modal", function (){
-            //Remove reBrew from the collection
-            // let id = document.getElementById("DelrebrewID" + Template.instance().id).value
-            // var idd = Template.instance().data.id;
-            Meteor.call('rebrews.removeById', ID, (err, res) => {
-
-            });
-        });
-        $("#DeletereBrewModal" + Template.instance().data.id).modal("hide");
     },
     'submit .EditsubmitRebrew'(event){
         event.preventDefault();
@@ -154,4 +148,10 @@ Template.editRebrewModal.events({
   const value = $(event.target).val();
   $("#erating" + Template.instance().data.id).val(value);
 },
+});
+
+Template.delRebrewModal.events({
+  'submit .modalOk'(event) {
+
+  }
 });

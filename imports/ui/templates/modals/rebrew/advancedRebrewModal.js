@@ -32,7 +32,7 @@ Template.advancedRebrewModal.helpers({
         advancedRebrew = prepareAdvancedRebrew(event);
       }
       advancedRebrew.CoffeeName = FlowRouter.getParam('brewId');
-      advancedRebrew.CoffeeId = this._id;
+      advancedRebrew.CoffeeId = this.coffeeId;
       advancedRebrew.Advanced = isAdvanced;
 
       let inputs = Common.WebrewModal.GetForm(event);

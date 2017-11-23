@@ -146,13 +146,16 @@ Template.brew.events({
     });
   },
   
-  'click .addRebrew': (event) => {
+  'click .addRebrew' (event) {
     var instance = Template.instance();
     instance.isReBrewing.set(!instance.isReBrewing.get());
     Common.WebrewModal.Show({
       template: "advancedRebrewModal",
       title: "How was the brew?",
-      coffeeOk: true
+      coffeeOk: true,
+      data: {
+        coffeeId: this._id
+      }
     });
   },
 

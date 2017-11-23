@@ -5,14 +5,17 @@ import { Favorites } from '../../api/collections/coffees.js';
 import { BrewFiles } from '../../api/collections/coffees.js';
 import { Coffee } from '../../../lib/DatabaseModels.js';
 import { Brewfile } from '../../../lib/DatabaseModels.js';
+import Common from '../common/scripts/common.js';
+import '../templates/modals/mebrew/meModal.js';
+
 Template.mebrew.onCreated(() => {
   // var t = Meteor.user().username;
   let template = Template.instance();
   let user = FlowRouter.getParam('userName');
-  template.searching = new ReactiveVar( false );
+  template.searching = new ReactiveVar(false);
   template.searchText = new ReactiveVar("");
 
-  template.autorun( () => {
+  template.autorun(() => {
     // template.subscribe( 'brewfile', user, () => {
     //   setTimeout( () => {
     //   }, 300 );
@@ -28,80 +31,80 @@ Template.mebrew.onCreated(() => {
 });
 
 Template.mebrew.events({
-  'click .goMe' (event){
-    FlowRouter.go('mebrew', {userName: Meteor.user().username})
+  'click .goMe'(event) {
+    FlowRouter.go('mebrew', { userName: Meteor.user().username })
   },
-  'submit .changeProfile'(event){
-    event.preventDefault();
-    var url = event.target.url.value;
-    var Tagline = event.target.tagline.value;
-    var Email = event.target.email.value;
-
-  var secure = Promise.resolve(Meteor.user()).then(function(data){
-    var user = Meteor.user().username;
-    if(Meteor.user().username == FlowRouter.getParam('userName')){
-      let brewfile = new Brewfile({username: user, tagline: Tagline, imageurl: url, email: Email});
-      Meteor.call('brewfile.updateProfile',brewfile.Get(), (err, res) => {
-        $("#meBrewModal").modal("hide");
+  'click .changeProfile'(event) {
+    if (BrewFiles.findOne()) {
+      var brewfile = new Brewfile(BrewFiles.findOne());
+      var getImage = brewfile.OnlyImageUrl().ImageUrl;
+      var getTagline = BrewFiles.findOne(brewfile.OnlyUsername()).Tagline;
+      var getEmail = BrewFiles.findOne(brewfile.OnlyUsername()).Email;
+      Common.WebrewModal.Show({
+        template: "meBrewModal",
+        title: "Profile Maintenance",
+        data: {
+          getImage: getImage,
+          getTagline: getTagline,
+          getEmail: getEmail
+        },
+        coffeeOk: true
       });
     }
-  })
-},
-'keyup [name="search"]' ( event) {
-  let value = event.target.value.trim();
-  Template.instance().searchText.set(value)
-  if ( value === '' ) {
-    Template.instance().searchText.curValue =  value;
+  },
+  'keyup [name="search"]'(event) {
+    let value = event.target.value.trim();
+    Template.instance().searchText.set(value)
+    if (value === '') {
+      Template.instance().searchText.curValue = value;
+    }
   }
-}
 });
 
 Template.mebrew.helpers({
   name: FlowRouter.getParam("userName"),
   info: "Tell us a little about yourself and how you like to Brew? Click the image to update!",
-  favorites(){
-    if(!!Favorites.find() && Favorites.find().fetch().length !== 0){
+  favorites() {
+    if (!!Favorites.find() && Favorites.find().fetch().length !== 0) {
       return Favorites.find();
     }
   },
-  meBrews (){
+  meBrews() {
     let user = FlowRouter.getParam('userName');
-    let coffeeCriteria = new Coffee({username: user});
+    let coffeeCriteria = new Coffee({ username: user });
     return Coffees.find(coffeeCriteria);
   },
-  brew (element) {
-      return Coffees.find({_id:element.hash.name._id});
+  brew(element) {
+    return Coffees.find({ _id: element.hash.name._id });
   },
-  Favbrew (element) {
-    return Coffees.find({_id: element.hash.name.CoffeeId});
+  Favbrew(element) {
+    return Coffees.find({ _id: element.hash.name.CoffeeId });
   },
-  getImage(){
-    if(BrewFiles.findOne()){
+  getImage() {
+    if (BrewFiles.findOne()) {
       let user = FlowRouter.getParam('userName')
       let brewfile = new Brewfile(BrewFiles.findOne());
       return brewfile.OnlyImageUrl().ImageUrl;
     }
   },
-  getTagline(){
-    var brewfile = new Brewfile({username: FlowRouter.getParam('userName')});
-    if(BrewFiles.findOne(brewfile.OnlyUsername()))
-    {
+  getTagline() {
+    var brewfile = new Brewfile({ username: FlowRouter.getParam('userName') });
+    if (BrewFiles.findOne(brewfile.OnlyUsername())) {
       return BrewFiles.findOne(brewfile.OnlyUsername()).Tagline;
     }
   },
-  getEmail(){
-    var brewfile = new Brewfile({username: FlowRouter.getParam('userName')});
-    if(BrewFiles.findOne(brewfile.OnlyUsername()))
-    {
+  getEmail() {
+    var brewfile = new Brewfile({ username: FlowRouter.getParam('userName') });
+    if (BrewFiles.findOne(brewfile.OnlyUsername())) {
       return BrewFiles.findOne(brewfile.OnlyUsername()).Email;
     }
   },
-  isUser(){
-    if(!!Meteor.user()){
-      if(Meteor.user().username == FlowRouter.getParam('userName')){
+  isUser() {
+    if (!!Meteor.user()) {
+      if (Meteor.user().username == FlowRouter.getParam('userName')) {
         return "modal";
       }
-      else{
+      else {
         return "";
       }
     }

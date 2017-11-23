@@ -61,7 +61,9 @@ class WebrewModal
      * {
      *      template: string,
      *      title?: string,
-     *      okCallback?: Function
+     *      okCallback?: Function,
+     *      data?: object,
+     *      coffeeOk?: boolean
      * }
      */
     static Show(options)
