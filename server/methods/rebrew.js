@@ -124,12 +124,12 @@ if(Meteor.isServer){
 
         //Recalculate Average Rating
         let advancedRebrews = Rebrews.find({CoffeeId: rebrewUpdate.CoffeeId, Advanced: true}).fetch();
+        
         let simpleRebrews = Rebrews.find({CoffeeId: rebrewUpdate.CoffeeId, Advanced: false}).fetch();
-
         let average = calculateCoffeeRating(simpleRebrews, advancedRebrews);
 
         Coffees.update({_id: rebrewUpdate.CoffeeId}, {$set: {AverageRating: average}});
-
+        
         //Recalculate Advanced Average Ratings
         advancedRebrews = Rebrews.find({CoffeeId: rebrewUpdate.CoffeeId, Advanced: true}).fetch();
         if(advancedRebrews.length == 0){
@@ -140,7 +140,7 @@ if(Meteor.isServer){
         let AvgBalance = calculateAdvancedAvg(advancedRebrews, 'Balance');
         let AvgFlavour = calculateAdvancedAvg(advancedRebrews, 'Flavour');
         let AvgBody = calculateAdvancedAvg(advancedRebrews, 'Body');
-
+        
         Coffees.update({_id: rebrewUpdate.CoffeeId}, {$set: {AverageAroma: AvgAroma, AverageAcidity: AvgAcidity, AverageBalance: AvgBalance, AverageFlavour: AvgFlavour, AverageBody: AvgBody }});
       
       } else {
@@ -188,6 +188,7 @@ function calculateAdvancedAvg(allAdvanced, Attribute){
   if(Ratings.length > 0){
     sum += Ratings.reduce(function(a, b){return parseFloat(a) + parseFloat(b);});
   }
+  
   if(Ratings.length < 1){
     throw "Something in your database is really messed up, sir!"
   }
