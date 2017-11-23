@@ -37,22 +37,22 @@ Template.rebrew.events({
         document.getElementById("DelrebrewID" + this.id).value =  this.id;
     },
     'click .editRebrewModal'(event) {
-      let _this = this;
       Common.WebrewModal.Show({
         template: "editRebrewModal",
         title: "Edit Brew",
         coffeeOk: true,
         data: {
-          id: _this.id,
-          advanced: _this.advanced,
-          body: _this.body,
-          acidity: _this.acidity,
-          flavour: _this.flavour,
-          balance: _this.balance,
-          aroma: _this.aroma,
-          title: _this.title,
-          rebrew: _this.rebrew,
-          ratingNum: _this.ratingNum
+          id: this.id,
+          advanced: this.advanced,
+          body: this.body,
+          acidity: this.acidity,
+          flavour: this.flavour,
+          balance: this.balance,
+          aroma: this.aroma,
+          title: this.title,
+          rebrew: this.rebrew,
+          ratingNum: this.ratingNum,
+          coffeeid: this.coffeeid
         }
       });
       return;
