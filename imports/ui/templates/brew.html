@@ -49,7 +49,7 @@
           <div class="dropdown" style="position: absolute;top: 0px; right: 15px;">
               <i class="fa fa-pencil-square-o fa-2x dropdown-toggle" aria-hidden="true" data-toggle="dropdown" aria-expanded="false"></i>
               <ul class="dropdown-menu" style="position:relative">
-                  <li><a class="editModal" data-toggle="modal" data-target="#EditBrewModal" data-keyboard="true">Edit</a></li>
+                  <li><a class="editModal">Edit</a></li>
                   <li><a class="deleteModal">Delete</a></li>
               </ul>
           </div>
@@ -80,45 +80,7 @@
   </div>
 
   <!--Edit brew Modal-->
-<div class="modal fade" id="EditBrewModal" role="dialog">
-  <div class="modal-dialog modal-md">
-    <div class="modal-content" style="padding-bottom:15px">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Edit the Brew</h4>
-      </div>
-      <div class="modal-body">
-          <form class="submitEditBrew thumbnail">
-              <div class="form-group">
-                  <label>Name</label>
-                  <input required type="text" name="title" class="form-control" value="{{CoffeeName}}">
-              </div>
-              <div class="form-group">
-                  <label>Roast</label>
-                  <select required class="form-control" style="width:auto; height:auto; padding:10px; border-radius:10px;" id="roast" name="roast" value="{{CoffeeRoast}}">
-                      <option style="color: #b69476" value="Light Roast">Light Roast</option>
-                      <option style="color: #825d43" value="Medium Roast">Medium Roast</option>
-                      <option style="color: #66290b" value="Medium-Dark Roast">Medium-Dark Roast</option>
-                      <option style="color: #120907" value="Dark Roast">Dark Roast</option>
-                  </select>
-              </div>
-              <div class="form-group">
-                  <label>Image URL</label>
-                  <input type="text" name="imageURL" class="form-control" value="{{ImageUrl}}" />
-              </div>
-              <div class="form-group">
-                  <label>Description</label>
-                  <textarea required class="form-control" value="{{CoffeeDescription}}" rows="3" name="description"></textarea>
-              </div>
-              <input id="editbrewID" type="hidden" value="">
-              <button class="btn btn-info" type="submit" style="float:right">
-                  <i class="fa fa-2x fa-coffee" aria-hidden="true"></i>
-              </button>
-          </form>
-      </div>
-    </div>
-  </div>
-</div>
+
 {{/each}}
 {{/if}}
 {{/if}}
@@ -128,4 +90,31 @@
     <h5>Are you sure you want to remove this brew?</h5>
     <input class="modalOk" id="modalOk" type="hidden" />
     <input class="modalCancel" id="modalCancel" type="hidden" />
+</template>
+
+<template name="modalEdit">
+  <form>
+      <div class="form-group">
+          <label>Name</label>
+          <input required type="text" name="title" class="form-control" value="{{CoffeeName}}">
+      </div>
+      <div class="form-group">
+          <label>Roast</label>
+          <select required class="form-control" style="width:auto; height:auto; padding:10px; border-radius:10px;" id="roast" name="roast" value="{{CoffeeRoast}}">
+              <option style="color: #b69476" value="Light Roast">Light Roast</option>
+              <option style="color: #825d43" value="Medium Roast">Medium Roast</option>
+              <option style="color: #66290b" value="Medium-Dark Roast">Medium-Dark Roast</option>
+              <option style="color: #120907" value="Dark Roast">Dark Roast</option>
+          </select>
+      </div>
+      <div class="form-group">
+          <label>Image URL</label>
+          <input type="text" name="imageURL" class="form-control" value="{{ImageUrl}}" />
+      </div>
+      <div class="form-group">
+          <label>Description</label>
+          <textarea required class="form-control" value="{{CoffeeDescription}}" rows="3" name="description"></textarea>
+      </div>
+      <input class="modalOk" id="modalOk" type="submit" style="display:none;">
+  </form>
 </template>

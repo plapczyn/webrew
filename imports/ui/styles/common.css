@@ -17,3 +17,10 @@
 {
     background-color: #A93428;
 }
+
+.webrewLoader-background
+{
+    opacity: .5;
+    height: 100%;
+    width: 100%;
+}

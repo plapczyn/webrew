@@ -34,7 +34,14 @@ Template.rebrew.helpers({
 
 Template.rebrew.events({
     'click .delRebrewModal'(event) {
-        document.getElementById("DelrebrewID" + this.id).value =  this.id;
+      Common.WebrewModal.Show({
+        template: "deleteRebrewModal",
+        title: "Delete this rebrew?",
+        okCallback: () => {
+          let ID = this.id
+          Meteor.call('rebrews.removeById', ID, (err, res) => {});
+        }
+      });
     },
     'click .editRebrewModal'(event) {
       Common.WebrewModal.Show({

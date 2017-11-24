@@ -161,36 +161,55 @@ Template.brew.events({
 
   //Edit Brew
   'click .editModal'(event) {
-    document.getElementById("editbrewID").value = this._id;
-  },
+    let coffee = Coffees.findOne();
 
-  'submit .submitEditBrew'(event){
-    //prevent the refresh page and put params in
-    event.preventDefault();
-
-    //update database
-    let editBrew = {};
-    const target = event.target;
-    editBrew.coffeename = target.title.value;
-    editBrew.coffeeroast = target.roast.value;
-    editBrew.imageURL = target.imageURL.value;
-    editBrew.coffeedescription = target.description.value;
-    editBrew._id = document.getElementById("editbrewID").value;
-    let coffee = new Coffee(editBrew);
-
-    $("#EditBrewModal").on("hidden.bs.modal", function (){
-      Meteor.call('coffees.edit', coffee.Get(), (err, res) => {
-        if(!err){
-          FlowRouter.go('/brew/' + editBrew.coffeename);
-        } else {
-          Common.WebrewToast.Show(editBrew.name + " already exists.", "error")
-        }
-      });
+    Common.WebrewModal.Show({
+      template: "modalEdit",
+      coffeeOk: true,
+      title: "Edit Brew",
+      data: {
+        ImageUrl: coffee.ImageUrl,
+        CoffeeDescription: coffee.CoffeeDescription,
+        CoffeeName: coffee.CoffeeName,
+        id: coffee._id,
+        CoffeeRoast: coffee.CoffeeRoast
+      }
     });
-    $("#EditBrewModal").modal("hide");
   },
+
+
   //Goto Profile
   'click .goMe' (event){
     FlowRouter.go('mebrew', {userName: Meteor.user().username});
   }
 });
+
+Template.modalEdit.events({
+  'submit .modalOk'(event){
+    //prevent the refresh page and put params in
+    event.preventDefault();
+    var form = Common.WebrewModal.GetForm(event);
+    //update database
+    let editBrew = {};
+    editBrew.coffeename = form.title.value;
+    editBrew.coffeeroast = form.roast.value;
+    editBrew.imageURL = form.imageURL.value;
+    editBrew.coffeedescription = form.description.value;
+    editBrew._id = Template.instance().data.id;
+    let coffee = new Coffee(editBrew);
+
+    Meteor.call('coffees.edit', coffee.Get(), (err, res) => {
+      if(!err){
+        FlowRouter.go('/brew/' + editBrew.coffeename);
+        Common.WebrewToast.Show(editBrew.coffeename + " updated!", "success")
+        Common.WebrewModal.Hide();
+      } else {
+        Common.WebrewToast.Show(editBrew.coffeename + " already exists.", "error")
+      }
+    });
+  }
+});
+
+Template.modalEdit.onRendered(() => {
+  $("#roast").val(Template.instance().data.CoffeeRoast);
+})

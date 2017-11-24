@@ -56,6 +56,8 @@ class WebrewModal
 {
     static renderedTemplate;
     static initialized;
+    static options;
+
     /**
      * options: 
      * {
@@ -66,37 +68,38 @@ class WebrewModal
      */
     static Show(options)
     {
-        this.verifyOptions(options);
+        this.options = options;
+        this.verifyOptions(this.options);
         if(this.initialized)
         {
-            this.reRender(options);
+            this.reRender();
         }
         else
         {
-            this.render(options)
+            this.render()
         }
         
         $("#webrewModalDialog").modal("show");
     }
 
-    static reRender(options)
+    static reRender()
     {
         Blaze.remove(this.renderedTemplate);
         this.renderedTemplate = null;
+        this.options = null;
 
-       this.SetTemplateHelpers(options)
-
+        this.SetTemplateHelpers(this.options)
         this.renderedTemplate = Blaze.render(Template.webrewModal, $("body")[0]);
     }
 
-    static render(options)
+    static render()
     {
         Template.webrewModal.events({
             'click .ok': (event, template) => 
             {
-                if(typeof options.okCallback == "function")
+                if(typeof this.options.okCallback == "function")
                 {
-                    options.okCallback(event);
+                    this.options.okCallback(event);
                     this.Hide();
                 }
                 else
@@ -112,8 +115,7 @@ class WebrewModal
             }
         });
 
-        this.SetTemplateHelpers(options)
-
+        this.SetTemplateHelpers()
         this.renderedTemplate = Blaze.render(Template.webrewModal, $("body")[0]);
         this.initialized = true;
     }
@@ -145,14 +147,27 @@ class WebrewModal
         return event.target.form.checkValidity()
     }
 
-    static SetTemplateHelpers(options)
+    static SetTemplateHelpers()
     {
         Template.webrewModal.helpers({
-            modalBody: options.template,
-            title: options.title || "",
-            coffeeOk: options.coffeeOk || false,
-            data: options.data
+            modalBody: this.options.template,
+            title: this.options.title || "",
+            coffeeOk: this.options.coffeeOk || false,
+            data: this.options.data
         });
+    }
+}
+
+class WebrewLoader
+{
+    static Show()
+    {
+        
+    }
+
+    static Hide()
+    {
+
     }
 }
 
