@@ -68,31 +68,32 @@ class WebrewModal
      */
     static Show(options)
     {
+        this.options = null;
         this.options = options;
-        this.verifyOptions(this.options);
-        if(this.initialized)
+        this.verifyOptions();
+        if(!this.initialized)
         {
-            this.reRender();
+            this.init();
         }
-        else
-        {
-            this.render()
-        }
-        
+
+        this.render()
         $("#webrewModalDialog").modal("show");
     }
 
-    static reRender()
+    static render()
     {
-        Blaze.remove(this.renderedTemplate);
-        this.renderedTemplate = null;
-        this.options = null;
+        if(typeof this.renderedTemplate != "undefined" || this.renderedTemplate != null)
+        {
+            Blaze.remove(this.renderedTemplate);
+        }
 
-        this.SetTemplateHelpers(this.options)
+        this.renderedTemplate = null;
+
+        this.SetTemplateHelpers()
         this.renderedTemplate = Blaze.render(Template.webrewModal, $("body")[0]);
     }
 
-    static render()
+    static init()
     {
         Template.webrewModal.events({
             'click .ok': (event, template) => 
@@ -115,8 +116,6 @@ class WebrewModal
             }
         });
 
-        this.SetTemplateHelpers()
-        this.renderedTemplate = Blaze.render(Template.webrewModal, $("body")[0]);
         this.initialized = true;
     }
 
@@ -125,8 +124,8 @@ class WebrewModal
         $("#webrewModalDialog").modal("hide");
     }
 
-    static verifyOptions(options){
-        if(typeof options.template == "undefined")
+    static verifyOptions(){
+        if(typeof this.options.template == "undefined")
         {
             console.error("Error: WebrewModal.Show(options)  - You must set options.template to a blaze template name")
         }
