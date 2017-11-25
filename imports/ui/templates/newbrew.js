@@ -26,7 +26,7 @@ Template.newbrew.events({
 
     Meteor.call('coffees.add', obj , (err, res) => {
       if(!err){
-        Common.WebrewToast.Show("Mmm, It's a Good Brew!", obj.coffeename + "was added!", "success");
+        Common.WebrewToast.Show("Mmm, It's a Good Brew!","success", obj.coffeename + "was added!" );
         FlowRouter.go('Main');
       }
       else {

@@ -56,49 +56,51 @@ class WebrewModal
 {
     static renderedTemplate;
     static initialized;
+    static options;
+
     /**
      * options: 
      * {
      *      template: string,
      *      title?: string,
-     *      okCallback?: Function,
-     *      data?: object,
-     *      coffeeOk?: boolean
+     *      okCallback?: Function
      * }
      */
     static Show(options)
     {
-        this.verifyOptions(options);
-        if(this.initialized)
+        this.options = null;
+        this.options = options;
+        this.verifyOptions();
+        if(!this.initialized)
         {
-            this.reRender(options);
+            this.init();
         }
-        else
-        {
-            this.render(options)
-        }
-        
+
+        this.render()
         $("#webrewModalDialog").modal("show");
     }
 
-    static reRender(options)
+    static render()
     {
-        Blaze.remove(this.renderedTemplate);
+        if(typeof this.renderedTemplate != "undefined" || this.renderedTemplate != null)
+        {
+            Blaze.remove(this.renderedTemplate);
+        }
+
         this.renderedTemplate = null;
 
-       this.SetTemplateHelpers(options)
-
+        this.SetTemplateHelpers()
         this.renderedTemplate = Blaze.render(Template.webrewModal, $("body")[0]);
     }
 
-    static render(options)
+    static init()
     {
         Template.webrewModal.events({
             'click .ok': (event, template) => 
             {
-                if(typeof options.okCallback == "function")
+                if(typeof this.options.okCallback == "function")
                 {
-                    options.okCallback(event);
+                    this.options.okCallback(event);
                     this.Hide();
                 }
                 else
@@ -114,9 +116,6 @@ class WebrewModal
             }
         });
 
-        this.SetTemplateHelpers(options)
-
-        this.renderedTemplate = Blaze.render(Template.webrewModal, $("body")[0]);
         this.initialized = true;
     }
 
@@ -125,8 +124,8 @@ class WebrewModal
         $("#webrewModalDialog").modal("hide");
     }
 
-    static verifyOptions(options){
-        if(typeof options.template == "undefined")
+    static verifyOptions(){
+        if(typeof this.options.template == "undefined")
         {
             console.error("Error: WebrewModal.Show(options)  - You must set options.template to a blaze template name")
         }
@@ -147,14 +146,27 @@ class WebrewModal
         return event.target.form.checkValidity()
     }
 
-    static SetTemplateHelpers(options)
+    static SetTemplateHelpers()
     {
         Template.webrewModal.helpers({
-            modalBody: options.template,
-            title: options.title || "",
-            coffeeOk: options.coffeeOk || false,
-            data: options.data
+            modalBody: this.options.template,
+            title: this.options.title || "",
+            coffeeOk: this.options.coffeeOk || false,
+            data: this.options.data
         });
+    }
+}
+
+class WebrewLoader
+{
+    static Show()
+    {
+        
+    }
+
+    static Hide()
+    {
+
     }
 }
 
