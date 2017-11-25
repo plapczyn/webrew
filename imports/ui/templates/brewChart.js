@@ -43,8 +43,8 @@ function updateChartData(){
     template.chart.get().update();
   }
   catch(e){
-      console.log(e);
-    }
+      //console.log(e);
+  }
 }
 
 function CreateBlankChart(){

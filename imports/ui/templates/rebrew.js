@@ -150,7 +150,7 @@ Template.editRebrewModal.events({
 },
 });
 
-Template.delRebrewModal.events({
+Template.deleteRebrewModal.events({
   'submit .modalOk'(event) {
 
   }
