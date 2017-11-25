@@ -34,27 +34,16 @@ Template.rebrew.helpers({
 
 Template.rebrew.events({
     'click .delRebrewModal'(event) {
-<<<<<<< HEAD
-        Common.WebrewModal.Show({
-          template: "delRebrewModal",
-          title: "Delete this reBrew?",
-          okCallback: (evt, template) => {
-              var brew = FlowRouter.getParam('brewId')
-              var ID = this.id;
-              Meteor.call('rebrews.removeById', ID, (err, res)=> {
-                Common.WebrewToast.Show("reBrew was removed","success");
-              });
-          }});
-=======
       Common.WebrewModal.Show({
         template: "deleteRebrewModal",
         title: "Delete this rebrew?",
         okCallback: () => {
           let ID = this.id
-          Meteor.call('rebrews.removeById', ID, (err, res) => {});
+          Meteor.call('rebrews.removeById', ID, (err, res) => {
+            Common.WebrewToast.Show("reBrew was removed","success");
+          });
         }
       });
->>>>>>> 0570bccc295b2a8992f653283a6d23412af00efd
     },
     'click .editRebrewModal'(event) {
       Common.WebrewModal.Show({
