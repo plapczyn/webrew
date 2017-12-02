@@ -3,7 +3,11 @@
     <div class="header">
       <h1><a id="title">meBrew</a></h1>
       {{#if currentUser}}
-      <p>{{> loginButtons align="right"}}'s Profile</p>
+        {{#if isUser}}
+          <p>{{> loginButtons align="right"}}'s Profile</p>
+        {{else}}
+          <p>{{otherUser}}'s Profile</p>
+        {{/if}}
       {{else}}
       <p> I'm a member, <span style="a:link{color: white}">{{> loginButtons align="right"}}</span></p>
       {{/if}}
@@ -20,7 +24,7 @@
   {{#if currentUser}}
 
   <div class="container">
-    <div class="profile-box changeProfile">
+    <div class="profile-box {{#if isUser}}changeProfile{{/if}}">
       <img src="{{getImage}}" class="img-thumbnail profile-picture offset-top" />
       <div class="row offset-top">
         <div class="col-xs-2">
@@ -31,7 +35,8 @@
       </div>
     </div>
   </div>
-  <div class="container">
+  {{> webrewLoader}}
+  <div class="container loading-wrapper">
       <h1>Added by {{name}}</h1>
       <div class="row">
         {{#each meBrews}}
@@ -40,11 +45,7 @@
         {{/each}}
         {{/each}}
       </div>
-      <!-- <div class="row">
-        {{#each coffeeReviews}}
-        {{> coffee }}
-        {{/each}}
-      </div> -->
+      
       <h1>{{name}}'s Favorites</h1>
       <div class="row">
         {{#each favorites}}

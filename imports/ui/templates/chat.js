@@ -2,8 +2,20 @@ import './chat.html';
 import './chat.css';
 import { Messages } from '../../api/collections/coffees.js';
 import { RoomUsers } from '../../api/collections/coffees.js';
+import '../common/templates/webrewLoader.html';
+
+Template.chat.onCreated( function (){
+  this.subscribe('roommessages', function () {
+    //subsReady
+    $('.loader').fadeOut('fast', function(){
+      $('.loading-wrapper').fadeIn('slow');
+    });
+  });
+  this.subscribe('roomusers');
+});
 
 Template.chat.onRendered( function() {
+  $('.loader').fadeIn();
 });
 
 Template.chat.events({
@@ -93,7 +105,7 @@ Template.chat.helpers({
     return RoomUsers.find();
   },
   messages: function (){
-    return Messages.find();
+    return Messages.find({}, {sort: {creation_date: 1}});
   },
   isConnected(){
     if (RoomUsers.findOne({userid: Meteor.userId()})) {

@@ -73,6 +73,9 @@ p{
 #title a:hover, #title a:focus {
     color: white;
 }
+.accounts-dialog {
+  left: -50%
+}
 
 #login-buttons a, .accounts-dialog a {
     cursor: pointer;
@@ -131,6 +134,12 @@ p{
   display: inline-block;
   text-align: left;
   vertical-align: middle;
+}
+.loader {
+  display:none;
+} 
+.loading-wrapper {
+  display:none;
 }
 @media (max-width:991px){
     .header {

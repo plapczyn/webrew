@@ -7,27 +7,32 @@ import { Coffee } from '../../../lib/DatabaseModels.js';
 import { Brewfile } from '../../../lib/DatabaseModels.js';
 import Common from '../common/scripts/common.js';
 import '../templates/modals/mebrew/meModal.js';
+import '../common/templates/webrewLoader.html';
 
-Template.mebrew.onCreated(() => {
-  // var t = Meteor.user().username;
+Template.mebrew.onCreated( () => {
   let template = Template.instance();
   let user = FlowRouter.getParam('userName');
+  template.userName = new ReactiveVar(user);
   template.searching = new ReactiveVar(false);
-  template.searchText = new ReactiveVar("");
+  template.searchQuery = new ReactiveVar("");
 
-  template.autorun(() => {
-    // template.subscribe( 'brewfile', user, () => {
-    //   setTimeout( () => {
-    //   }, 300 );
-    // });
-    // Gather
-    // this.register('myPost', Meteor.subscribe('brewfile', params.userName));
-    // this.register('coffeesForBrewfileClient', Meteor.subscribe('coffees.myCoffees', params.userName));
-    template.subscribe('coffees.mebrew', user, template.searchText.get());
-
-    template.subscribe('favorites', user, () => {
+  template.subscribe('coffees.mebrew', user, function () {
+    //subsReady
+    $('.loader').fadeOut('fast', function(){
+      $('.loading-wrapper').fadeIn('slow');
     });
   });
+
+  template.autorun(() => {
+    template.subscribe('coffees.mebrew', template.userName.get(), template.searchQuery.get());
+
+    template.subscribe('favorites', template.userName.get(), () => {
+    });
+  });
+});
+
+Template.mebrew.onRendered( function() {
+  $('.loader').fadeIn();
 });
 
 Template.mebrew.events({
@@ -54,9 +59,9 @@ Template.mebrew.events({
   },
   'keyup [name="search"]'(event) {
     let value = event.target.value.trim();
-    Template.instance().searchText.set(value)
+    Template.instance().searchQuery.set(value)
     if (value === '') {
-      Template.instance().searchText.curValue = value;
+      Template.instance().searchQuery.curValue = value;
     }
   }
 });
@@ -100,14 +105,13 @@ Template.mebrew.helpers({
     }
   },
   isUser() {
-    if (!!Meteor.user()) {
-      if (Meteor.user().username == FlowRouter.getParam('userName')) {
-        return "modal";
-      }
-      else {
-        return "";
-      }
+    if (Meteor.user().username == FlowRouter.getParam('userName')) {
+      return true;
+    }else {
+      return false;
     }
+  },
+  otherUser() {
+    return FlowRouter.getParam('userName');
   }
-
 });

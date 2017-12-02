@@ -17,23 +17,53 @@
           <li role="presentation"><a href="/new">New Brew</a></li>
           <li role="presentation"><a class="goMe" style="cursor:pointer">Me</a></li>
       </ul>
+
+      <!-- Testing for Different button Layout-->
+      <!-- Option-1 -->
+      <!-- <nav class="navbar navbar-inverse navbar-top">
+        <div class="container-fluid">
+          <ui class="nav navbar-nav">
+            <li><input type="text" name="search" class="form-control" placeholder="Find a brew..."></li>
+          </ui>
+          <ul class="nav navbar-nav nav-pills navbar-right">
+            <li role="presentation" class="active"><a href="/">Home</a></li>
+            <li role="presentation"><a href="/new">New Brew</a></li>
+            <li role="presentation"><a class="goMe" style="cursor:pointer">Me</a></li>
+            <li role="presentation"><a href="/chat">Brew Chat</a></li>
+          </ul>
+        </div>
+      </nav> -->
+
+      <!-- Option-2 -->
+      <!-- <nav class="navbar navbar-inverse navbar-top">
+        <div class="container-fluid">
+          <ui class="nav navbar-nav">
+            <li><input type="text" name="search" class="form-control" placeholder="Find a brew..."></li>
+          </ui>
+          <ul class="nav navbar-nav navbar-right">
+            <li class="active"><a href="/">Home</a></li>
+            <li><a href="/new">New Brew</a></li>
+            <li><a class="goMe" style="cursor:pointer">Me</a></li>
+            <li><a href="/chat">Brew Chat</a></li>
+          </ul>
+        </div>
+      </nav> -->
+      <!-- Testing for Different button Layout-->
+
       {{/if}}
     </div>
 
-  {{#if currentUser}}
-  <div class="container" >
-    <h1> Recently Added </h1>
-    <div class="row v-align">
-      <div class="pull-right">
+    {{#if currentUser}}
+    {{> webrewLoader}}
+    <div class="container loading-wrapper" >
+      <h1> Recently Added </h1>
+      <div class="row v-align">
+        <div class="pull-right">
+        </div>
+        {{#each coffees}}
+        {{> coffee}}
+        {{/each}}
       </div>
-      {{#each coffees}}
-      {{> coffee}}
-      {{/each}}
     </div>
-  </div>
-  {{/if}}
-
-  {{#each users}}
-  {{> mebrew}}
-  {{/each}}
-</template>
+    {{/if}}
+  </template>

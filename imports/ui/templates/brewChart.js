@@ -11,13 +11,17 @@ Template.canvas.onCreated(() => {
   template.chart = new ReactiveVar();
   template.autorun(() =>{
     updateChartData();
-    template.subscribe('brew.averageChartData',brew)
+    template.subscribe('brew.averageChartData',brew);
 
   })
 });
 Template.canvas.onRendered (function() {
   Template.instance().chart.set(CreateBlankChart());
-  updateChartData();
+  this.autorun(() => {
+      if (this.subscriptionsReady()) {
+          updateChartData();
+      }
+    })
 });
 
 Template.canvas.helpers({

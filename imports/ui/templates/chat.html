@@ -19,9 +19,9 @@
       </ul>
     {{/if}}
   </div>
-  
   {{#if currentUser}}
-  <div class="container" style="width:80%;margin:15px auto;">
+  {{> webrewLoader}} 
+  <div class="container loading-wrapper" style="width:80%;margin:15px auto;">
     <div class="row">
       <div class="messages-container">
         <div class="col-xs-12 col-sm-3" style="padding-right:0px;padding-left:0px;">
@@ -70,6 +70,6 @@
         </div>          
       </div>
     </div>
-  </div>  
-  {{/if}}
+  </div> 
+{{/if}}
 </template>

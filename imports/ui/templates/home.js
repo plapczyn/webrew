@@ -1,13 +1,20 @@
 import './home.html';
 import './home.css'
+import '../common/templates/webrewLoader.html';
 
 import { Coffees } from '../../api/collections/coffees.js';
 
-Template.Home.onCreated(()=>{
-  let template = Template.instance();
+Template.Home.onCreated( function (){
+  this.subscribe('coffeeSearch', function () {
+    //subsReady
+    $('.loader').fadeOut('fast', function(){
+      $('.loading-wrapper').fadeIn('slow');
+    });
+  });
 
-  template.searchQuery = new ReactiveVar();
+  let template = Template.instance();
   template.searching   = new ReactiveVar( false );
+  template.searchQuery = new ReactiveVar();
 
   template.autorun( () => {
     template.subscribe( 'coffeeSearch', template.searchQuery.get(), () => {
@@ -16,8 +23,11 @@ Template.Home.onCreated(()=>{
       }, 300 );
     });
   });
-})
+});
 
+Template.Home.onRendered( function() {
+  $('.loader').fadeIn();
+});
 
 Template.Home.helpers({
   coffees () {
