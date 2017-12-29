@@ -77,7 +77,13 @@ class WebrewModal
         }
 
         this.render()
+        $("#webrewModalDialog").one("shown.bs.modal", function() {
+            if(typeof $(".modal-body :input")[0] != 'undefined'){
+                $(".modal-body :input")[0].focus();
+            }
+        })
         $("#webrewModalDialog").modal("show");
+        
     }
 
     static render()
