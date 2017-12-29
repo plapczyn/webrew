@@ -9,9 +9,9 @@ Template.coffee.helpers({
   },
   CoffeeDescriptionShort(){
     let description = this.CoffeeDescription;
-    if(description.length >= 200)
+    if(description.length >= 100)
     {
-      return description.substr(0, 200) + "..."
+      return description.substr(0, 100) + "..."
     }
     else
     {
@@ -22,11 +22,14 @@ Template.coffee.helpers({
     return Common.WebrewColorPallet.GetColor(this.CoffeeRoast);
   },
   CoffeeNameShort(){
-    if(this.CoffeeName.length >= 65){
-      return this.CoffeeName.substr(0, 65) + "..."
+    if(this.CoffeeName.length >= 55){
+      return this.CoffeeName.substr(0, 55) + "..."
     }
     else{
       return this.CoffeeName;
     }
+  },
+  hasAverageRating(){
+    return this.AverageRating > 0;
   }
 })

@@ -2,18 +2,27 @@
   <div class="col-xs-12 col-sm-6 col-md-4">
     <div class="thumbnail" style="height: 420px">
       <a href="/brew/{{CoffeeName}}" class="">
-        <div class="circle-container">
+        {{#if hasAverageRating}}
+        <div>
+          
+        </div>
+        <!-- <div class="circle-container">
             <span class="circle-for-card" style="background: {{getColor}}">
                 <div class="rating-value-for-card">{{AverageRating}}</div>
             </span>
-          </div>
+          </div> -->
+        {{/if}}
+        <div class="rating-for-card">
+            {{> rating value=2.5 disabled=true}}
+        </div>
         {{#if ImageUrl}}
         <img src="{{ImageUrl}}" class="img-responsive" alt="..." style="height:230px">
         {{else}}
         <img src="/img/default-brew.jpg" class="img-responsive" alt="..." style="height:230px">
         {{/if}}
+       
         <div class="caption">
-          <h3 style="margin:0; font-family: Roboto">{{CoffeeNameShort}}</h3>
+          <h3 style="margin:0; font-family: Roboto;">{{CoffeeNameShort}}</h3>
           <p class="brand-name">Two Brothers Coffee</p>
           <hr style="margin:0; padding-bottom: 15px" />
           <!-- <div>

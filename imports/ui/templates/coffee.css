@@ -1,18 +1,19 @@
 .coffee-description-card
 {
-    height: 60px;
+    height: 40px;
 }
 
 .added-at-card
 {
     position: absolute;
     bottom: 15px;
-    left: 25px;
+    right: 24px;
 }
 
 .added-at-for-card
 {
     color:grey;
+    text-align: right;
 }
 
 .circle-container
@@ -28,4 +29,15 @@
     color: lightgrey;
     margin:0;
     padding:0;
+}
+
+.rating
+{
+    font-size: 20px;
+}
+
+.rating-for-card
+{
+    position: absolute;
+    top: 0;
 }
