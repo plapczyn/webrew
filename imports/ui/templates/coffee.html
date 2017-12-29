@@ -1,6 +1,6 @@
 <template name="coffee">
   <div class="col-xs-12 col-sm-6 col-md-4">
-    <div class="thumbnail" style="height: 420px">
+    <div class="thumbnail" style="height: 450px">
       <a href="/brew/{{CoffeeName}}" class="">
         {{#if hasAverageRating}}
         <div>
@@ -12,23 +12,29 @@
             </span>
           </div> -->
         {{/if}}
-        <div class="rating-for-card">
-            {{> rating value=2.5 disabled=true}}
-        </div>
         {{#if ImageUrl}}
         <img src="{{ImageUrl}}" class="img-responsive" alt="..." style="height:230px">
         {{else}}
         <img src="/img/default-brew.jpg" class="img-responsive" alt="..." style="height:230px">
         {{/if}}
        
-        <div class="caption">
+        <div class="caption" style="position:relative;">
           <h3 style="margin:0; font-family: Roboto;">{{CoffeeNameShort}}</h3>
           <p class="brand-name">Two Brothers Coffee</p>
-          <hr style="margin:0; padding-bottom: 15px" />
-          <!-- <div>
+          <hr style="margin:0; padding-bottom: 20px" />
+            {{#if hasAverageRating}}
+            <div class="rating-for-card">
+                {{> rating value=GetCoffeeRating disabled=true}}
+            </div>
+            {{else}}
+            <div class="not-rating-for-card">
+            <p style="font-size: 20px; font-family: Roboto">Not yet rated!</p>
+            </div>
+            {{/if}}
+          <div class="label-for-card">
                 <span class="label label-default" style="background-color:{{coffeeColor(CoffeeRoast)}}; float:left">{{CoffeeRoast}}</span>
-          </div> -->
-          <p class="coffee-description-card">{{CoffeeDescriptionShort}}</p>
+          </div>
+          <p class="coffee-description-card" style="padding-top: 20px;">{{CoffeeDescriptionShort}}</p>
         </div>
       </a>
         <div class="added-at-card">

@@ -31,13 +31,27 @@
     padding:0;
 }
 
-.rating
-{
-    font-size: 20px;
-}
-
 .rating-for-card
 {
     position: absolute;
-    top: 0;
+    bottom: 29px;
+    right: 0;
+}
+
+.not-rating-for-card
+{
+    position: absolute;
+    bottom: 33px;
+    right: 30px;
+}
+
+.label-for-card
+{
+    position: absolute;
+    bottom: 45px;
+}
+
+.label-for-card > .label.label-default
+{
+    font-size: 78%;
 }

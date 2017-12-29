@@ -31,5 +31,13 @@ Template.coffee.helpers({
   },
   hasAverageRating(){
     return this.AverageRating > 0;
+  },
+  GetCoffeeRating(){
+    if(this.AverageRating > 0){
+      return Math.round(this.AverageRating*2)/2.0;
+    }
+    else{
+      return 0
+    }
   }
 })
