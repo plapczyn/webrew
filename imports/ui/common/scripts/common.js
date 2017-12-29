@@ -170,7 +170,50 @@ class WebrewLoader
     }
 }
 
+class WebrewColorPallet
+{
+    static LightRoast = {Name: "Light Roast", Color: "#D5BDAE"};
+    static LightMediumRoast = {Name: "Light-Medium Roast", Color: "#B18367"};
+    static MediumRoast = {Name: "Medium Roast", Color: "#975934"};
+    static MediumDarkRoast = {Name: "Medium-Dark Roast", Color: "#653B23"};
+    static DarkRoast = {Name: "Dark Roast", Color: "#321E11"};
+    
+    static GetColor(roastName)
+    {
+        if(typeof roastName !== 'string'){
+            console.error("Enter a roast name as a string");
+            return;
+        }
+
+        switch(roastName)
+        {
+            case this.LightRoast.Name:
+            {
+                return this.LightRoast.Color
+            }
+            case this.MediumRoast.Name:
+            {
+                return this.MediumRoast.Color
+            }
+            case this.MediumDarkRoast.Name:
+            {
+                return this.MediumDarkRoast.Color
+            }
+            case this.DarkRoast.Name:
+            {
+                return this.DarkRoast.Color
+            }
+            default:
+            {
+                console.error("Color name is not in the pallet!")
+                return "red";
+            }
+        }
+    }
+}
+
 module.exports = {
     WebrewToast: WebrewToast,
-    WebrewModal: WebrewModal
+    WebrewModal: WebrewModal,
+    WebrewColorPallet: WebrewColorPallet
 }

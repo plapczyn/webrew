@@ -1,0 +1,31 @@
+.coffee-description-card
+{
+    height: 60px;
+}
+
+.added-at-card
+{
+    position: absolute;
+    bottom: 15px;
+    left: 25px;
+}
+
+.added-at-for-card
+{
+    color:grey;
+}
+
+.circle-container
+{
+    position:absolute;
+    left: 25px;
+    top: 10px;
+}
+
+.brand-name
+{
+    position: relative;
+    color: lightgrey;
+    margin:0;
+    padding:0;
+}

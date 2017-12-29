@@ -39,7 +39,6 @@ Template.Home.events({
   'keyup [name="search"]' ( event) {
     let value = event.target.value.trim();
     Template.instance().searchQuery.set(value)
-    // Template.instance().searching.set( true );
 
     if ( value === '' ) {
       Template.instance().searchQuery.curValue =  value;

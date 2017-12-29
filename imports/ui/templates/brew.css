@@ -8,11 +8,28 @@
   margin-right: 15px;
 }
 
+.circle-for-card{
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    /* background: #8c6f50; */
+    text-align: center;
+    float:right;
+    margin-right: 15px;
+    margin-bottom: 18px;
+  }
+
 .overall{
   font-size: 1em;
   color: white;
   line-height: 35px;
 }
+
+.overall-for-card{
+    font-size: .25em;
+    color: white;
+    line-height: 20px;
+  }
 
 .rating-value{
   font-size: 2.2em;
@@ -20,6 +37,15 @@
   color: white;
   line-height: 20px
 }
+
+.rating-value-for-card{
+    font-size: 1.5em;
+    /* font-weight: bold; */
+    font-family: 'Roboto';
+    color: white;
+    line-height: 45px
+  }
+
 .advlabel{
   float: left;
 }
