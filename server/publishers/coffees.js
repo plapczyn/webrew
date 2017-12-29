@@ -24,6 +24,10 @@ if (Meteor.isServer) {
     return Coffees.find({},{ sort:{ CreatedAt: -1 }});
   });
 
+  Meteor.publish('webrewHome', function() {
+    return Coffees.find({},{ sort: { CreatedAt: -1 }, limit: 100});
+  });
+
   Meteor.publish('coffees.myCoffees', (user) => {
     let coffee = new Coffee({username: user});
     return Coffees.find(coffee.Username(),{ sort:{ CreatedAt: -1 }});
@@ -60,7 +64,6 @@ if (Meteor.isServer) {
   });
 
   Meteor.publish('brew', (brewName) => {
-    let coffee = new Coffee({CoffeeName: brewName})
-    return Coffees.find(coffee.Get(),{ sort:{ CreatedAt: -1 }});
+    return Coffees.find({CoffeeName: brewName});
   })
 }
