@@ -13,8 +13,6 @@ Template.mebrew.onCreated( () => {
   let template = Template.instance();
   let user = FlowRouter.getParam('userName');
   template.userName = new ReactiveVar(user);
-  template.searching = new ReactiveVar(false);
-  template.searchQuery = new ReactiveVar("");
 
   template.subscribe('coffees.mebrew', user, function () {
     //subsReady
@@ -24,7 +22,7 @@ Template.mebrew.onCreated( () => {
   });
 
   template.autorun(() => {
-    template.subscribe('coffees.mebrew', template.userName.get(), template.searchQuery.get());
+    template.subscribe('coffees.mebrew', template.userName.get());
 
     template.subscribe('favorites', template.userName.get(), () => {
     });
@@ -55,13 +53,6 @@ Template.mebrew.events({
         },
         coffeeOk: true
       });
-    }
-  },
-  'keyup [name="search"]'(event) {
-    let value = event.target.value.trim();
-    Template.instance().searchQuery.set(value)
-    if (value === '') {
-      Template.instance().searchQuery.curValue = value;
     }
   }
 });

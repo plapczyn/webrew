@@ -85,7 +85,6 @@ if(Meteor.isServer){
       }
     },
     'rebrews.updateRebrew'(rebrew){
-      console.log(rebrew);
       //Check owner and update rebrew
       if (Rebrews.findOne({_id: rebrew._id}).Owner == Meteor.userId() ) {
         let rebrewUpdate = {};

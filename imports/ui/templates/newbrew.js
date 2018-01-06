@@ -1,6 +1,5 @@
 import './newbrew.html';
 import './newbrew.css';
-
 import { Coffees } from '../../api/collections/coffees.js';
 import Common from '../common/scripts/common.js';
 import { Coffee } from '../../../lib/DatabaseModels.js';
@@ -11,6 +10,7 @@ Template.newbrew.events({
 
     // Get value from form element
     const target = event.target;
+    const company = target.company.value;
     const name = target.name.value;
     const roast = target.roast.value;
     const description = target.description.value;
@@ -18,6 +18,7 @@ Template.newbrew.events({
 
     // Insert a new coffee into the collection
     let obj = {
+      coffeecompany: company.trim(),
       coffeename: name.trim(),
       coffeeroast: roast.trim(),
       coffeedescription: description.trim(),
@@ -47,7 +48,7 @@ Template.newbrew.events({
 });
 
 Template.newbrew.helpers({
-  //    submitterImage(){
-//        return BrewFiles.findOne({user:this.user}).imageURL;
-  //    }
+  getColor(roastName){
+    return Common.WebrewColorPallet.roastName.Color;
+  }
 });

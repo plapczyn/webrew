@@ -20,7 +20,7 @@
        
         <div class="caption" style="position:relative;">
           <h3 style="margin:0; font-family: Roboto;">{{CoffeeNameShort}}</h3>
-          <p class="brand-name">Two Brothers Coffee</p>
+          <p class="brand-name">{{CoffeeCompany}}</p>
           <hr style="margin:0; padding-bottom: 20px" />
             {{#if hasAverageRating}}
             <div class="rating-for-card">
@@ -32,7 +32,7 @@
             </div>
             {{/if}}
           <div class="label-for-card">
-                <span class="label label-default" style="background-color:{{coffeeColor(CoffeeRoast)}}; float:left">{{CoffeeRoast}}</span>
+                <span class="label label-default" style="background-color:{{getColor}}; float:left">{{CoffeeRoast}}</span>
           </div>
           <p class="coffee-description-card" style="padding-top: 20px;">{{CoffeeDescriptionShort}}</p>
         </div>

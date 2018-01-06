@@ -72,6 +72,21 @@ Template.brew.helpers({
 
   setAdvanced(advanced){
     Template.instance().isAdvanced.set(advanced);
+  },
+
+  getColor(){
+    return Common.WebrewColorPallet.GetColor(this.CoffeeRoast);
+  },
+  hasAverageRating(){
+    return this.AverageRating > 0;
+  },
+  GetCoffeeRating(){
+    if(this.AverageRating > 0){
+      return Math.round(this.AverageRating*2)/2.0;
+    }
+    else{
+      return 0
+    }
   }
 });
 
@@ -170,6 +185,7 @@ Template.brew.events({
       data: {
         ImageUrl: coffee.ImageUrl,
         CoffeeDescription: coffee.CoffeeDescription,
+        CoffeeCompany: coffee.CoffeeCompany,
         CoffeeName: coffee.CoffeeName,
         id: coffee._id,
         CoffeeRoast: coffee.CoffeeRoast
@@ -191,6 +207,7 @@ Template.modalEdit.events({
     var form = Common.WebrewModal.GetForm(event);
     //update database
     let editBrew = {};
+    editBrew.coffeecompany = form.company.value;
     editBrew.coffeename = form.title.value;
     editBrew.coffeeroast = form.roast.value;
     editBrew.imageURL = form.imageURL.value;

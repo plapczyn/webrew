@@ -44,6 +44,7 @@ if(Meteor.isServer){
           if(Coffees.findOne(coffee.OnlyCoffeeName())._id == coffee.Only_id()._id){
             //Update Coffee-no name update
             var id = coffee.Only_id();
+            Coffees.update(id, {$set: coffee.OnlyCoffeeCompany()});
             Coffees.update(id, {$set: coffee.OnlyCoffeeRoast()});
             Coffees.update(id, {$set: coffee.OnlyImageUrl()});
             Coffees.update(id, {$set: coffee.OnlyCoffeeDescription()});
@@ -54,6 +55,7 @@ if(Meteor.isServer){
 
           var id = coffee.Only_id();
           Coffees.update(id, {$set: coffee.OnlyCoffeeName()});
+          Coffees.update(id, {$set: coffee.OnlyCoffeeCompany()});
           Coffees.update(id, {$set: coffee.OnlyCoffeeRoast()});
           Coffees.update(id, {$set: coffee.OnlyImageUrl()});
           Coffees.update(id, {$set: coffee.OnlyCoffeeDescription()});

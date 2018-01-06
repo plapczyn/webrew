@@ -1,27 +1,40 @@
-import {Coffees } from '../../imports/api/collections/coffees.js';
+import { Coffees } from '../../imports/api/collections/coffees.js';
 import { Favorites } from '../../imports/api/collections/coffees.js';
 import { Favorite } from '../../lib/DatabaseModels.js';
 import { Coffee } from '../../lib/DatabaseModels.js';
 if (Meteor.isServer) {
   // This code only runs on the server
-  Meteor.publish('coffeeSearch', function( search ) {
-    check( search, Match.OneOf( String, null, undefined ) );
-    let query      = {},
-    projection = { limit: 8, sort: { title: -1 } };
+  Meteor.publish('coffeeSearch', function( searchText, searchRating, searchRoast ) {
+    check( searchText, Match.OneOf( String, null, undefined ) );
+    check( searchRating, Match.OneOf( String, null, undefined ) );
+    check( searchRoast, Match.OneOf( String, null, undefined ) );
 
-    if ( search ) {
-      let regex = new RegExp( search, 'i' );
+    searchRoast = searchRoast.split(",");
+    let query = {};
+    let projection = {}; 
+    projection.limit = 100; 
+
+    if ( searchText || searchRating || searchRoast ) {
+      let regex = new RegExp( searchText, 'i' );
+      let avgRating;
+      if (searchRating == "0"){
+        avgRating = false; 
+      } else {
+        avgRating = true;
+      }
+
       query = {
-        $or: [
-          { CoffeeName: {$regex: regex} },
-          { CoffeeRoast: {$regex: regex}}
+        $and: [
+          { $or: [ {CoffeeCompany: {$regex: regex} }, { CoffeeName: {$regex: regex} }, { CoffeeRoast: {$regex: regex}}, { CoffeeDescription: {$regex: regex}} ]},
+          { $or: [ {CoffeeRoast: {$in: searchRoast} } ] },
+          { $or: [ {AverageRating: {$gte: searchRating} }, {AverageRating: {$exists: avgRating}} ] }
         ]
       };
-
-      projection.limit = 98;
-      return Coffees.find(query,{ sort:{ CreatedAt: -1 }});
+      
+      return Coffees.find(query, projection);
+    } else {
+      return Coffees.find({}, projection);
     }
-    return Coffees.find({},{ sort:{ CreatedAt: -1 }});
   });
 
   Meteor.publish('webrewHome', function() {
@@ -33,25 +46,13 @@ if (Meteor.isServer) {
     return Coffees.find(coffee.Username(),{ sort:{ CreatedAt: -1 }});
   });
 
-  Meteor.publish('coffees.mebrew', (user,search) => {
+  Meteor.publish('coffees.mebrew', (user) => {
     // Gather favorites list
     let favorite = new Favorite(user);
     let favorites = Favorites.find(favorite.OnlyUsername());
     let coffeeList = [];
 
-    //// Setup if currently Searching
-    let isSearching = false;
-    if(!!search){
-      isSearching = true;
-    }
-    let regex = new RegExp( search, 'i' );
-
-    favorites.forEach((e) => {
-      let name = (!!isSearching)? {$regex: regex} : Coffees.findOne({_id: e.CoffeeId}).CoffeeName;
-      coffeeList.push({CoffeeName: name});
-    });
-
-    let favoriteRegex = new Coffee({Username: user, CoffeeName: {$regex: regex}})
+    let favoriteRegex = new Coffee({Username: user})
 
     coffeeList.push(
       favoriteRegex.Get()

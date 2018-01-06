@@ -1,0 +1,132 @@
+<template name="Browse">
+  <div id="{{#if currentUser}}hero{{else}}hero-login{{/if}}">
+    <div class="header">
+      <h1>
+        <a id="title">BrewBrowse</a>
+      </h1>
+      <p>The world's foremost coffee network.</p>
+      {{#if currentUser}}
+      <p> My name is {{> loginButtons align="right"}} and I love coffee! </p>
+      {{else}}
+      <p> I'm a member,
+        <span style="a:link{color: white}">{{> loginButtons align="right"}}</span>
+      </p>
+      {{/if}}
+    </div>
+    {{#if currentUser}}
+    <!-- <ul class="nav nav-pills pull-right">
+      <li role="presentation"><a href="/chat">Brew Chat</a></li>
+      <li role="presentation"><input type="text" name="search" class="form-control search" width="250px" placeholder="Find a brew..."></li>
+      <li role="presentation" class="active"><a href="/">Home</a></li>
+      <li role="presentation"><a href="/new">New Brew</a></li>
+      <li role="presentation"><a class="goMe" style="cursor:pointer">Me</a></li>
+    </ul> -->
+
+      <!-- Testing for Different button Layout -->
+      <!-- <nav class="navbar navbar-default//navbar-inverse navbar-static-top//navbar-fixed-top"> -->
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container-fluid">
+              <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                  <i class="fa fa-bars" aria-hidden="true"></i>                       
+                </button>
+                <a class="navbar-brand" href="/">
+                  <img src="/img/logo.png" href="/" style="max-height:50px;margin-right:50px;margin-top:-10px">
+                </a>
+              </div>
+              <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav navbar-left">
+                  <li><a href="/"><i class="fa fa-home" aria-hidden="true"></i> Home</a></li>
+                  <li class="active"><a href="/browse"><i class="fa fa-search" aria-hidden="true"></i> Browse</a></li>
+                  <li><a href="/new"><i class="fa fa-coffee" aria-hidden="true"></i> New</a></li>
+                  <li><a href="/chat"><i class="fa fa-commenting-o" aria-hidden="true"></i> Chat</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                  <li><a class="goMe" style="cursor:pointer"><i class="fa fa-user" aria-hidden="true"></i> Me</a></li>
+                  <li><a class="goOut" style="cursor:pointer"><i class="fa fa-sign-out" aria-hidden="true"></i> Sign out</a></li>
+                </ul>
+              </div>
+            </div>
+          </nav>
+        <!-- Testing for Different button Layout -->
+    {{/if}}
+  </div>
+
+  {{#if currentUser}}
+  <!-- {> webrewLoader} -->
+  <div class="container">
+    <p></p>
+    <div class="row">
+      <div id="topDynamicContent" class="container" style="padding-top: 5px;padding-bottom: 5px;background: white;border-bottom: 1px solid #ccc;box-shadow: 0 0 10px #ddd;-webkit-box-shadow: 0 0 10px #ddd;">
+    
+        <div style="float: left;">
+          {{#if searchCount}}
+          <span id="result-count" style="float: left;">1-{{searchCount}} of {{searchCount}} results</span>
+          {{/if}}
+        </div>
+        <div style="float: right;">
+          <span id="sort_by_text">Sort by&nbsp;</span>
+          <select name="sort" id="sort" class="sort">
+            <option value="CoffeeName">Coffee Name</option>
+            <option value="CoffeeCompany">Coffee Company</option>
+            <option value="AverageRating">Avg. Coffee Review</option>
+            <option value="CreatedAt">Date Added</option>
+          </select>
+    
+        </div>
+      </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2 thumbnail float-right" style="background-color: #fff; padding-left: 10px; padding-right: 10px;">
+              <!--Search-->
+              <h3>Search Criteria</h3>
+              <h4>Keyword</h4>
+              <section id="sectionsearch" style="position: relative;">
+                <i class="fa fa-search isearch" aria-hidden="true" style="position: absolute; left: 3px; top: 7px;"></i>
+                <input id="keysearch" name="keysearch" class="form-control input-md" placeholder="Search for coffees" tabindex="1" style="padding-left: 20px;padding-right: 20px;" value="{{searchText}}">
+                <a id="search-clear" class="fa fa-times-circle search-clear" aria-hidden="true" style="display:none; position: absolute; right: 3px; top: 8px;" href=""></a>
+              </section>
+
+              <h4>Avg. Review & Up</h4>
+              <input id="brating" required="" class="form-group" type="hidden" name="brating" value="0">{{> rating value=searchRating disabled=false}}
+          
+          <h4>Coffee Roast</h4>
+          <form>
+              <div class="checkbox">
+                <label style="color: #D5BDAE"><input class="checkRoast" type="checkbox" checked="checked" value="Light Roast" id="checkLR">Light Roast</label>
+              </div>
+              <div class="checkbox">
+                <label style="color: #975934"><input class="checkRoast" type="checkbox" checked="checked" value="Medium Roast" id="checkMR">Medium Roast</label>
+              </div>
+              <div class="checkbox">
+                  <label style="color: #653B23"><input class="checkRoast" type="checkbox" checked="checked" value="Medium-Dark Roast" id="checkMDR">Medium-Dark Roast</label>
+                </div>
+                <div class="checkbox">
+                  <label style="color: #321E11"><input class="checkRoast" type="checkbox" checked="checked" value="Dark Roast" id="checkDR">Dark Roast</label>
+                </div>
+          </form>
+        </div>
+        <div class="col-sm-10">
+          <!--Content-->
+          {{#if searching}}
+            <div style="text-align:center;"><svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="40px" height="40px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50; margin-top:10vh;" xml:space="preserve">
+              <path fill="#825d43" d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
+              <animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.6s" repeatCount="indefinite"/>
+              </path>
+            </svg></div>
+          {{else}}
+              <div class="row v-align">
+                  <div class="pull-right"></div>
+                  {{#each coffees}} 
+                    {{> coffee}} 
+                  {{else}}
+                    <h3 style="margin:50px;">No coffees were found based on the criteria you entered. You should add the coffee you are looking for if something is missing!</h3>
+                  {{/each}}
+              </div>
+          {{/if}}
+        </div>
+        
+    </div>
+  </div>
+  {{/if}}
+</template>

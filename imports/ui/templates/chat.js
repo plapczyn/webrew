@@ -9,6 +9,7 @@ Template.chat.onCreated( function (){
     //subsReady
     $('.loader').fadeOut('fast', function(){
       $('.loading-wrapper').fadeIn('slow');
+      $(".messages").scrollTop($(".messages")[0].scrollHeight);
     });
   });
   this.subscribe('roomusers');

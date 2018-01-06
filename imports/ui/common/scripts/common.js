@@ -184,6 +184,12 @@ class WebrewColorPallet
     static MediumDarkRoast = {Name: "Medium-Dark Roast", Color: "#653B23"};
     static DarkRoast = {Name: "Dark Roast", Color: "#321E11"};
     
+    static LightGrey = {Name: "LightGrey", Color: "#e8e9eb"};
+    static Grey = {Name: "Grey", Color: "#a9a9ab"};
+    static LightBrown = {Name: "LightBrown", Color: "#b69476"};
+    static DarkBrown = {Name: "DarkBrown", Color: "#66290b"};
+    static BlackBrown = {Name: "BlackBrown", Color: "#120907"};
+
     static GetColor(roastName)
     {
         if(typeof roastName !== 'string'){

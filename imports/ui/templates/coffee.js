@@ -1,12 +1,8 @@
 import './coffee.html';
-import {ColorPallet} from '../body.js';
 import './coffee.css';
 import Common from '../common/scripts/common.js'
 
 Template.coffee.helpers({
-  coffeeColor(roast){
-    return ColorPallet[roast];
-  },
   CoffeeDescriptionShort(){
     let description = this.CoffeeDescription;
     if(description.length >= 100)

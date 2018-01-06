@@ -11,10 +11,6 @@ Template.Home.onCreated( function (){
       $('.loading-wrapper').fadeIn('slow');
     });
   });
-
-  let template = Template.instance();
-  // template.searching   = new ReactiveVar( false );
-  template.searchQuery = new ReactiveVar();
 });
 
 Template.Home.onRendered( function() {
@@ -24,24 +20,14 @@ Template.Home.onRendered( function() {
 Template.Home.helpers({
   coffees () {
     return Coffees.find({},{ sort: { CreatedAt: -1 } });
-  },
-  query() {
-    return Template.instance().searchQuery.get();
-  },
+  }
 });
-
-
 
 Template.Home.events({
   'click .goMe' (event){
     FlowRouter.go('mebrew', {userName: Meteor.user().username})
   },
-  'keyup [name="search"]' ( event) {
-    let value = event.target.value.trim();
-    Template.instance().searchQuery.set(value)
-
-    if ( value === '' ) {
-      Template.instance().searchQuery.curValue =  value;
-    }
+  'click .goOut' (event) {
+    Meteor.logout();
   }
 });

@@ -10,28 +10,76 @@
       {{/if}}
     </div>
     {{#if currentUser}}
-      <ul class="nav nav-pills pull-right">
+      <!-- <ul class="nav nav-pills pull-right">
         <li role="presentation"><input type="text" name="search" class="form-control search" width="250px" placeholder="Find a brew..."></li>
         <li role="presentation" class="active"><a href="/">Home</a></li>
         <li role="presentation"><a href="/new">New Brew</a></li>
         <li role="presentation"><a class="goMe" style="cursor:pointer">Me</a></li>
-      </ul>
+      </ul> -->
+
+      <!-- Testing for Different button Layout -->
+      <!-- <nav class="navbar navbar-default//navbar-inverse navbar-static-top//navbar-fixed-top"> -->
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container-fluid">
+              <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                  <i class="fa fa-bars" aria-hidden="true"></i>                       
+                </button>
+                <a class="navbar-brand" href="/">
+                  <img src="/img/logo.png" href="/" style="max-height:50px;margin-right:50px;margin-top:-10px">
+                </a>
+              </div>
+              <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav navbar-left">
+                  <li><a href="/"><i class="fa fa-home" aria-hidden="true"></i> Home</a></li>
+                  <li class="active"><a href="/browse"><i class="fa fa-search" aria-hidden="true"></i> Browse</a></li>
+                  <li><a href="/new"><i class="fa fa-coffee" aria-hidden="true"></i> New</a></li>
+                  <li><a href="/chat"><i class="fa fa-commenting-o" aria-hidden="true"></i> Chat</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                  <li><a class="goMe" style="cursor:pointer"><i class="fa fa-user" aria-hidden="true"></i> Me</a></li>
+                  <li><a class="goOut" style="cursor:pointer"><i class="fa fa-sign-out" aria-hidden="true"></i> Sign out</a></li>
+                </ul>
+              </div>
+            </div>
+          </nav>
+        <!-- Testing for Different button Layout -->
     {{/if}}
   </div>
   {{#if isReady}}
   {{#if currentUser}}
   {{#each brew}}
-  <div class="container">
+  <div class="container" style="position:relative;">
         <h1>{{CoffeeName}}</h1>
+        <p class="brand-name">{{CoffeeCompany}}</p>
+        <hr style="margin:0; padding-bottom: 20px" />
+        {{#if isOwner}}
+          <div class="dropdown" style="position: absolute;top: 15px; right: 15px;">
+              <i class="fa fa-pencil-square-o fa-2x dropdown-toggle" aria-hidden="true" data-toggle="dropdown" aria-expanded="false"></i>
+              <ul class="dropdown-menu" style="position:relative">
+                  <li><a class="editModal">Edit</a></li>
+                  <li><a class="deleteModal">Delete</a></li>
+              </ul>
+          </div>
+        {{/if}}
     <div class="row">
       <div class="col-md-4">
         {{#if AverageRating}}
-        <div class="circle">
-          <div class="overall"> Overall </div>
-          <div class="rating-value">{{AverageRating}}</div>
+        <div class="rating-for-brew">
+            <div class="circle" style="background-color:{{getColor}};">
+              <div class="overall"> Overall </div>
+              <div class="rating-value">{{AverageRating}}</div>
+            </div>
+            {{> rating value=GetCoffeeRating disabled=true}}
+        </div>
+        {{else}}
+        <div class="not-rating-for-brew">
+        <p style="font-size: 20px; font-family: Roboto;">Not yet rated!</p>
         </div>
         {{/if}}
-        <h3>{{CoffeeRoast}}</h3>
+        <h3>
+          <span class="label label-default" style="background-color:{{getColor}};">{{CoffeeRoast}}</span>
+        </h3>
         <p style="margin-bottom: 25px"> Added {{tm_now CreatedAt}} by <a href="/mebrew/{{Username}}" class="">{{Username}}</a></p>
         {{#if ImageUrl}}
         <img src="{{ImageUrl}}" class="img-responsive" style="margin-bottom: 10px; max-height: 300px; object-fit:cover; width:100%" alt="...">
@@ -44,15 +92,6 @@
         <button type="button" class="addToFavorites btn btn-success">Add to Favorites</button>
         {{else}}
         <button type="button" class="removeFromFavorites btn btn-success">Not a Favorite</button>
-        {{/if}}
-        {{#if isOwner}}
-          <div class="dropdown" style="position: absolute;top: 0px; right: 15px;">
-              <i class="fa fa-pencil-square-o fa-2x dropdown-toggle" aria-hidden="true" data-toggle="dropdown" aria-expanded="false"></i>
-              <ul class="dropdown-menu" style="position:relative">
-                  <li><a class="editModal">Edit</a></li>
-                  <li><a class="deleteModal">Delete</a></li>
-              </ul>
-          </div>
         {{/if}}
       </div>
       <div class="col-md-4" style="max-height: 500px; overflow: auto;">
@@ -94,6 +133,10 @@
 
 <template name="modalEdit">
   <form>
+      <div class="form-group">
+          <label>Company</label>
+          <input required type="text" name="company" class="form-control" value="{{CoffeeCompany}}">
+      </div>
       <div class="form-group">
           <label>Name</label>
           <input required type="text" name="title" class="form-control" value="{{CoffeeName}}">
