@@ -7,7 +7,6 @@ import { Coffee } from '../../../lib/DatabaseModels.js';
 import { Brewfile } from '../../../lib/DatabaseModels.js';
 import Common from '../common/scripts/common.js';
 import '../templates/modals/mebrew/meModal.js';
-import '../common/templates/webrewLoader.html';
 
 Template.mebrew.onCreated( () => {
   let template = Template.instance();
@@ -34,9 +33,6 @@ Template.mebrew.onRendered( function() {
 });
 
 Template.mebrew.events({
-  'click .goMe'(event) {
-    FlowRouter.go('mebrew', { userName: Meteor.user().username })
-  },
   'click .changeProfile'(event) {
     if (BrewFiles.findOne()) {
       var brewfile = new Brewfile(BrewFiles.findOne());

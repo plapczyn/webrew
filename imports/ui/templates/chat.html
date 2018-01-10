@@ -10,41 +10,7 @@
       {{/if}}
     </div>
     {{#if currentUser}}
-      <!-- <ul class="nav nav-pills pull-right">
-        <li role="presentation" class="active"><a href="/chat">Brew Chat</a></li>
-        <li role="presentation"><input type="text" name="search" class="form-control search" width="250px" placeholder="Find a brew..."></li>
-        <li role="presentation"><a href="/">Home</a></li>
-        <li role="presentation"><a href="/new">New Brew</a></li>
-        <li role="presentation"><a class="goMe" style="cursor:pointer">Me</a></li>
-      </ul> -->
-
-      <!-- Testing for Different button Layout -->
-      <!-- <nav class="navbar navbar-default//navbar-inverse navbar-static-top//navbar-fixed-top"> -->
-        <nav class="navbar navbar-default navbar-fixed-top">
-            <div class="container-fluid">
-              <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                  <i class="fa fa-bars" aria-hidden="true"></i>                       
-                </button>
-                <a class="navbar-brand" href="/">
-                  <img src="/img/logo.png" href="/" style="max-height:50px;margin-right:50px;margin-top:-10px">
-                </a>
-              </div>
-              <div class="collapse navbar-collapse" id="myNavbar">
-                <ul class="nav navbar-nav navbar-left">
-                  <li><a href="/"><i class="fa fa-home" aria-hidden="true"></i> Home</a></li>
-                  <li><a href="/browse"><i class="fa fa-search" aria-hidden="true"></i> Browse</a></li>
-                  <li><a href="/new"><i class="fa fa-coffee" aria-hidden="true"></i> New</a></li>
-                  <li class="active"><a href="/chat"><i class="fa fa-commenting-o" aria-hidden="true"></i> Chat</a></li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                  <li><a class="goMe" style="cursor:pointer"><i class="fa fa-user" aria-hidden="true"></i> Me</a></li>
-                  <li><a class="goOut" style="cursor:pointer"><i class="fa fa-sign-out" aria-hidden="true"></i> Sign out</a></li>
-                </ul>
-              </div>
-            </div>
-          </nav>
-        <!-- Testing for Different button Layout -->
+      {{> Header}}
     {{/if}}
   </div>
   {{#if currentUser}}

@@ -9,6 +9,13 @@
     margin-bottom: 10px;
 }
 
+.newbrew select {
+    text-align-last: center;
+    width: 50%;
+    padding: 10px;
+    border-radius: 10px;
+}
+
 .newbrew textarea {
     width: 50%;
     padding: 15px;
@@ -25,4 +32,47 @@
 
 :-moz-placeholder { /* Firefox 18- */
    text-align: center;
+}
+
+.brewlabel {
+    display:inline-block;
+    color:#a9a9a9;
+    margin-right: 25px;
+}
+
+.btn-newbrew {
+    color: #fff;
+    background-color: #b69476;
+    border-color: #66290b;
+}
+.btn-newbrew:focus {
+    color: #fff;
+    background-color: #5c4b3d;
+    border-color: #122b40;
+}
+.btn-newbrew:hover {
+    color: #fff;
+    background-color: #806854;
+    border-color: #502009;
+}
+.btn-newbrew:active {
+    color: #fff;
+    background-color: #5c4b3d;
+    border-color: #502009;
+}
+
+@media (min-width: 768px) {
+    .brewlabel {
+        float: right;
+    }
+    .newbrew input, .newbrew textarea, .newbrew select {
+        float: left;
+        width: 33vw;
+    }
+}
+
+@media (max-width: 767px) {
+    .newbrew input, .newbrew textarea, .newbrew select {
+        width: 60vw;
+    }
 }

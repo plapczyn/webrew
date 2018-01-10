@@ -1,7 +1,5 @@
 import './home.html';
 import './home.css'
-import '../common/templates/webrewLoader.html';
-
 import { Coffees } from '../../api/collections/coffees.js';
 
 Template.Home.onCreated( function (){
@@ -23,11 +21,5 @@ Template.Home.helpers({
   }
 });
 
-Template.Home.events({
-  'click .goMe' (event){
-    FlowRouter.go('mebrew', {userName: Meteor.user().username})
-  },
-  'click .goOut' (event) {
-    Meteor.logout();
-  }
-});
+// Template.Home.events({
+// });

@@ -97,10 +97,6 @@ Template.rebrew.events({
             $("#EditreBrewingModal" + this.id).modal("hide");
         });
     },
-    //Goto Profile
-    'click .goMe' (event){
-        FlowRouter.go('mebrew', {userName: Meteor.user().username});
-    },
     //Star Rating
     'click .rating'(event) {
         const value = $(event.target).val();

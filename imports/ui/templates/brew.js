@@ -191,12 +191,6 @@ Template.brew.events({
         CoffeeRoast: coffee.CoffeeRoast
       }
     });
-  },
-
-
-  //Goto Profile
-  'click .goMe' (event){
-    FlowRouter.go('mebrew', {userName: Meteor.user().username});
   }
 });
 

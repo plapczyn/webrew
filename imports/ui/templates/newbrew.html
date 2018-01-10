@@ -10,70 +10,70 @@
             {{/if}}
         </div>
         {{#if currentUser}}
-        <!-- <ul class="nav nav-pills pull-right">
-            <li role="presentation"><input type="text" name="search" class="form-control search" width="250px" placeholder="Find a brew..."></li>
-            <li role="presentation"><a href="/">Home</a></li>
-            <li role="presentation" class="active"><a href="/new">New Brew</a></li>
-            <li role="presentation"><a class="goMe" style="cursor:pointer">Me</a></li>
-        </ul> -->
-
-      <!-- Testing for Different button Layout -->
-      <!-- <nav class="navbar navbar-default//navbar-inverse navbar-static-top//navbar-fixed-top"> -->
-        <nav class="navbar navbar-default navbar-fixed-top">
-                <div class="container-fluid">
-                  <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                      <i class="fa fa-bars" aria-hidden="true"></i>                       
-                    </button>
-                    <a class="navbar-brand" href="/">
-                      <img src="/img/logo.png" href="/" style="max-height:50px;margin-right:50px;margin-top:-10px">
-                    </a>
-                  </div>
-                  <div class="collapse navbar-collapse" id="myNavbar">
-                    <ul class="nav navbar-nav navbar-left">
-                      <li><a href="/"><i class="fa fa-home" aria-hidden="true"></i> Home</a></li>
-                      <li><a href="/browse"><i class="fa fa-search" aria-hidden="true"></i> Browse</a></li>
-                      <li class="active"><a href="/new"><i class="fa fa-coffee" aria-hidden="true"></i> New</a></li>
-                      <li><a href="/chat"><i class="fa fa-commenting-o" aria-hidden="true"></i> Chat</a></li>
-                    </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                      <li><a class="goMe" style="cursor:pointer"><i class="fa fa-user" aria-hidden="true"></i> Me</a></li>
-                      <li><a class="goOut" style="cursor:pointer"><i class="fa fa-sign-out" aria-hidden="true"></i> Sign out</a></li>
-                    </ul>
-                  </div>
-                </div>
-              </nav>
-            <!-- Testing for Different button Layout -->
+          {{> Header}}
         {{/if}}
     </div>
     {{#if currentUser}}
     <div class="container">
         <p> </p>
         <form class="newbrew text-center">
-            <div class="form-group">
-                <input required type="text" name="company" placeholder="Who makes this delicious brew?" data-toggle="tooltip" data-placement="top" title="What company makes the brew?" />
+            <div class="row">
+                <div class="col-sm-5">
+                    <h4 class="brewlabel">Coffee Company</h4>
+                </div>
+                <div class="col-sm-7">
+                    <div class="form-group">
+                        <input required type="text" name="company" placeholder="Who makes this delicious brew?" data-toggle="tooltip" data-placement="top" title="What company makes the brew?" />
+                    </div>    
+                </div>
             </div>
-            <div class="form-group">
-                <input required type="text" name="name" placeholder="What shall we call this delicious brew?" data-toggle="tooltip" data-placement="top" title="What is the name of the brew?" />
+            <div class="row">
+                <div class="col-sm-5">
+                    <h4 class="brewlabel">Coffee Name</h4>
+                </div>
+                <div class="col-sm-7">
+                    <div class="form-group">
+                        <input required type="text" name="name" placeholder="What shall we call this delicious brew?" data-toggle="tooltip" data-placement="top" title="What is the name of the brew?" />
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label style="color:#a9a9a9;">What type of roast is it?</label>
-                <select required class="form-group" style="width:auto; padding:10px; border-radius:10px;" name="roast">
-                    <option style="color: #D5BDAE">Light Roast</option>
-                    <option style="color: #975934">Medium Roast</option>
-                    <option style="color: #653B23">Medium-Dark Roast</option>
-                    <option style="color: #321E11">Dark Roast</option>
-                </select>
+            <div class="row">
+                <div class="col-sm-5">
+                    <h4 class="brewlabel">Coffee Roast</h4>
+                </div>
+                <div class="col-sm-7">
+                    <div class="form-group">
+                            <select required class="form-group" name="roast">
+                                <option style="color: #D5BDAE">Light Roast</option>
+                                <option style="color: #975934">Medium Roast</option>
+                                <option style="color: #653B23">Medium-Dark Roast</option>
+                                <option style="color: #321E11">Dark Roast</option>
+                            </select>
+                        </div>    
+                </div>
             </div>
-
-            <div class="form-group">
-                <input type="text" name="imageURL" placeholder="Where can we find a picture of it?" data-toggle="tooltip" data-placement="top" title="Where is a picture of the brew?"/>
+            <div class="row">
+                <div class="col-sm-5">
+                    <h4 class="brewlabel">Coffee Image</h4>
+                </div>
+                <div class="col-sm-7">
+                    <div class="form-group">
+                        <input type="text" name="imageURL" value="" placeholder="Where can we find a picture of it?" data-toggle="tooltip" data-placement="top" title="Where is a picture of the brew?"/>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <textarea required placeholder="Are you a fan of delicious flavor and literary commentary? Tell us about this brew" rows="3" id="description" data-toggle="tooltip" data-placement="top" title="Tell us about this brew?"></textarea>
+            <div class="row">
+                <div class="col-sm-5">
+                    <h4 class="brewlabel">Coffee Description</h4>
+                </div>
+                <div class="col-sm-7">
+                    <div class="form-group">
+                        <textarea required placeholder="Are you a fan of delicious flavor and literary commentary? Tell us about this brew" rows="3" id="description" data-toggle="tooltip" data-placement="top" title="Tell us about this brew?"></textarea>
+                    </div>
+                </div>
             </div>
-            <button type="submit" class="btn btn-primary btn-lg center-block" style="margin-bottom:30px;">Submit</button>
-        </form>
+            <button type="submit" class="btn btn-newbrew btn-lg center-block" style="margin-bottom:30px;"><i class="fa fa-coffee" aria-hidden="true"></i> Submit</button>
+        </form>   
     </div>
     {{/if}}
 </template>

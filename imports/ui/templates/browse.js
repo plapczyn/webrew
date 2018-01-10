@@ -1,6 +1,5 @@
 import './browse.html';
 import './browse.css'
-import '../common/templates/webrewLoader.html';
 //import { Session } from 'meteor/session'
 import { Coffees } from '../../api/collections/coffees.js';
 
@@ -74,9 +73,6 @@ Template.Browse.helpers({
 });
 
 Template.Browse.events({
-  'click .goMe' (event){
-    FlowRouter.go('mebrew', {userName: Meteor.user().username})
-  },
   'keyup [name="keysearch"]' ( event, template) {
     let value = event.target.value.trim();
     let e = document.getElementById("search-clear");
@@ -86,7 +82,7 @@ Template.Browse.events({
       e.style.display = "none";
     }
 
-    if ( value !== '' && event.keyCode === 13 ) {
+    if ( event.keyCode === 13 ) {
       template.searchText.set( value );
       template.searching.set( true ); 
     }
@@ -125,5 +121,8 @@ Template.Browse.events({
     value = value.toString();
     template.searchRoast.set( value );
     template.searching.set( true );
+  },
+  'click .critbtn' (event, template){
+    $("#mySrchbar").slideToggle();
   }
 });

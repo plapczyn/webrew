@@ -1,0 +1,25 @@
+<!-- <nav class="navbar navbar-default//navbar-inverse navbar-static-top//navbar-fixed-top"> -->
+<template name="Header">
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <i class="fa fa-bars" aria-hidden="true"></i>
+            </button>
+            <a class="navbar-brand" href="/"><img src="/img/logo.png" href="/" style="max-height:50px;margin-right:50px;margin-top:-10px"></a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav navbar-left">
+                <li id="hbhome" class="headerbutton"><a href="/"><i class="fa fa-home" aria-hidden="true"></i> Home</a></li>
+                <li id="hbbrowse" class="headerbutton"><a href="/browse"><i class="fa fa-search" aria-hidden="true"></i> Browse</a></li>
+                <li id="hbnew" class="headerbutton"><a href="/new"><i class="fa fa-coffee" aria-hidden="true"></i> New</a></li>
+                <li id="hbchat" class="headerbutton"><a href="/chat"><i class="fa fa-commenting-o" aria-hidden="true"></i> Chat</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li id="hbprofile" class="headerbutton"><a class="goMe" style="cursor:pointer"><i class="fa fa-user" aria-hidden="true"></i> Me</a></li>
+                <li id="hbsignout" class="headerbutton"><a class="goOut" style="cursor:pointer"><i class="fa fa-sign-out" aria-hidden="true"></i> Sign out</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+</template>

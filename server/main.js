@@ -61,3 +61,7 @@ Accounts.onCreateUser(function (options, user) {
     
     return user;
 });
+
+Accounts.onLogin(function () {
+    FlowRouter.go("/");
+});

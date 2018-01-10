@@ -3,6 +3,7 @@ import './newbrew.css';
 import { Coffees } from '../../api/collections/coffees.js';
 import Common from '../common/scripts/common.js';
 import { Coffee } from '../../../lib/DatabaseModels.js';
+
 Template.newbrew.events({
   'submit .newbrew'(event) {
     // Prevent default browser form submit
@@ -34,13 +35,6 @@ Template.newbrew.events({
         Common.WebrewToast.Show(obj.coffeename + ' already exists. click to check it out.', "error");
       }
     });
-
-    // Clear form
-  },
-
-  //Goto Profile
-  'click .goMe' (event){
-    FlowRouter.go('mebrew', {userName: Meteor.user().username})
   },
   'click .newbrew' (event){
     $('[data-toggle="tooltip"]').tooltip();

@@ -2,7 +2,6 @@ import './chat.html';
 import './chat.css';
 import { Messages } from '../../api/collections/coffees.js';
 import { RoomUsers } from '../../api/collections/coffees.js';
-import '../common/templates/webrewLoader.html';
 
 Template.chat.onCreated( function (){
   this.subscribe('roommessages', function () {
@@ -20,9 +19,6 @@ Template.chat.onRendered( function() {
 });
 
 Template.chat.events({
-  'click .goMe' (event){
-    FlowRouter.go('mebrew', {userName: Meteor.user().username})
-  },
   'click .send-message'(event){
     event.preventDefault();
     if( $('#messagebox').val().trim() == '') {
