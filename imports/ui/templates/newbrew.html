@@ -1,80 +1,83 @@
 <template name="newbrew">
     <div id="hero">
         <div class="header">
-            <h1><a id="title">newBrew</a></h1>
+            <h1>
+                <a id="title">newBrew</a>
+            </h1>
             <p>The world's foremost coffee network.</p>
             <p> My name is {{> loginButtons align="right"}} and I love coffee! </p>
         </div>
         {{> Header}}
     </div>
-    
+
     {{#if currentUser}}
     <div class="container">
-        <p> </p>
-        <form class="newbrew text-center">
-            <div class="row">
-                <div class="col-sm-5">
-                    <h4 class="brewlabel">Coffee Company</h4>
-                </div>
-                <div class="col-sm-7">
-                    <div class="form-group">
-                        <input required type="text" name="company" placeholder="Who makes this delicious brew?" data-toggle="tooltip" data-placement="top" title="What company makes the brew?" />
-                    </div>    
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-5">
-                    <h4 class="brewlabel">Coffee Name</h4>
-                </div>
-                <div class="col-sm-7">
-                    <div class="form-group">
-                        <input required type="text" name="name" placeholder="What shall we call this delicious brew?" data-toggle="tooltip" data-placement="top" title="What is the name of the brew?" />
+        <form class="newbrew">
+            <div class="row newbrew-container">
+                <div class="col-md-8 col-md-offset-2">
+                    <div class="thumbnail">
+                        <div class="row">
+                            <div class="col-md-8 col-md-offset-2">
+                                <div class="webrew-input-container">
+                                    <h3 class="webrew-input-label">&nbsp;Company</h3>
+                                    <!-- <div id="coffeeCompany"></div> -->
+                                    <input class="webrew-input" required type="text" name="company" 
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8 col-md-offset-2">
+                                <div class="webrew-input-container">
+                                    <h3 class="webrew-input-label">&nbsp;Name</h3>
+                                    <!-- <div id="coffeeCompany"></div> -->
+                                    <input class="webrew-input" autocomplete="off" required type="text" name="name" data-toggle="tooltip" data-placement="top"
+                                        title="What is the name of the brew?" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8 col-md-offset-2">
+                                <div class="webrew-input-container">
+                                    <h3 class="webrew-input-label">&nbsp;Roast</h3>
+                                    <select required name="roast" class="webrew-select">
+                                        <option style="color: #D5BDAE">Light Roast</option>
+                                        <option style="color: #975934">Medium Roast</option>
+                                        <option style="color: #653B23">Medium-Dark Roast</option>
+                                        <option style="color: #321E11">Dark Roast</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8 col-md-offset-2">
+                                <div class="webrew-input-container">
+                                    <h3 class="webrew-input-label">Image</h3>
+                                    <div id="imgDiv"></div>
+                                    <input class="webrew-input" type="text" name="imageURL" value="" data-toggle="tooltip" data-placement="top" title="Where is a picture of the brew?"
+                                    />
+                                    <p class="imgcomment">Enter the
+                                        <i class="fa fa-link" aria-hidden="true"></i> or choose an
+                                        <i class="fa fa-picture-o" aria-hidden="true"></i> to upload.</p>
+                                    <input type="file" id="imageFile" name="imageFile" style="background-color:white;display:inline;" accept="image/*">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8 col-md-offset-2">
+                                <div class="webrew-input-container">
+                                    <h3 class="webrew-input-label">Coffee Description</h3>
+                                    <textarea required rows="4" class="webrew-textarea"
+                                        id="description" data-toggle="tooltip" data-placement="top" title="Tell us about this brew"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-newbrew btn-lg center-block">
+                            <i class="fa fa-coffee" aria-hidden="true"></i> Submit</button>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-sm-5">
-                    <h4 class="brewlabel">Coffee Roast</h4>
-                </div>
-                <div class="col-sm-7">
-                    <div class="form-group">
-                            <select required class="form-group" name="roast">
-                                <option style="color: #D5BDAE">Light Roast</option>
-                                <option style="color: #975934">Medium Roast</option>
-                                <option style="color: #653B23">Medium-Dark Roast</option>
-                                <option style="color: #321E11">Dark Roast</option>
-                            </select>
-                        </div>    
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-5">
-                    <h4 class="brewlabel" style="position:relative;">Coffee Image</h4>
-                    <div id="imgDiv"></div>
-                </div>
-                <div class="col-sm-7">
-                    <div class="form-group">
-                        <input type="text" name="imageURL" value="" placeholder="Where can we find a picture of it?" data-toggle="tooltip" data-placement="top" title="Where is a picture of the brew?"/>
-                    </div>
-                    <p class="imgcomment">Enter the <i class="fa fa-link" aria-hidden="true"></i> or choose an <i class="fa fa-picture-o" aria-hidden="true"></i> to upload.</p>
-                    <div class="form-group">
-                        <input type="file" id="imageFile" name="imageFile" style="background-color:white;display:inline;" accept="image/*">
-                        <!-- <div id="imgDiv"></div> -->
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-5">
-                    <h4 class="brewlabel">Coffee Description</h4>
-                </div>
-                <div class="col-sm-7">
-                    <div class="form-group">
-                        <textarea required placeholder="Are you a fan of delicious flavor and literary commentary? Tell us about this brew" rows="3" id="description" data-toggle="tooltip" data-placement="top" title="Tell us about this brew?"></textarea>
-                    </div>
-                </div>
-            </div>      
-            <button type="submit" class="btn btn-newbrew btn-lg center-block" style="margin-bottom:30px;"><i class="fa fa-coffee" aria-hidden="true"></i> Submit</button>
-        </form>   
+        </form>
     </div>
     {{/if}}
 </template>

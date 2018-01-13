@@ -1,4 +1,5 @@
 import '../templates/webrewModal.html';
+import '../templates/webrewInput.js';
 
 class WebrewToast
 {
@@ -224,8 +225,29 @@ class WebrewColorPallet
     }
 }
 
+class WebrewInput
+{
+    static instances = [];
+    options;
+    template;
+
+    constructor(options)
+    {
+        this.options = options;
+        this.options.elementId = "webrewInput" + this.options.renderOnId + WebrewInput.instances.length;
+        this.render();
+    }
+    
+    render()
+    {
+        this.template = Blaze.renderWithData(Template.webrewInput, this.options, $("#" + this.options.renderOnId)[0]);
+        WebrewInput.instances.push(this.template);
+    }
+}
+
 module.exports = {
     WebrewToast: WebrewToast,
     WebrewModal: WebrewModal,
-    WebrewColorPallet: WebrewColorPallet
+    WebrewColorPallet: WebrewColorPallet,
+    WebrewInput: WebrewInput
 }

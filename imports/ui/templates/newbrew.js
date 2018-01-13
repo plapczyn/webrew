@@ -94,6 +94,12 @@ Template.newbrew.helpers({
   }
 });
 
+
+Template.newbrew.onRendered(function() {
+  console.log($("#coffeeCompany"));
+  let gg = new Common.WebrewInput({renderOnId: "coffeeCompany"});
+});
+
 uploadFile = function (id) {
   var file = document.getElementById("imageFile").files[0];
   if (file) {
