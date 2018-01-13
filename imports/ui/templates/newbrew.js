@@ -46,3 +46,8 @@ Template.newbrew.helpers({
     return Common.WebrewColorPallet.roastName.Color;
   }
 });
+
+Template.newbrew.onRendered(function() {
+  console.log($("#coffeeCompany"));
+  let gg = new Common.WebrewInput({renderOnId: "coffeeCompany"});
+});
