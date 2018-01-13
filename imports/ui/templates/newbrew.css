@@ -1,4 +1,4 @@
-.newbrew input {
+/*.newbrew input {
     width: 50%;
     padding: 15px;
     box-sizing: border-box;
@@ -30,7 +30,7 @@
    text-align: center;
 }
 
-:-moz-placeholder { /* Firefox 18- */
+:-moz-placeholder { 
    text-align: center;
 }
 
@@ -40,11 +40,7 @@
     margin-right: 25px;
 }
 
-.btn-newbrew {
-    color: #fff;
-    background-color: #b69476;
-    border-color: #66290b;
-}
+
 .btn-newbrew:focus {
     color: #fff;
     background-color: #5c4b3d;
@@ -98,4 +94,49 @@
         margin-bottom: 10px;
         position: relative;
     }
+}
+*/
+
+.webrew-input
+{
+    height: 40px;
+    font-family: Roboto;
+    font-size: 1.250rem;
+    width: 100%;
+    padding: 7px;
+}
+
+.btn-newbrew {
+    color: #fff;
+    background-color: #b69476;
+    border-color: #66290b;
+}
+
+.webrew-input-container
+{
+    padding-bottom: 15px;
+}
+
+.webrew-textarea
+{
+    font-family: Roboto;
+    font-size: 1.250rem;
+    width: 100%;
+    padding: 7px;
+}
+
+.webrew-select
+{
+    height:40px;
+    width: 100%;
+    text-align-last: center;
+}
+
+.newbrew-container
+{
+    padding-top: 20px;
+}
+.webrew-input-label
+{
+    padding-bottom: 4px;
 }
