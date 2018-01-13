@@ -1,0 +1,9 @@
+<template name="Login">
+    <div id="hero-login">
+      <div class="header">
+        <h1><a id="title">weBrew</a></h1>
+        <p>The world's foremost coffee network.</p>
+        {{#if currentUser}}{{else}}<p> I'm a member, <span style="a:link{color: white}">{{> loginButtons align="right"}}</span></p>{{/if}}
+      </div>
+    </div>
+</template>

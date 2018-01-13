@@ -16,21 +16,18 @@ if (Meteor.isServer) {
 
     if ( searchText || searchRating || searchRoast ) {
       let regex = new RegExp( searchText, 'i' );
-      let avgRating;
-      if (searchRating == "0"){
-        avgRating = false; 
-      } else {
-        avgRating = true;
+      let hasAvgRating = !(searchRating == "0");
+      let avgRatingSubquery = [{AverageRating: {$gte: searchRating} }];
+      if (!hasAvgRating){
+        avgRatingSubquery.push({AverageRating: {$exists: hasAvgRating}});
       }
-
       query = {
         $and: [
           { $or: [ {CoffeeCompany: {$regex: regex} }, { CoffeeName: {$regex: regex} }, { CoffeeRoast: {$regex: regex}}, { CoffeeDescription: {$regex: regex}} ]},
           { $or: [ {CoffeeRoast: {$in: searchRoast} } ] },
-          { $or: [ {AverageRating: {$gte: searchRating} }, {AverageRating: {$exists: avgRating}} ] }
+          { $or: avgRatingSubquery }
         ]
       };
-      
       return Coffees.find(query, projection);
     } else {
       return Coffees.find({}, projection);

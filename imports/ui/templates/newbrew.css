@@ -61,6 +61,17 @@
     border-color: #502009;
 }
 
+.imgcomment {
+    display:inline-block;
+    font-style: italic;
+    color: #a9a9ab;
+}
+
+#imgDiv img {
+    max-width: 150;
+    max-height: 110px;
+}
+
 @media (min-width: 768px) {
     .brewlabel {
         float: right;
@@ -69,10 +80,22 @@
         float: left;
         width: 33vw;
     }
+    .imgcomment {
+        float: left;
+    }
+    #imgDiv img {
+        position: absolute;
+        top: 40px;
+        right: 30px;
+    }
 }
 
 @media (max-width: 767px) {
     .newbrew input, .newbrew textarea, .newbrew select {
         width: 60vw;
+    }
+    #imgDiv img {
+        margin-bottom: 10px;
+        position: relative;
     }
 }

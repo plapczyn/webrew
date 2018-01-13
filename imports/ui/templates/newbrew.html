@@ -1,18 +1,13 @@
 <template name="newbrew">
-    <div id="{{#if currentUser}}hero{{else}}hero-login{{/if}}">
+    <div id="hero">
         <div class="header">
             <h1><a id="title">newBrew</a></h1>
             <p>The world's foremost coffee network.</p>
-            {{#if currentUser}}
             <p> My name is {{> loginButtons align="right"}} and I love coffee! </p>
-            {{else}}
-            <p> I'm a member, <span style="a:link{color: white}">{{> loginButtons align="right"}}</span></p>
-            {{/if}}
         </div>
-        {{#if currentUser}}
-          {{> Header}}
-        {{/if}}
+        {{> Header}}
     </div>
+    
     {{#if currentUser}}
     <div class="container">
         <p> </p>
@@ -54,11 +49,17 @@
             </div>
             <div class="row">
                 <div class="col-sm-5">
-                    <h4 class="brewlabel">Coffee Image</h4>
+                    <h4 class="brewlabel" style="position:relative;">Coffee Image</h4>
+                    <div id="imgDiv"></div>
                 </div>
                 <div class="col-sm-7">
                     <div class="form-group">
                         <input type="text" name="imageURL" value="" placeholder="Where can we find a picture of it?" data-toggle="tooltip" data-placement="top" title="Where is a picture of the brew?"/>
+                    </div>
+                    <p class="imgcomment">Enter the <i class="fa fa-link" aria-hidden="true"></i> or choose an <i class="fa fa-picture-o" aria-hidden="true"></i> to upload.</p>
+                    <div class="form-group">
+                        <input type="file" id="imageFile" name="imageFile" style="background-color:white;display:inline;" accept="image/*">
+                        <!-- <div id="imgDiv"></div> -->
                     </div>
                 </div>
             </div>
@@ -71,7 +72,7 @@
                         <textarea required placeholder="Are you a fan of delicious flavor and literary commentary? Tell us about this brew" rows="3" id="description" data-toggle="tooltip" data-placement="top" title="Tell us about this brew?"></textarea>
                     </div>
                 </div>
-            </div>
+            </div>      
             <button type="submit" class="btn btn-newbrew btn-lg center-block" style="margin-bottom:30px;"><i class="fa fa-coffee" aria-hidden="true"></i> Submit</button>
         </form>   
     </div>

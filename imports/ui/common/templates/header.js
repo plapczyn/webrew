@@ -33,15 +33,13 @@ Template.Header.events({
     },
     'click .goOut' (event) {
       Meteor.logout();
+      FlowRouter.go("/login");
     },
     'click .headerbutton' (event) {
         let e = document.getElementsByClassName("headerbutton");
         for (i=0; i < e.length; i++) {
             e[i].classList.remove("active");
         }
-        //e = event.target.parentElement;
-        //e.classList.add("active");
-        //console.log(FlowRouter.current().route.name);
     }
   });
   

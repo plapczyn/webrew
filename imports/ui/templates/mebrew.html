@@ -1,23 +1,17 @@
 <template name="mebrew">
-  <div id="{{#if currentUser}}hero{{else}}hero-login{{/if}}">
+  <div id="hero">
     <div class="header">
       <h1><a id="title">meBrew</a></h1>
-      {{#if currentUser}}
         {{#if isUser}}
           <p>{{> loginButtons align="right"}}'s Profile</p>
         {{else}}
           <p>{{otherUser}}'s Profile</p>
         {{/if}}
-      {{else}}
-      <p> I'm a member, <span style="a:link{color: white}">{{> loginButtons align="right"}}</span></p>
-      {{/if}}
     </div>
-    {{#if currentUser}}
-      {{> Header}}
-    {{/if}}
+    {{> Header}}
   </div>
-  {{#if currentUser}}
 
+  {{#if currentUser}}
   <div class="container">
     <div class="profile-box {{#if isUser}}changeProfile{{/if}}">
       <img src="{{getImage}}" class="img-thumbnail profile-picture offset-top" />

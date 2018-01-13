@@ -1,6 +1,5 @@
 import './browse.html';
 import './browse.css'
-//import { Session } from 'meteor/session'
 import { Coffees } from '../../api/collections/coffees.js';
 
 Template.Browse.onCreated( function (){
@@ -19,11 +18,11 @@ Template.Browse.onCreated( function (){
   template.sortBy       = new ReactiveVar("CoffeeName");
   template.searchCount  = new ReactiveVar("");
 
-  //Session.set("searchText","");
-  //Session.get("searchText");
-
   template.autorun( () => {
     template.subscribe( 'coffeeSearch', template.searchText.get(), template.searchRating.get(), template.searchRoast.get(), () => {
+      $('.loader').fadeOut('fast', function(){
+        $('.loading-wrapper').fadeIn('slow');
+      });
       setTimeout( () => {
         template.searching.set( false );
       }, 300 );
@@ -59,7 +58,8 @@ Template.Browse.helpers({
     return Template.instance().searchText.get();
   },
   searchRating() {
-    return Template.instance().searchRating.get();
+    console.log(Template.instance().searchRating.get());
+    return Template.instance().searchRating.get()
   },
   searchRoast() {
     return Template.instance().searchRoast.get();

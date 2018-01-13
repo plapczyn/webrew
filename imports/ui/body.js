@@ -3,6 +3,7 @@ import { Template } from 'meteor/templating';
 
 import './common/templates/webrewLoader.html';
 import './common/templates/header.js';
+import './templates/login.js';
 
 import './body.html';
 import './templates/home.js';

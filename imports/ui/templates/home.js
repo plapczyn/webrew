@@ -12,6 +12,9 @@ Template.Home.onCreated( function (){
 });
 
 Template.Home.onRendered( function() {
+  // if (!Meteor.user()){
+  //   FlowRouter.go("/login");
+  // }
   $('.loader').fadeIn();
 });
 

@@ -30,6 +30,13 @@ if(Meteor.isServer){
       } else {
         console.log("Update Profile Error From: " + Meteor.user().username);
       }
+    },
+    'brewfile.user'(){
+      if (Meteor.user()) {
+        return true;
+      } else { 
+        return false;
+      }
     }
   });
 }
