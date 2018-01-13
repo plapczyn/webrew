@@ -16,11 +16,15 @@
 .stickResults {
   position: -webkit-sticky;
   position: sticky;
-  top: 59px;
+  top: 58px;
   z-index: 999;
 }
 .stickSearch {
-  position: relative;
+  /* position: relative; */
+  position: -webkit-sticky;
+  position: sticky;
+  top: 91px;
+  z-index: 999;
   
 }
 .row {
@@ -37,11 +41,55 @@
   border-radius: 4px;
 }
 
+.scrolltop {
+	display:none;
+	width:100%;
+	margin:0 auto;
+	position:fixed;
+	bottom:20px;
+	right:10px;	
+}
+.scroll {
+	position:absolute;
+	right:20px;
+	bottom:20px;
+	background:#b2b2b2;
+	background:rgba(178,178,178,0.7);
+  border-radius: 50%;
+  padding:10px;
+	text-align: center;
+	margin: 0 0 0 0;
+  cursor:pointer;
+	transition: 0.5s;
+	-moz-transition: 0.5s;
+	-webkit-transition: 0.5s;
+	-o-transition: 0.5s; 		
+}
+.scroll:hover {
+	background:rgba(178,178,178,1.0);
+	transition: 0.5s;
+	-moz-transition: 0.5s;
+	-webkit-transition: 0.5s;
+	-o-transition: 0.5s; 		
+}
+.scroll:hover .fa {
+	padding-top:-10px;
+}
+.scroll .fa {
+	font-size:30px;
+	margin-top:-5px;
+	margin-left:1px;
+	transition: 0.5s;
+	-moz-transition: 0.5s;
+	-webkit-transition: 0.5s;
+	-o-transition: 0.5s; 	
+}
+
 @media (min-width: 1200px) {
   .stickSearch {
     position: -webkit-sticky;
     position: sticky;
-    top: 93px;
+    top: 91px;
     z-index: 999;
     display:unset !important;
   }

@@ -1,6 +1,6 @@
 .profile-box {
   position: absolute;
-  top: 30px;
+  top: 90px;
   left: 30px;
   cursor: pointer;
 }
@@ -17,47 +17,3 @@
 .offset-top{
   position:relative;
 }
-/*.glyphicon-star {
-  font-size: 1.25em;
-  color: brown;
-  &.half {
-    position: relative;
-    &:before {
-      position: relative;
-      z-index: 9;
-      width: 47%;
-      display: block;
-      overflow: hidden;
-    }
-    &:after {
-      content: '\e006';
-      position: absolute;
-      z-index: 8;
-      color: #bdc3c7;
-      top: 0;
-      left: 0;
-    }
-  }
-}
-.glyphicon-star-empty {
-  font-size: 1.25em;
-  color: brown;
-  &.half {
-    position: relative;
-    &:before {
-      position: relative;
-      z-index: 9;
-      width: 47%;
-      display: block;
-      overflow: hidden;
-    }
-    &:after {
-      content: '\e006';
-      position: absolute;
-      z-index: 8;
-      color: #bdc3c7;
-      top: 0;
-      left: 0;
-    }
-  }
-}*/

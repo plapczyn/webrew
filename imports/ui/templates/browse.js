@@ -3,13 +3,6 @@ import './browse.css'
 import { Coffees } from '../../api/collections/coffees.js';
 
 Template.Browse.onCreated( function (){
-  // this.subscribe('coffeeSearch', function (data) {
-  //   //subsReady
-  //   $('.loader').fadeOut('fast', function(){
-  //     $('.loading-wrapper').fadeIn('slow');
-  //   });
-  // });
-
   let template = Template.instance();
   template.searchText   = new ReactiveVar("");
   template.searchRating = new ReactiveVar("0");
@@ -33,7 +26,16 @@ Template.Browse.onCreated( function (){
 
 Template.Browse.onRendered( function() {
   $('.loader').fadeIn();
+
+  $(window).scroll(function() {
+    if ($(this).scrollTop() > 50 ) {
+        $('.scrolltop:hidden').stop(true, true).fadeIn();
+    } else {
+        $('.scrolltop').stop(true, true).fadeOut();
+    }
+  });
 });
+  
 
 Template.Browse.helpers({
   coffees () {
@@ -58,7 +60,6 @@ Template.Browse.helpers({
     return Template.instance().searchText.get();
   },
   searchRating() {
-    console.log(Template.instance().searchRating.get());
     return Template.instance().searchRating.get()
   },
   searchRoast() {
@@ -124,5 +125,8 @@ Template.Browse.events({
   },
   'click .critbtn' (event, template){
     $("#mySrchbar").slideToggle();
+  },
+  'click .scroll' (event){
+    $('html').animate({scrollTop: 335},500,'swing');
   }
 });

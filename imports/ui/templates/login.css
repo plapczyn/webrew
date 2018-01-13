@@ -3,3 +3,11 @@
     top: -20vh;
     left: -15vw;
   }
+#signup {
+  cursor: pointer;
+  color: white;
+}
+#signup:hover {
+  color: #23527c ;
+  text-decoration: none;
+}
