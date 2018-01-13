@@ -1,18 +1,13 @@
 <template name="chat">
-  <div id="{{#if currentUser}}hero{{else}}hero-login{{/if}}">
+  <div id="hero">
     <div class="header">
       <h1><a id="title">BrewChat</a></h1>
       <p>The world's foremost coffee network.</p>
-      {{#if currentUser}}
       <p> My name is {{> loginButtons align="right"}} and I love coffee! </p>
-      {{else}}
-      <p> I'm a member, <span style="a:link{color: white}">{{> loginButtons align="right"}}</span></p>
-      {{/if}}
-    </div>
-    {{#if currentUser}}
-      {{> Header}}
-    {{/if}}
+    </div>    
+    {{> Header}}
   </div>
+  
   {{#if currentUser}}
   {{> webrewLoader}} 
   <div class="container loading-wrapper" style="width:80%;margin:15px auto;">

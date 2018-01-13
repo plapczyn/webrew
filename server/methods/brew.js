@@ -6,6 +6,7 @@ import { Coffee } from '../../lib/DatabaseModels.js';
 import { Rebrew } from '../../lib/DatabaseModels.js';
 import { Favorite } from '../../lib/DatabaseModels.js';
 
+import fs from 'fs';
 
 if(Meteor.isServer){
   Meteor.methods({
@@ -31,7 +32,7 @@ if(Meteor.isServer){
       let coffee = new Coffee(newbrew);
       if(!Coffees.findOne(coffee.OnlyCoffeeName())){
         Coffees.insert(coffee.Get());
-        return;
+        return Coffees.findOne(coffee.OnlyCoffeeName())._id;
       }
       throw "Brew Not Found";
     },
@@ -67,6 +68,25 @@ if(Meteor.isServer){
       } else {
         console.log("Coffee Edit Error From: " + Meteor.user().username);
       }
+    },
+    'image.upload'(coffeeid, fileinfo, filedata) {  
+      //get user info based on current logged in user
+      let coffeeOwner = Coffees.findOne({_id: coffeeid}).CoffeeOwner; 
+      if (coffeeOwner != Meteor.userId()) {
+        return;
+      }
+      //add path to file name and write 
+      let fs = require('fs');
+      let path = process.env['METEOR_SHELL_DIR'] + '/../../../public/img/coffees/';
+      let url = "/img/coffees/" + coffeeid + fileinfo;
+      console.log("writing:" + coffeeid + fileinfo);
+      fs.writeFile(path + coffeeid + fileinfo, filedata, {encoding: 'binary'}, Meteor.bindEnvironment((err) => {
+        if(err) {
+          return console.log(err);
+        }
+        Coffees.update({ _id: coffeeid }, {$set: {ImageUrl: url }});       
+      }));
+      return;
     }
-  });
+  });      
 }

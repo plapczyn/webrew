@@ -1,25 +1,14 @@
 <template name="Browse">
-  <div id="{{#if currentUser}}hero{{else}}hero-login{{/if}}">
+  <div id="hero">
     <div class="header">
-      <h1>
-        <a id="title">BrewBrowse</a>
-      </h1>
+      <h1><a id="title">BrewBrowse</a></h1>
       <p>The world's foremost coffee network.</p>
-      {{#if currentUser}}
       <p> My name is {{> loginButtons align="right"}} and I love coffee! </p>
-      {{else}}
-      <p> I'm a member,
-        <span style="a:link{color: white}">{{> loginButtons align="right"}}</span>
-      </p>
-      {{/if}}
     </div>
-    {{#if currentUser}}
-      {{> Header}}
-    {{/if}}
+    {{> Header}}
   </div>
 
   {{#if currentUser}}
-  <!-- {> webrewLoader} -->
   <div class="container-fluid">
     <p></p>
     <div class="row stickResults">
@@ -75,6 +64,8 @@
         </div>
         <div class="col-sm-12 col-lg-10" style="padding:0px;">
           <!--Content-->
+          {{> webrewLoader}}
+          <div class="container-fluid loading-wrapper" >
           {{#if searching}}
             <div style="text-align:center;"><svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="40px" height="40px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50; margin-top:10vh;" xml:space="preserve">
               <path fill="#825d43" d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
@@ -92,6 +83,7 @@
               </div>
           {{/if}}
         </div>
+      </div>
         
     </div>
   </div>
