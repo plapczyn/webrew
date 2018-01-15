@@ -98,15 +98,15 @@
   <form>
       <div class="form-group">
           <label>Company</label>
-          <input required type="text" name="company" class="form-control" value="{{CoffeeCompany}}">
+          <input required type="text" name="company" class="webrew-input" value="{{CoffeeCompany}}">
       </div>
       <div class="form-group">
           <label>Name</label>
-          <input required type="text" name="title" class="form-control" value="{{CoffeeName}}">
+          <input required type="text" name="title" class="webrew-input" value="{{CoffeeName}}">
       </div>
       <div class="form-group">
           <label>Roast</label>
-          <select required class="form-control" style="width:auto; height:auto; padding:10px; border-radius:10px;" id="roast" name="roast" value="{{CoffeeRoast}}">
+          <select required class="webrew-select" id="roast" name="roast" value="{{CoffeeRoast}}">
               <option style="color: #b69476" value="Light Roast">Light Roast</option>
               <option style="color: #825d43" value="Medium Roast">Medium Roast</option>
               <option style="color: #66290b" value="Medium-Dark Roast">Medium-Dark Roast</option>
@@ -115,11 +115,11 @@
       </div>
       <div class="form-group">
           <label>Image URL</label>
-          <input type="text" name="imageURL" class="form-control" value="{{ImageUrl}}" />
+          {{ > imgupload imgurl=ImageUrl }}
       </div>
       <div class="form-group">
           <label>Description</label>
-          <textarea required class="form-control" value="{{CoffeeDescription}}" rows="3" name="description"></textarea>
+          <textarea required class="webrew-textarea" value="{{CoffeeDescription}}" rows="3" name="description"></textarea>
       </div>
       <input class="modalOk" id="modalOk" type="submit" style="display:none;">
   </form>

@@ -1,16 +1,17 @@
 import './imgupload.html';
 import './imgupload.css'
+import Common from '../scripts/common.js'
 
 Template.imgupload.events({
     'change #imageFile' (event, template){
         if(!event.target.files || !window.FileReader) return;
-        template.isFileUpload.set( false ); 
         let imgDiv = document.getElementById("imgDiv");
         imgDiv.innerHTML = "";
         let file = event.target.files[0];
         //Is there a file
         if (!file) { 
-          document.getElementsByName("imageURL")[0].value = "";  
+          document.getElementById("imageURL").value = "";  
+          document.getElementById("imageURL").removeAttribute("disabled",""); 
           return; 
         }
         //Check filetype
@@ -27,14 +28,14 @@ Template.imgupload.events({
         let reader = new FileReader();
         reader.onload = function (event) {
           imgDiv.innerHTML = "<img src=\"" + event.target.result + "\">";
-          template.isFileUpload.set( true ); 
-          document.getElementsByName("imageURL")[0].value = file.name;          
+          document.getElementById("imageURL").value = file.name;
+          document.getElementById("imageURL").setAttribute("disabled","");         
         }
         reader.readAsDataURL(file);
       }
 });
 
-uploadFile = function (id) {
+uploadFile = function (id, method) {
     var file = document.getElementById("imageFile").files[0];
     if (file) {
       //Check filetype
@@ -52,10 +53,12 @@ uploadFile = function (id) {
       reader.onload = function(fileLoadEvent) {
       //call created upload method and pass file name, and file-reader info
       console.log("startUploadFileMeteorCall");
-      Meteor.call('image.upload', id, file.name, reader.result, function(err, res) {
+      Meteor.call(method, id, file.name, reader.result, function(err, res) {
             if(!err){
               Common.WebrewToast.Show(file.name + " uploaded successfully", "success")
               console.log("endUploadFileMeteorCall");
+              console.log(res);
+              return res;
             }
             else{
               Common.WebrewToast.Show(file.name + " was not uploaded successfully", "error")
