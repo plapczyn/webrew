@@ -1,3 +1,15 @@
 <template name="webrewInput">
-    <input id="{{elementId}}" type="text" autocomplete="off" />
+    <div style="position:relative">
+        <input id="{{elementId}}" type="text" autocomplete="off" class="webrew-dynamic-input" />
+        <button class="btn btn-info toggleDropdown webrew-input-dropdown-button"><i id="webrew-input-icon" class="fa fa-chevron-down" aria-hidden="true"></i></button>
+        <div class="webrew-input-list-container webrew-input-list-hidden">
+            <ul class="webrew-input-list">
+                {{#each item in items}}
+                <li class="webrew-input-list-item" data-key="{{item.key}}" data-value="{{item.value}}">
+                    Item 1
+                </li>
+                {{/each}}
+            </ul>
+        </div>
+    </div>
 </template>

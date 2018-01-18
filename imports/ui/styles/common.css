@@ -24,3 +24,59 @@
     height: 100%;
     width: 100%;
 }
+
+.webrew-input-list
+{
+    list-style-type: none;
+    padding-left: 0px;
+    margin-bottom: 0px;
+}
+
+.webrew-input-list-item
+{
+    font-size: 1.250rem;
+    padding: 7px;
+}
+
+.webrew-dynamic-input
+{
+    height: 40px;
+    font-family: Roboto;
+    font-size: 1.250rem;
+    width: 100%;
+    padding-right: 45px;
+    padding-left: 5px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+}
+
+.webrew-input-list-container
+{
+    margin: 0px;
+    border: solid 1px lightgrey;
+    background-color: rgb(230, 229, 229);
+}
+
+.webrew-input-dropdown-button
+{
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    height: 40px;
+}
+
+.webrew-input-list-hidden
+{
+    display: none;
+    z-index: -99999;
+}
+
+.webrew-input-list-open
+{
+    position: absolute;
+    top: 40px;
+    left: 0px;
+    width: 100%;
+    z-index: 99999;
+}
+
