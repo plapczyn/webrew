@@ -1,5 +1,4 @@
 import '../templates/webrewModal.html';
-import '../templates/webrewInput.js';
 
 class WebrewToast
 {
@@ -227,21 +226,28 @@ class WebrewColorPallet
 
 class WebrewInput
 {
-    static instances = [];
-    options;
-    template;
+    // static instances = [];
+    // options;
+    // template;
 
     constructor(options)
     {
-        this.options = options;
-        this.options.elementId = "webrewInput" + this.options.renderOnId + WebrewInput.instances.length;
-        this.render();
+        // this.options = options;
+        // this.options.elementId = "webrewInput" + this.options.renderOnId + WebrewInput.instances.length;
+        // this.render();
     }
     
     render()
     {
-        this.template = Blaze.renderWithData(Template.webrewInput, this.options, $("#" + this.options.renderOnId)[0]);
-        WebrewInput.instances.push(this.template);
+        // this.template = Blaze.renderWithData(Template.webrewInput, this.options, $("#" + this.options.renderOnId)[0]);
+        // WebrewInput.instances.push(this.template);
+    }
+
+    static HideDropdown(template){
+        template.$(".webrew-input-list-container").toggleClass("webrew-input-list-hidden")
+        template.$(".webrew-input-list-container").toggleClass("webrew-input-list-open")
+        template.$("#webrew-input-icon").toggleClass("fa-chevron-down")
+        template.$("#webrew-input-icon").toggleClass("fa-chevron-up")
     }
 }
 

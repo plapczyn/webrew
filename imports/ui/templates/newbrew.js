@@ -2,6 +2,7 @@ import './newbrew.html';
 import './newbrew.css';
 import { Coffees } from '../../api/collections/coffees.js';
 import Common from '../common/scripts/common.js';
+import "../../ui/common/templates/webrewInput.js";
 import { Coffee } from '../../../lib/DatabaseModels.js';
 
 Template.newbrew.onCreated( function (){

@@ -36,6 +36,7 @@
 {
     font-size: 1.250rem;
     padding: 7px;
+    border: solid 1px rgb(230, 229, 229);
 }
 
 .webrew-dynamic-input
@@ -55,6 +56,8 @@
     margin: 0px;
     border: solid 1px lightgrey;
     background-color: rgb(230, 229, 229);
+    max-height: 280px;
+    overflow-y: auto;
 }
 
 .webrew-input-dropdown-button
@@ -80,3 +83,10 @@
     z-index: 99999;
 }
 
+.webrew-item-highlight
+{
+    background-color: beige;
+    border-color: black;
+    border-style: inset;
+    border-width: 1px;
+}
