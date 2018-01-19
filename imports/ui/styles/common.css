@@ -86,7 +86,22 @@
 .webrew-item-highlight
 {
     background-color: beige;
-    border-color: black;
-    border-style: inset;
+    border-color: lightgray;
+    border-style: solid;
     border-width: 1px;
+    cursor: pointer;
+}
+
+.webrew-unselectable
+{
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+.testtest
+{
+    background-color: red;
 }

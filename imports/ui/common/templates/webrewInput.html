@@ -6,7 +6,7 @@
         <div class="webrew-input-list-container webrew-input-list-hidden">
             <ul class="webrew-input-list">
                 {{#each item in items}}
-                <li class="webrew-input-list-item" data-key="{{item.key}}" data-value="{{item.value}}">
+                <li class="webrew-input-list-item webrew-unselectable" data-key="{{item.key}}" data-value="{{item.value}}">
                     {{item.value}}
                 </li>
                 {{/each}}

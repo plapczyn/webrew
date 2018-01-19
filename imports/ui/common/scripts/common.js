@@ -243,11 +243,34 @@ class WebrewInput
         // WebrewInput.instances.push(this.template);
     }
 
-    static HideDropdown(template){
+    static ToggleDropdown(template){
         template.$(".webrew-input-list-container").toggleClass("webrew-input-list-hidden")
         template.$(".webrew-input-list-container").toggleClass("webrew-input-list-open")
         template.$("#webrew-input-icon").toggleClass("fa-chevron-down")
         template.$("#webrew-input-icon").toggleClass("fa-chevron-up")
+        template.$(".webrew-input-list-container").scrollTop(true);
+    }
+
+    static HideDropdown(template)
+    {
+        this.hideShowDropDown(template, false);
+    }
+
+    static ShowDropdown(template)
+    {
+        this.hideShowDropDown(template, true);
+    }
+
+    static hideShowDropDown(template, show)
+    {
+        let hide;
+        hide = (typeof show == "undefined" ? undefined : !show);
+
+        template.$(".webrew-input-list-container").toggleClass("webrew-input-list-hidden", hide)
+        template.$(".webrew-input-list-container").toggleClass("webrew-input-list-open", show)
+        template.$("#webrew-input-icon").toggleClass("fa-chevron-down", !show)
+        template.$("#webrew-input-icon").toggleClass("fa-chevron-up", show)
+        template.$(".webrew-input-list-container").scrollTop(true);
     }
 }
 
