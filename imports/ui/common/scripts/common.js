@@ -244,21 +244,26 @@ class WebrewInput
     }
 
     static ToggleDropdown(template){
-        template.$(".webrew-input-list-container").toggleClass("webrew-input-list-hidden")
-        template.$(".webrew-input-list-container").toggleClass("webrew-input-list-open")
-        template.$("#webrew-input-icon").toggleClass("fa-chevron-down")
-        template.$("#webrew-input-icon").toggleClass("fa-chevron-up")
-        template.$(".webrew-input-list-container").scrollTop(true);
+        if(template.$(".webrew-input-list-container").hasClass("webrew-input-list-open"))
+        {
+            this.HideDropdown(template);
+        }
+        else
+        {
+            this.ShowDropdown(template);
+        }
     }
 
     static HideDropdown(template)
     {
         this.hideShowDropDown(template, false);
+        template.$(".webrew-input-control-container").trigger("webrew-input-dropdown-hide");
     }
 
     static ShowDropdown(template)
     {
         this.hideShowDropDown(template, true);
+        template.$(".webrew-input-control-container").trigger("webrew-input-dropdown-show");
     }
 
     static hideShowDropDown(template, show)
@@ -271,6 +276,16 @@ class WebrewInput
         template.$("#webrew-input-icon").toggleClass("fa-chevron-down", !show)
         template.$("#webrew-input-icon").toggleClass("fa-chevron-up", show)
         template.$(".webrew-input-list-container").scrollTop(true);
+    }
+
+    static SetSelectedValue(template){
+        let element = template.$(".webrew-item-highlight")[0];
+        let value = template.$(element).attr("data-value")
+        let key = template.$(element).attr("data-key")
+        template.$("#" + template.data.elementId).val(value);
+        template.$("#" + template.data.elementId + "_hiddenKey").val(key);
+
+        template.$(".webrew-input-control-container").trigger("webrew-input-selection-changed")
     }
 }
 
