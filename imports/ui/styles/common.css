@@ -105,3 +105,31 @@
 {
     background-color: red;
 }
+
+.webrew-input-active
+{
+    background-color: #B18367;
+}
+
+.webrew-input-active-click
+{
+    background-color: rgb(174, 142, 122);
+}
+
+.webrew-input-clear-button
+{
+    position: absolute;
+    top: 12px;
+    right: 46px;
+    padding-bottom: 0px;
+    margin: 0px;
+    padding-right: 1px;
+    padding-left: 1px;
+    padding-top: 0px;
+    line-height: 0px;
+}
+
+.webrew-input-clear-hidden
+{
+    display: none;
+}

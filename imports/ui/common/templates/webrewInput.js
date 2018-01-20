@@ -7,6 +7,7 @@ Template.webrewInput.onCreated(function () {
     this.highlightedIndex = new ReactiveVar(-2);
     this.range = new ReactiveVar([0, this.data.rowCount || 5]);
     this.items = new ReactiveVar([]);
+    this.isDropDownOpen = new ReactiveVar(false);
 });
 
 Template.webrewInput.helpers({
@@ -29,53 +30,76 @@ Template.webrewInput.helpers({
 });
 
 Template.webrewInput.events({
+    'click .clearInput': function (event, template){
+        event.preventDefault();
+        Common.WebrewInput.ClearInput(template);
+        console.log("input cleared")
+    },
+    'mousedown .toggleDropdown': function (event, template) {
+        event.preventDefault();
+        event.stopPropagation();
+        template.jqElement.trigger("webrew-input-toggle-dropdown-mousedown");
+    },
     'click .toggleDropdown': function (event, template) {
         event.preventDefault();
-        template.$("#" + template.data.elementId).focus();
-        template.highlightedIndex.set(template.highlightedIndex.get() + 1);
-        Common.WebrewInput.ToggleDropdown(template)
+        event.stopPropagation();
+    },
+    'mouseup .toggleDropdowntest': function (event, template) {
+        event.preventDefault();
+        event.stopPropagation();
+        template.jqElement.trigger("webrew-input-toggle-dropdown-mouseup");
     },
     'mouseleave .webrew-input-list-container': function (event, template) {
-        template.$(".webrew-input-list-item").toggleClass("testtest", false)
+        if(template.isMouseDown.get()){
+            template.$(".webrew-input-list-item").removeClass("webrew-input-active-click", false)
+        }
+        template.$(".webrew-input-list-item").toggleClass("webrew-item-highlight", false)
     },
     'mouseenter .webrew-input-list-item': function (event, template) {
         if (template.isMouseDown.get()) {
-            template.$(event.target).toggleClass("testtest", true)
-            template.$(event.fromElement).toggleClass("testtest", false)
+            template.$(".webrew-input-list-item").toggleClass("webrew-input-active-click", false)
+            template.$(event.target).toggleClass("webrew-input-active-click", true)
+        }
+        else{
+            template.$('.webrew-input-list-item').toggleClass("webrew-item-highlight", false)
+            template.$(event.target).addClass("webrew-item-highlight")
         }
 
-        let list = template.$(".webrew-input-list").children().toArray();
-        let index = -1;
-        let element = list.filter((element, i) => {
-            if (element == event.target) {
-                index = i;
-                return element == event.target;
-            }
-        });
+        // let list = template.$(".webrew-input-list").children().toArray();
+        // let index = -1;
+        // let element = list.filter((element, i) => {
+        //     if (element == event.target) {
+        //         index = i;
+        //         return element == event.target;
+        //     }
+        // });
 
-        template.highlightedIndex.set(index);
+        // template.highlightedIndex.set(index);
 
-        template.$('.webrew-input-list-item').toggleClass("webrew-item-highlight", false)
-        template.$(event.target).addClass("webrew-item-highlight")
     },
     'mouseleave .webrew-input-list-item': function (event, template) {
         template.$(event.target).removeClass("webrew-item-highlight")
     },
 
     'mousedown .webrew-input-list-item': function (event, template) {
-        template.$(event.target).addClass("testtest");
+        event.stopPropagation();
+        event.preventDefault();
+        template.$(".webrew-input-list-item").toggleClass("webrew-input-active-click", false);
+        template.$(event.target).addClass("webrew-input-active-click");
+        template.$(".webrew-input-control-container").trigger("webrew-input-mousedown");
     },
     'mouseup .webrew-input-list-item': function (event, template) {
-        template.$(event.target).removeClass("testtest")
-        let value = template.$(event.target).attr("data-value")
-        let key = template.$(event.target).attr("data-key")
-        template.$("#" + template.data.elementId).val(value);
-        template.$("#" + template.data.elementId + "_hiddenKey").val(key);
+        template.$(".webrew-input-list-item").toggleClass("webrew-input-active", false);
+        template.$(event.target).toggleClass("webrew-input-active", true);
+        Common.WebrewInput.SetSelectedValue(template);
         Common.WebrewInput.ToggleDropdown(template);
+        template.$("#" + template.data.elementId).focus();
+        template.jqElement.trigger("webrew-input-mouseup");
     },
     'click .webrew-input-list-item': function (event, template) {
 
     },
+    // Custom Events for the control
     'mouseleave webrew-dynamic-input': function (event, template) {
 
     },
@@ -86,19 +110,43 @@ Template.webrewInput.events({
         template.highlightedIndex.set(-2);
         template.range.set([0, template.data.rowCount || 5])
         template.$('.webrew-input-list-item').toggleClass("webrew-item-highlight", false)
-        console.log("webrew-input-dropdown-hide")
+        template.$('.webrew-input-list-item').toggleClass("webrew-input-active", false)
+        template.$('.webrew-input-list-item').toggleClass("webrew-input-active-click", false)
+        console.log("webrew-input-dropdown-hide");
     },
     'webrew-input-dropdown-show': function (event, template) {
-        console.log("webrew-input-dropdown-show")
+        console.log("webrew-input-dropdown-show");
     },
     'webrew-input-selection-changed': function(event, template){
-        
+        template.$(".webrew-input-clear-button").toggleClass("webrew-input-clear-hidden", false);
+        console.log("webrew-input-selection-changed")
+    },
+    'webrew-input-mousedown': function(event, template){
+        template.isMouseDown.set(true);
+        console.log("webrew-input-mousedown")
+    },
+    'webrew-input-mouseup': function (event, template){
+        template.isMouseDown.set(false);
+        console.log("webrew-input-mousedown")
+    },
+    'webrew-input-toggle-dropdown-mousedown': function (event, template){
+        console.log("webrew-input-toggle-dropdown-mousedown");
+        template.jqElement.trigger("webrew-input-mousedown");
+    },
+    'webrew-input-toggle-dropdown-mouseup': function(event, template){
+        if(template.isMouseDown.get()){
+            template.$("#" + template.data.elementId).focus();
+            template.highlightedIndex.set(template.highlightedIndex.get() + 1);
+            Common.WebrewInput.ToggleDropdown(template)
+        }
+        template.jqElement.trigger("webrew-input-mouseup");
+        console.log("webrew-input-toggle-dropdown-mousedown");
     }
 });
 
 Template.webrewInput.onRendered(function () {
     var template = Template.instance();
-
+    this.jqElement = template.$(".webrew-input-control-container");
     // Set Height of dropdown
     let height = template.data.rowCount || 6;
     height = height * 44;
@@ -123,13 +171,21 @@ Template.webrewInput.onRendered(function () {
         template.isMouseDown.set(false);
     });
 
+    template.$("#" + template.data.elementId).blur((event) => {
+        Common.WebrewInput.HideDropdown(template);
+    });
+
     template.$("#" + template.data.elementId).keydown((event) => {
         let index = template.highlightedIndex.get();
         let list = $(".webrew-input-list").children().toArray();
         let range = [...template.range.get()];
 
         switch (event.which) {
-            case 37: // left
+            case 13: // enter
+                Common.WebrewInput.SetSelectedValue(template);
+                Common.WebrewInput.HideDropdown(template);
+                event.preventDefault();
+                event.stopPropagation();
                 break;
 
             case 38: // up
@@ -148,14 +204,19 @@ Template.webrewInput.onRendered(function () {
                     break;
                 }
                 else {
-                    template.$(list[index]).toggleClass("webrew-item-highlight", false)
-                    template.$(list[index - 1]).addClass("webrew-item-highlight")
+                    template.$(list[index]).toggleClass("webrew-input-active", false)
+                    template.$(list[index - 1]).addClass("webrew-input-active")
                     template.highlightedIndex.set(index - 1);
                 }
 
                 if(index == range[0]){
+                    console.log(index, range);
                     template.range.set([range[0] - 1, range[1] - 1])
                     template.$(".webrew-input-list-container").scrollTop((range[0] - 1) * 44)
+                }
+
+                if(index < range[0] || index > range[1]){
+                    template.$(".webrew-input-list-container").scrollTop((index - 1) * 44)
                 }
 
                 Common.WebrewInput.SetSelectedValue(template);
@@ -176,8 +237,8 @@ Template.webrewInput.onRendered(function () {
                     break;
                 }
                 else {
-                    template.$(list[index]).toggleClass("webrew-item-highlight", false)
-                    template.$(list[index + 1]).addClass("webrew-item-highlight")
+                    template.$(list[index]).toggleClass("webrew-input-active", false)
+                    template.$(list[index + 1]).addClass("webrew-input-active")
                     template.highlightedIndex.set(index + 1);
                     Common.WebrewInput.SetSelectedValue(template);
                 }
@@ -186,11 +247,26 @@ Template.webrewInput.onRendered(function () {
                     template.$(".webrew-input-list-container").scrollTop((range[0] + 1) * 44)
                 }
 
+                if(index < range[0] || index > range[1]){
+                    template.$(".webrew-input-list-container").scrollTop((index - 1) * 44)
+                }
+
+                console.log(index, range);
                 break;
 
-            default: return; // exit this handler for other keys
+            default: return; 
         }
 
-        event.preventDefault(); // prevent the default action (scroll / move caret)
+        event.preventDefault();
     });
+
+    // Setting the range of where the hell we are in the scroll
+    template.$(".webrew-input-list-container").scroll((event) => {
+        let range = template.range.get();
+        
+        if(Math.round(template.$(event.target).scrollTop() / 44) <= template.$(event.target).scrollTop() / 44){
+            template.range.set([Math.round(template.$(event.target).scrollTop() / 44), Math.round(template.$(event.target).scrollTop() / 44 + 5)]);
+            console.log(template.range.get());
+        }
+    })
 });

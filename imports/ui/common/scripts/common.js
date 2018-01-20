@@ -257,13 +257,11 @@ class WebrewInput
     static HideDropdown(template)
     {
         this.hideShowDropDown(template, false);
-        template.$(".webrew-input-control-container").trigger("webrew-input-dropdown-hide");
     }
 
     static ShowDropdown(template)
     {
         this.hideShowDropDown(template, true);
-        template.$(".webrew-input-control-container").trigger("webrew-input-dropdown-show");
     }
 
     static hideShowDropDown(template, show)
@@ -276,16 +274,46 @@ class WebrewInput
         template.$("#webrew-input-icon").toggleClass("fa-chevron-down", !show)
         template.$("#webrew-input-icon").toggleClass("fa-chevron-up", show)
         template.$(".webrew-input-list-container").scrollTop(true);
+
+        if(show)
+        {
+            template.$(".webrew-input-control-container").trigger("webrew-input-dropdown-show");
+        }
+        else
+        {
+            template.$(".webrew-input-control-container").trigger("webrew-input-dropdown-hide");
+        }
+        
+        template.isDropDownOpen.set(show);
     }
 
     static SetSelectedValue(template){
-        let element = template.$(".webrew-item-highlight")[0];
+        let element = template.$(".webrew-input-active")[0];
         let value = template.$(element).attr("data-value")
         let key = template.$(element).attr("data-key")
+        this.SetValue(template, key, value);
+    }
+
+    static SetValue(template, key, value){
         template.$("#" + template.data.elementId).val(value);
         template.$("#" + template.data.elementId + "_hiddenKey").val(key);
-
         template.$(".webrew-input-control-container").trigger("webrew-input-selection-changed")
+    }
+
+    static ClearInput(template){
+        this.SetValue(template, -1, "");
+        if(template.isDropDownOpen.get())
+        {
+            template.highlightedIndex.set(-1);
+        }
+        else
+        {
+            template.highlightedIndex.set(-2);
+        }
+
+        template.$(".webrew-input-list-item").toggleClass("webrew-input-active", false);
+        template.$(".webrew-input-clear-button").toggleClass("webrew-input-clear-hidden", true);
+        template.$("#" + template.data.elementId).focus();
     }
 }
 
