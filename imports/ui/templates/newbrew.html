@@ -52,13 +52,7 @@
                             <div class="col-md-8 col-md-offset-2">
                                 <div class="webrew-input-container">
                                     <h3 class="webrew-input-label">Image</h3>
-                                    <div id="imgDiv"></div>
-                                    <input class="webrew-input" type="text" name="imageURL" value="" data-toggle="tooltip" data-placement="top" title="Where is a picture of the brew?"
-                                    />
-                                    <p class="imgcomment">Enter the
-                                        <i class="fa fa-link" aria-hidden="true"></i> or choose an
-                                        <i class="fa fa-picture-o" aria-hidden="true"></i> to upload.</p>
-                                    <input type="file" id="imageFile" name="imageFile" style="background-color:white;display:inline;" accept="image/*">
+                                    {{> imgupload }}
                                 </div>
                             </div>
                         </div>

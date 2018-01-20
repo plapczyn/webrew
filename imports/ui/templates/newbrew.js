@@ -4,10 +4,10 @@ import { Coffees } from '../../api/collections/coffees.js';
 import Common from '../common/scripts/common.js';
 import "../../ui/common/templates/webrewInput.js";
 import { Coffee } from '../../../lib/DatabaseModels.js';
+import '../common/templates/imgupload.js'
 
 Template.newbrew.onCreated( function (){
   let template = Template.instance();
-  template.isFileUpload = new ReactiveVar(false);
 });
 
 Template.newbrew.events({
@@ -23,7 +23,7 @@ Template.newbrew.events({
     const description = target.description.value;
     let imageURL = target.imageURL.value;
     //Set imageURL as nothing if file will be uploaded
-    if (template.isFileUpload.get() == true ){
+    if ( document.getElementById("imageURL").hasAttribute("disabled") ){
       imageURL = "";
     }
 
@@ -41,12 +41,9 @@ Template.newbrew.events({
         Common.WebrewToast.Show("Mmm, It's a Good Brew!","success", obj.coffeename + "was added!" );
         
         //If Image Upload, load image with filename as res/CoffeeID
-        if (template.isFileUpload.get() == true ){
-          console.log("startUploadFile");
-          uploadFile(res);
-          console.log("endUploadFile");
+        if ( document.getElementById("imageURL").hasAttribute("disabled") ){
+          uploadFile(res, "coffees.upload");
         }
-        console.log("FlowRouterMain");
         FlowRouter.go('Main');
       }
       else {
@@ -56,36 +53,6 @@ Template.newbrew.events({
   },
   'click .newbrew' (event){
     $('[data-toggle="tooltip"]').tooltip();
-  },
-  'change #imageFile' (event, template){
-    if(!event.target.files || !window.FileReader) return;
-    template.isFileUpload.set( false ); 
-    let imgDiv = document.getElementById("imgDiv");
-    imgDiv.innerHTML = "";
-    let file = event.target.files[0];
-    //Is there a file
-    if (!file) { 
-      document.getElementsByName("imageURL")[0].value = "";  
-      return; 
-    }
-    //Check filetype
-    if (!(file.type.match('image.*'))){
-      Common.WebrewToast.Show(file.name + " is not an image, please select an image.", "error");
-      return;
-    }
-    //Check filesize
-    if (file.size > 1024*1024*2) {
-      Common.WebrewToast.Show(file.name + " is too large, please select an image smaller than 2MB", "error")
-      return;
-    }
-    
-    let reader = new FileReader();
-    reader.onload = function (event) {
-      imgDiv.innerHTML = "<img src=\"" + event.target.result + "\">";
-      template.isFileUpload.set( true ); 
-      document.getElementsByName("imageURL")[0].value = file.name;          
-    }
-    reader.readAsDataURL(file);
   }
 });
 
@@ -95,11 +62,7 @@ Template.newbrew.helpers({
   }
 });
 
-
 Template.newbrew.onRendered(function() {
-  $(()=>{
-    new Common.WebrewInput({renderOnId: "coffeeCompany"});
-  });
 });
 
 uploadFile = function (id) {

@@ -21,6 +21,30 @@ if(Meteor.isServer){
       } else {
         console.log("Coffee Removal Error From: " + Meteor.user().username);
       }
+
+      //set variables
+      let fs = require('fs');
+      let path = process.env['METEOR_SHELL_DIR'] + '/../../../public/img/coffees/';
+      
+      //Find and delete existing by coffeeid
+      fs.readdir( path, function( err, files ) {
+        if (err) {
+          console.log(err);
+        } else {
+          files.forEach ( function(file, index) {
+            //if coffeeid in filename, and is not the uploadfile, delete
+            if (file.indexOf(id) != -1) {
+              fs.unlink(path + file, function (err) {
+                if (err) {
+                  console.log(err);
+                } else {
+                  console.log('deleted:' + file);
+                }
+              });
+            }
+          });
+        }
+      });
     },
 
     'coffees.add'(brew){
@@ -69,24 +93,48 @@ if(Meteor.isServer){
         console.log("Coffee Edit Error From: " + Meteor.user().username);
       }
     },
-    'image.upload'(coffeeid, fileinfo, filedata) {  
+    'coffees.upload'(coffeeid, fileinfo, filedata) {  
       //get user info based on current logged in user
       let coffeeOwner = Coffees.findOne({_id: coffeeid}).CoffeeOwner; 
       if (coffeeOwner != Meteor.userId()) {
         return;
       }
-      //add path to file name and write 
+      
+      //set variables
       let fs = require('fs');
       let path = process.env['METEOR_SHELL_DIR'] + '/../../../public/img/coffees/';
       let url = "/img/coffees/" + coffeeid + fileinfo;
+      
+      //Find and delete existing by coffeeid
+      fs.readdir( path, function( err, files ) {
+        if (err) {
+          console.log(err);
+        } else {
+          files.forEach ( function(file, index) {
+            //if coffeeid in filename, and is not the uploadfile, delete
+            if (file.indexOf(coffeeid) != -1 && file != coffeeid + fileinfo) {
+              fs.unlink(path + file, function (err) {
+                if (err) {
+                  console.log(err);
+                } else {
+                  console.log('deleted:' + file);
+                }
+              });
+            }
+          });
+        }
+      });
+
+      //add path to file name and write 
       console.log("writing:" + coffeeid + fileinfo);
       fs.writeFile(path + coffeeid + fileinfo, filedata, {encoding: 'binary'}, Meteor.bindEnvironment((err) => {
         if(err) {
           return console.log(err);
+        } else {
+          Coffees.update({ _id: coffeeid}, {$set: {ImageUrl: url }});
         }
-        Coffees.update({ _id: coffeeid }, {$set: {ImageUrl: url }});       
       }));
-      return;
+      return url;
     }
   });      
 }

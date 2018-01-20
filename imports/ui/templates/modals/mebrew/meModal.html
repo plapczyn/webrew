@@ -2,15 +2,15 @@
     <form class="changeProfile">
         <div class="form-group">
             <label>Change Image</label>
-            <input required type="text" name="url" class="form-control" placeholder="Add a new image URL" value="{{getImage}}">
+            {{ > imgupload imgurl=getImage }}
         </div>
         <div class="form-group">
             <label>Change Tagline</label>
-            <input type="text" name="tagline" class="form-control" placeholder="Add a new tagline" value="{{getTagline}}">
+            <input type="text" name="tagline" class="webrew-input" placeholder="Add a new tagline" value="{{getTagline}}">
         </div>
         <div class="form-group">
             <label>Change Email</label>
-            <input type="text" name="email" class="form-control" placeholder="Add an Email address" value="{{getEmail}}">
+            <input type="text" name="email" class="webrew-input" placeholder="Add an Email address" value="{{getEmail}}">
         </div>  
         <input type="submit" class="modalOk" id="modalOk" style="display: none;" />
     </form>

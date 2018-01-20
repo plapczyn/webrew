@@ -1,0 +1,12 @@
+<template name="imgupload">
+    <div id="imgupload">
+    <input class="webrew-input" type="text" id="imageURL" name="imageURL" value="{{imgurl}}" data-toggle="tooltip" data-placement="top" title="Where is a picture of the brew?"/>       
+        <div id="drop-files" class="fileContainer">
+            <label for="imageFile">Enter a 
+                <i class="fa fa-link" aria-hidden="true"></i> choose an 
+                <i class="fa fa-picture-o" aria-hidden="true"></i> to upload.</label>
+            <input type="file" id="imageFile" name="imageFile" accept="image/*">
+        </div>
+    </div>
+    <div id="imgDiv"></div>
+</template>

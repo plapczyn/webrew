@@ -4,6 +4,7 @@ import './modals/rebrew/advancedRebrewModal.js';
 import './brewChart.js';
 import Common from '../common/scripts/common.js';
 import Chart from 'chart.js';
+import '../common/templates/imgupload.js'
 import { Coffees } from '../../api/collections/coffees.js';
 import { Favorites } from '../../api/collections/coffees.js';
 import { Rebrews } from '../../api/collections/coffees.js';
@@ -208,6 +209,10 @@ Template.modalEdit.events({
     editBrew.coffeedescription = form.description.value;
     editBrew._id = Template.instance().data.id;
     let coffee = new Coffee(editBrew);
+    //Upload if imageURL has attribute disabled for file
+    if ( document.getElementById("imageURL").hasAttribute("disabled") ){
+      editBrew.imageURL = uploadFile(editBrew._id, "coffees.upload");
+    }
 
     Meteor.call('coffees.edit', coffee.Get(), (err, res) => {
       if(!err){
