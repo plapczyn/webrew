@@ -5,34 +5,134 @@ import Common from '../scripts/common.js'
 Template.webrewInput.onCreated(function () {
     this.isMouseDown = new ReactiveVar(false);
     this.highlightedIndex = new ReactiveVar(-2);
-    this.range = new ReactiveVar([0, this.data.rowCount || 5]);
+    this.range = new ReactiveVar([0, this.data.rowCount || 6]);
     this.items = new ReactiveVar([]);
     this.isDropDownOpen = new ReactiveVar(false);
+    this.searchText = new ReactiveVar("");
+    this.searching = new ReactiveVar(false);
+    this.searchBoxHeight = new ReactiveVar((this.data.rowCount || 6) * 44);
+    this.dataBind = (forceBind) => {
+        if(this.searching.get() || forceBind){
+            Meteor.call('roasters.dropdown', this.searchText.get(), (err, res) => {
+                if(!err){
+                    this.items.set(res);
+                    if(res.length < (this.data.rowCount || 6)){
+                        this.range.set([0, res.length]);
+                        this.searchBoxHeight.set(res.length * 44);
+                        this.$(this.$(".webrew-input-list-container")[0]).css("height", this.searchBoxHeight.get())
+                    }
+                    else{
+                        this.range.set([0, (this.data.rowCount || 6) * 44]);
+                        this.searchBoxHeight.set((this.data.rowCount || 6) * 44);
+                        this.$(this.$(".webrew-input-list-container")[0]).css("height", this.searchBoxHeight.get())
+                        this.$(this.$(".webrew-input-list-container")[0]).css("height", this.searchBoxHeight.get())
+                    }
+                }
+                else{
+                }
+              });
+        }
+    }
+
+    this.dataBind(true);
 });
 
 Template.webrewInput.helpers({
     items: function () {
-        Template.instance().items.set([
-            { value: "Item 1", key: "1" },
-            { value: "Item 2", key: "2" },
-            { value: "Item 3", key: "3" },
-            { value: "Item 4", key: "4" },
-            { value: "Item 5", key: "5" },
-            { value: "Item 6", key: "6" },
-            { value: "Item 7", key: "7" },
-            { value: "Item 8", key: "8" },
-            { value: "Item 9", key: "9" },
-            { value: "Item 10", key: "10" },
-            { value: "Item 11", key: "11" }]);
+        let template = Template.instance();
+        return template.items.get();
+    },
+    textArray: function(text){
+        let template = Template.instance();
+        let searchText = template.searchText.get();
+        let textChunckArray = [];
 
-        return Template.instance().items.get();
+        function expandString(string, search, topLevel){
+            if(typeof topLevel === "undefined" && string.indexOf(search) == 0 && search != ""){
+                return ["", search, ...expandString(string.slice(string.indexOf(search) + search.length), search, false)];
+            }
+
+            if(search == ""){
+                return [string]
+            }
+            let array = [];
+            let newString = string.slice(0, string.indexOf(search));
+
+            if(string.indexOf(search) == 0){
+                return [search, ...expandString(string.slice(string.indexOf(search) + search.length), search, false)];
+            }
+
+            if(!(newString != "" && (string.indexOf(search) >= 0))){
+                return [string];
+            }
+
+            return [newString, search, ...expandString(string.slice(string.indexOf(search) + search.length), search, false)];
+        }
+        
+        let splitArray = expandString(text, searchText);
+    
+        if(template.searching.get()){
+            splitArray.forEach((value, index) => {
+                if(value == ""){
+                    return;
+                }
+                if(!(index % 2)){
+                    textChunckArray.push({
+                        highlight: false,
+                        text: value.replace(/ /g, '\u00a0')
+                    });
+                }
+                else{
+                    textChunckArray.push({
+                        highlight: true,
+                        text: template.searchText.get().replace(/ /g, '\u00a0')
+                    });
+                }
+            });
+        }
+        else{
+            textChunckArray = [{
+                highlight: false,
+                text: text
+            }];
+        }
+
+        return textChunckArray;
     }
 });
 
 Template.webrewInput.events({
+    'keyup .webrew-dynamic-input': function(event, template){
+        let text = template.$(event.target).val();
+        if(text == ""){
+            Common.WebrewInput.ClearInput(template)
+        }
+
+        
+
+        template.searchText.set(text)
+        template.dataBind();
+        switch (event.which){
+            case 13:
+                break;
+            case 38:
+                break;
+            case 40:
+                break;
+            default: 
+            {
+                if(template.$(".webrew-input-list-container").hasClass("webrew-input-list-hidden")){
+                    Common.WebrewInput.ShowDropdown(template);
+                }
+                template.searching.set(true);
+            }
+        }
+        console.log("input change")
+    },
     'click .clearInput': function (event, template){
         event.preventDefault();
         Common.WebrewInput.ClearInput(template);
+        template.searching.set(false);
         console.log("input cleared")
     },
     'mousedown .toggleDropdown': function (event, template) {
@@ -64,18 +164,6 @@ Template.webrewInput.events({
             template.$('.webrew-input-list-item').toggleClass("webrew-item-highlight", false)
             template.$(event.target).addClass("webrew-item-highlight")
         }
-
-        // let list = template.$(".webrew-input-list").children().toArray();
-        // let index = -1;
-        // let element = list.filter((element, i) => {
-        //     if (element == event.target) {
-        //         index = i;
-        //         return element == event.target;
-        //     }
-        // });
-
-        // template.highlightedIndex.set(index);
-
     },
     'mouseleave .webrew-input-list-item': function (event, template) {
         template.$(event.target).removeClass("webrew-item-highlight")
@@ -119,6 +207,7 @@ Template.webrewInput.events({
     },
     'webrew-input-selection-changed': function(event, template){
         template.$(".webrew-input-clear-button").toggleClass("webrew-input-clear-hidden", false);
+
         console.log("webrew-input-selection-changed")
     },
     'webrew-input-mousedown': function(event, template){
@@ -184,6 +273,7 @@ Template.webrewInput.onRendered(function () {
             case 13: // enter
                 Common.WebrewInput.SetSelectedValue(template);
                 Common.WebrewInput.HideDropdown(template);
+                template.searching.set(false);
                 event.preventDefault();
                 event.stopPropagation();
                 break;
@@ -220,6 +310,7 @@ Template.webrewInput.onRendered(function () {
                 }
 
                 Common.WebrewInput.SetSelectedValue(template);
+                template.searching.set(false);
                 break;
 
             case 39: // right
@@ -252,6 +343,7 @@ Template.webrewInput.onRendered(function () {
                 }
 
                 console.log(index, range);
+                template.searching.set(false);
                 break;
 
             default: return; 

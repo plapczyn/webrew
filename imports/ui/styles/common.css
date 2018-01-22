@@ -133,3 +133,9 @@
 {
     display: none;
 }
+
+.webrew-input-list-item-highlighted-search
+{
+    font-weight: bold;
+    font-size: 1.220rem;
+}

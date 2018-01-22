@@ -311,6 +311,9 @@ class WebrewInput
             template.highlightedIndex.set(-2);
         }
 
+        template.searchText.set("");
+        template.searching.set(false);
+        template.dataBind(true);
         template.$(".webrew-input-list-item").toggleClass("webrew-input-active", false);
         template.$(".webrew-input-clear-button").toggleClass("webrew-input-clear-hidden", true);
         template.$("#" + template.data.elementId).focus();
