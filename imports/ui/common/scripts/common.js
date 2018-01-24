@@ -226,21 +226,40 @@ class WebrewColorPallet
 
 class WebrewInput
 {
-    // static instances = [];
+    static instances = [];
     // options;
-    // template;
+    template;
 
-    constructor(options)
+    constructor(template)
     {
-        // this.options = options;
-        // this.options.elementId = "webrewInput" + this.options.renderOnId + WebrewInput.instances.length;
-        // this.render();
+        this.template = template;
+        let index = -1;
+        let hasInstance = WebrewInput.instances.some((instance, i) => {
+            if(template.data.elementId == instance.temp.data.elementId){
+                index = i;
+            }
+
+            return template.data.elementId == instance.temp.data.elementId;
+        });
+
+        if(hasInstance)
+        {
+            WebrewInput.instances.splice(index, 1);
+        }
+
+        WebrewInput.instances.push(this);
     }
-    
-    render()
+
+    getValue()
     {
-        // this.template = Blaze.renderWithData(Template.webrewInput, this.options, $("#" + this.options.renderOnId)[0]);
-        // WebrewInput.instances.push(this.template);
+        return this.template.$("#" + this.template.data.elementId + "_hiddenKey").val();
+    }
+
+    static GetById(id)
+    {
+        return WebrewInput.instances.filter((instance) => {
+            return instance.template.data.elementId == id;
+        })[0];
     }
 
     static ToggleDropdown(template){
@@ -300,7 +319,8 @@ class WebrewInput
         template.$(".webrew-input-control-container").trigger("webrew-input-selection-changed")
     }
 
-    static ClearInput(template){
+    static ClearInput(template)
+    {
         this.SetValue(template, -1, "");
         if(template.isDropDownOpen.get())
         {
@@ -317,6 +337,205 @@ class WebrewInput
         template.$(".webrew-input-list-item").toggleClass("webrew-input-active", false);
         template.$(".webrew-input-clear-button").toggleClass("webrew-input-clear-hidden", true);
         template.$("#" + template.data.elementId).focus();
+    }
+
+    static KeyDown(event, template)
+    {
+        if (event.defaultPrevented) {
+            return; // Should do nothing if the default action has been cancelled
+          }
+        
+        var handled = false;
+        if (event.key !== undefined) 
+        {
+            switch(event.key)
+            {
+                case "ArrowDown":
+                {
+                    WebrewInputKeys.ArrowDown(event, template);
+                    handled = true;
+                    break;
+                }
+                case "ArrowUp":
+                {
+                    WebrewInputKeys.ArrowUp(event, template);
+                    handled = true;
+                    break;
+                }
+                case "Enter":
+                {
+                    WebrewInputKeys.Enter(event, template);
+                    handled = true;
+                    break;
+                }
+            }
+            // Handle the event with KeyboardEvent.key and set handled true.
+          } else if (event.keyIdentifier !== undefined) {
+            // Handle the event with KeyboardEvent.keyIdentifier and set handled true.
+          } else if (event.keyCode !== undefined) {
+            // Handle the event with KeyboardEvent.keyCode and set handled true.
+          }
+        
+          if (handled) {
+            // Suppress "double action" if event handled
+          }
+    }
+
+    static KeyUp(event, template)
+    {
+        if (event.defaultPrevented) {
+            return; // Should do nothing if the default action has been cancelled
+          }
+        
+        var handled = false;
+        if (event.key !== undefined) 
+        {
+            switch(event.key)
+            {
+                case "ArrowDown":
+                {
+                    break;
+                }
+                case "ArrowUp":
+                {
+                    break;
+                }
+                case "Enter":
+                {
+                    break;
+                }
+                default: 
+                {
+                    let text = template.$(event.target).val();
+                    if(text == ""){
+                        WebrewInput.ClearInput(template)
+                    }
+            
+                    template.searchText.set(text)
+                    template.dataBind(true);
+                    switch (event.which){
+                        case 13:
+                        break;
+                        case 38:
+                        break;
+                        case 40:
+                        break;
+                        default: 
+                        {
+                            if(template.$(".webrew-input-list-container").hasClass("webrew-input-list-hidden")){
+                                WebrewInput.ShowDropdown(template);
+                            }
+                            template.searching.set(true);
+                        }
+                    }
+                    console.log("input change")
+                }
+            }
+            // Handle the event with KeyboardEvent.key and set handled true.
+          } else if (event.keyIdentifier !== undefined) {
+            // Handle the event with KeyboardEvent.keyIdentifier and set handled true.
+          } else if (event.keyCode !== undefined) {
+            // Handle the event with KeyboardEvent.keyCode and set handled true.
+          }
+        
+          if (handled) {
+            // Suppress "double action" if event handled
+          }
+    }
+}
+
+class WebrewInputKeys
+{
+    static ArrowDown(event, template)
+    {
+        let index = template.highlightedIndex.get();
+        let list = template.$(".webrew-input-list").children().toArray();
+        let range = [...template.range.get()];   
+        
+        if (template.$(".webrew-input-list-container").hasClass("webrew-input-list-hidden")) {
+            WebrewInput.ShowDropdown(template);
+        }
+
+        if (index == -2) {
+            template.highlightedIndex.set(index + 1);
+        }
+        else if (index == template.items.get().length - 1) {
+            return;
+        }
+        else {
+            template.$(list[index]).toggleClass("webrew-input-active", false)
+            template.$(list[index + 1]).addClass("webrew-input-active")
+            template.highlightedIndex.set(index + 1);
+            WebrewInput.SetSelectedValue(template);
+        }
+        if(index == range[1]){
+            template.range.set([range[0] + 1, range[1] + 1])
+            template.$(".webrew-input-list-container").scrollTop((range[0] + 1) * 44)
+        }
+
+        if(index < range[0] || index > range[1]){
+            template.$(".webrew-input-list-container").scrollTop((index - 1) * 44)
+        }
+
+        console.log(index, range);
+        template.searching.set(false);
+        return;
+    }
+
+    static ArrowUp(event, template)
+    {
+        let index = template.highlightedIndex.get();
+        let list = template.$(".webrew-input-list").children().toArray();
+        let range = [...template.range.get()]; 
+
+        if (index == 0) {
+            if (template.$(".webrew-input-list-container").hasClass("webrew-input-list-open")) {
+                WebrewInput.HideDropdown(template);
+                return;
+            }
+        }
+        else if (index == -1) {
+            template.highlightedIndex.set(index - 1);
+            WebrewInput.HideDropdown(template);
+            return;
+        }
+        else if (index == -2){
+            return;
+        }
+        else {
+            template.$(list[index]).toggleClass("webrew-input-active", false)
+            template.$(list[index - 1]).addClass("webrew-input-active")
+            template.highlightedIndex.set(index - 1);
+        }
+
+        if(index == range[0]){
+            console.log(index, range);
+            template.range.set([range[0] - 1, range[1] - 1])
+            template.$(".webrew-input-list-container").scrollTop((range[0] - 1) * 44)
+        }
+
+        if(index < range[0] || index > range[1]){
+            template.$(".webrew-input-list-container").scrollTop((index - 1) * 44)
+        }
+
+        WebrewInput.SetSelectedValue(template);
+        template.searching.set(false);
+        return;
+    }
+
+    static Enter(event, template)
+    {
+        WebrewInput.SetSelectedValue(template);
+        WebrewInput.HideDropdown(template);
+        template.searching.set(false);
+        event.preventDefault();
+        event.stopPropagation();
+        return;
+    }
+
+    static Backspace()
+    {
+
     }
 }
 

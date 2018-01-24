@@ -14,10 +14,10 @@ Template.newbrew.events({
   'submit .newbrew'(event, template) {
     // Prevent default browser form submit
     event.preventDefault();
-
+    let asdasd = Common.WebrewInput.GetById("companyId").getValue();
     // Get value from form element
     const target = event.target;
-    const company = target.company.value;
+    const company = template.company.getValue();
     const name = target.name.value;
     const roast = target.roast.value;
     const description = target.description.value;
@@ -60,9 +60,14 @@ Template.newbrew.events({
 Template.newbrew.helpers({
   getColor(roastName){
     return Common.WebrewColorPallet.roastName.Color;
+  },
+  getWebrewInput(webrewInput){
+    console.log(webrewInput);
   }
 });
 
 Template.newbrew.onRendered(function() {
+  let template = Template.instance();
+  template.company = Common.WebrewInput.GetById("companyId");
 });
 

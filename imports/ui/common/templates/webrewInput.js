@@ -5,26 +5,27 @@ import Common from '../scripts/common.js'
 Template.webrewInput.onCreated(function () {
     this.isMouseDown = new ReactiveVar(false);
     this.highlightedIndex = new ReactiveVar(-2);
-    this.range = new ReactiveVar([0, this.data.rowCount || 6]);
+    this.data.rowCount = this.data.rowCount || 5
+    this.data.maxVisibleRange = this.data.rowCount - 1;
+    this.range = new ReactiveVar([0, this.data.rowCount - 1]);
     this.items = new ReactiveVar([]);
     this.isDropDownOpen = new ReactiveVar(false);
     this.searchText = new ReactiveVar("");
     this.searching = new ReactiveVar(false);
-    this.searchBoxHeight = new ReactiveVar((this.data.rowCount || 6) * 44);
+    this.searchBoxHeight = new ReactiveVar((this.data.rowCount) * 44);
     this.dataBind = (forceBind) => {
         if(this.searching.get() || forceBind){
-            Meteor.call('roasters.dropdown', this.searchText.get(), (err, res) => {
+            Meteor.call(this.data.method, this.searchText.get(), (err, res) => {
                 if(!err){
                     this.items.set(res);
-                    if(res.length < (this.data.rowCount || 6)){
+                    if(res.length < (this.data.rowCount)){
                         this.range.set([0, res.length]);
                         this.searchBoxHeight.set(res.length * 44);
                         this.$(this.$(".webrew-input-list-container")[0]).css("height", this.searchBoxHeight.get())
                     }
                     else{
-                        this.range.set([0, (this.data.rowCount || 6) * 44]);
-                        this.searchBoxHeight.set((this.data.rowCount || 6) * 44);
-                        this.$(this.$(".webrew-input-list-container")[0]).css("height", this.searchBoxHeight.get())
+                        this.range.set([0, (this.data.maxVisibleRange)]);
+                        this.searchBoxHeight.set((this.data.rowCount) * 44);
                         this.$(this.$(".webrew-input-list-container")[0]).css("height", this.searchBoxHeight.get())
                     }
                 }
@@ -34,6 +35,7 @@ Template.webrewInput.onCreated(function () {
         }
     }
 
+    new Common.WebrewInput(this);
     this.dataBind(true);
 });
 
@@ -102,33 +104,8 @@ Template.webrewInput.helpers({
 });
 
 Template.webrewInput.events({
-    'keyup .webrew-dynamic-input': function(event, template){
-        let text = template.$(event.target).val();
-        if(text == ""){
-            Common.WebrewInput.ClearInput(template)
-        }
-
-        
-
-        template.searchText.set(text)
-        template.dataBind();
-        switch (event.which){
-            case 13:
-                break;
-            case 38:
-                break;
-            case 40:
-                break;
-            default: 
-            {
-                if(template.$(".webrew-input-list-container").hasClass("webrew-input-list-hidden")){
-                    Common.WebrewInput.ShowDropdown(template);
-                }
-                template.searching.set(true);
-            }
-        }
-        console.log("input change")
-    },
+    'keydown .webrew-dynamic-input': Common.WebrewInput.KeyDown,
+    'keyup .webrew-dynamic-input': Common.WebrewInput.KeyUp,
     'click .clearInput': function (event, template){
         event.preventDefault();
         Common.WebrewInput.ClearInput(template);
@@ -196,7 +173,7 @@ Template.webrewInput.events({
     },
     'webrew-input-dropdown-hide': function (event, template) {
         template.highlightedIndex.set(-2);
-        template.range.set([0, template.data.rowCount || 5])
+        template.range.set([0, template.data.maxVisibleRange])
         template.$('.webrew-input-list-item').toggleClass("webrew-item-highlight", false)
         template.$('.webrew-input-list-item').toggleClass("webrew-input-active", false)
         template.$('.webrew-input-list-item').toggleClass("webrew-input-active-click", false)
@@ -237,7 +214,7 @@ Template.webrewInput.onRendered(function () {
     var template = Template.instance();
     this.jqElement = template.$(".webrew-input-control-container");
     // Set Height of dropdown
-    let height = template.data.rowCount || 6;
+    let height = template.data.rowCount;
     height = height * 44;
     $($(".webrew-input-list-container")[0]).css("height", height)
 
@@ -264,100 +241,13 @@ Template.webrewInput.onRendered(function () {
         Common.WebrewInput.HideDropdown(template);
     });
 
-    template.$("#" + template.data.elementId).keydown((event) => {
-        let index = template.highlightedIndex.get();
-        let list = $(".webrew-input-list").children().toArray();
-        let range = [...template.range.get()];
-
-        switch (event.which) {
-            case 13: // enter
-                Common.WebrewInput.SetSelectedValue(template);
-                Common.WebrewInput.HideDropdown(template);
-                template.searching.set(false);
-                event.preventDefault();
-                event.stopPropagation();
-                break;
-
-            case 38: // up
-                if (index == 0) {
-                    if (template.$(".webrew-input-list-container").hasClass("webrew-input-list-open")) {
-                        Common.WebrewInput.HideDropdown(template);
-                        break;
-                    }
-                }
-                else if (index == -1) {
-                    template.highlightedIndex.set(index - 1);
-                    Common.WebrewInput.HideDropdown(template);
-                    break;
-                }
-                else if (index == -2){
-                    break;
-                }
-                else {
-                    template.$(list[index]).toggleClass("webrew-input-active", false)
-                    template.$(list[index - 1]).addClass("webrew-input-active")
-                    template.highlightedIndex.set(index - 1);
-                }
-
-                if(index == range[0]){
-                    console.log(index, range);
-                    template.range.set([range[0] - 1, range[1] - 1])
-                    template.$(".webrew-input-list-container").scrollTop((range[0] - 1) * 44)
-                }
-
-                if(index < range[0] || index > range[1]){
-                    template.$(".webrew-input-list-container").scrollTop((index - 1) * 44)
-                }
-
-                Common.WebrewInput.SetSelectedValue(template);
-                template.searching.set(false);
-                break;
-
-            case 39: // right
-                break;
-
-            case 40: // down
-                if (template.$(".webrew-input-list-container").hasClass("webrew-input-list-hidden")) {
-                    Common.WebrewInput.ShowDropdown(template);
-                }
-
-                if (index == -2) {
-                    template.highlightedIndex.set(index + 1);
-                }
-                else if (index == template.items.get().length - 1) {
-                    break;
-                }
-                else {
-                    template.$(list[index]).toggleClass("webrew-input-active", false)
-                    template.$(list[index + 1]).addClass("webrew-input-active")
-                    template.highlightedIndex.set(index + 1);
-                    Common.WebrewInput.SetSelectedValue(template);
-                }
-                if(index == range[1]){
-                    template.range.set([range[0] + 1, range[1] + 1])
-                    template.$(".webrew-input-list-container").scrollTop((range[0] + 1) * 44)
-                }
-
-                if(index < range[0] || index > range[1]){
-                    template.$(".webrew-input-list-container").scrollTop((index - 1) * 44)
-                }
-
-                console.log(index, range);
-                template.searching.set(false);
-                break;
-
-            default: return; 
-        }
-
-        event.preventDefault();
-    });
-
     // Setting the range of where the hell we are in the scroll
     template.$(".webrew-input-list-container").scroll((event) => {
         let range = template.range.get();
-        
+        let maxRange = template.data.maxVisibleRange
+
         if(Math.round(template.$(event.target).scrollTop() / 44) <= template.$(event.target).scrollTop() / 44){
-            template.range.set([Math.round(template.$(event.target).scrollTop() / 44), Math.round(template.$(event.target).scrollTop() / 44 + 5)]);
+            template.range.set([Math.round(template.$(event.target).scrollTop() / 44), Math.round(template.$(event.target).scrollTop() / 44 + maxRange)]);
             console.log(template.range.get());
         }
     })
