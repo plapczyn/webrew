@@ -1,5 +1,4 @@
 import '../templates/webrewModal.html';
-import '../templates/webrewInput.js';
 
 class WebrewToast
 {
@@ -227,21 +226,97 @@ class WebrewColorPallet
 
 class WebrewInput
 {
-    static instances = [];
-    options;
-    template;
+    // static instances = [];
+    // options;
+    // template;
 
     constructor(options)
     {
-        this.options = options;
-        this.options.elementId = "webrewInput" + this.options.renderOnId + WebrewInput.instances.length;
-        this.render();
+        // this.options = options;
+        // this.options.elementId = "webrewInput" + this.options.renderOnId + WebrewInput.instances.length;
+        // this.render();
     }
     
     render()
     {
-        this.template = Blaze.renderWithData(Template.webrewInput, this.options, $("#" + this.options.renderOnId)[0]);
-        WebrewInput.instances.push(this.template);
+        // this.template = Blaze.renderWithData(Template.webrewInput, this.options, $("#" + this.options.renderOnId)[0]);
+        // WebrewInput.instances.push(this.template);
+    }
+
+    static ToggleDropdown(template){
+        if(template.$(".webrew-input-list-container").hasClass("webrew-input-list-open"))
+        {
+            this.HideDropdown(template);
+        }
+        else
+        {
+            this.ShowDropdown(template);
+        }
+    }
+
+    static HideDropdown(template)
+    {
+        this.hideShowDropDown(template, false);
+    }
+
+    static ShowDropdown(template)
+    {
+        this.hideShowDropDown(template, true);
+    }
+
+    static hideShowDropDown(template, show)
+    {
+        let hide;
+        hide = (typeof show == "undefined" ? undefined : !show);
+
+        template.$(".webrew-input-list-container").toggleClass("webrew-input-list-hidden", hide)
+        template.$(".webrew-input-list-container").toggleClass("webrew-input-list-open", show)
+        template.$("#webrew-input-icon").toggleClass("fa-chevron-down", !show)
+        template.$("#webrew-input-icon").toggleClass("fa-chevron-up", show)
+        template.$(".webrew-input-list-container").scrollTop(true);
+
+        if(show)
+        {
+            template.$(".webrew-input-control-container").trigger("webrew-input-dropdown-show");
+        }
+        else
+        {
+            template.$(".webrew-input-control-container").trigger("webrew-input-dropdown-hide");
+        }
+        
+        template.isDropDownOpen.set(show);
+    }
+
+    static SetSelectedValue(template){
+        let element = template.$(".webrew-input-active")[0];
+        let value = template.$(element).attr("data-value")
+        let key = template.$(element).attr("data-key")
+        this.SetValue(template, key, value);
+    }
+
+    static SetValue(template, key, value){
+        template.$("#" + template.data.elementId).val(value);
+        template.$("#" + template.data.elementId + "_hiddenKey").val(key);
+        template.$(".webrew-input-control-container").trigger("webrew-input-selection-changed")
+    }
+
+    static ClearInput(template){
+        this.SetValue(template, -1, "");
+        if(template.isDropDownOpen.get())
+        {
+            template.highlightedIndex.set(-1);
+        }
+        else
+        {
+            template.highlightedIndex.set(-2);
+        }
+
+        template.searchText.set("");
+        template.searching.set(false);
+        template.dataBind(true);
+        template.$(".webrew-input-list-item").toggleClass("webrew-input-active", false);
+        template.$(".webrew-input-clear-button").toggleClass("webrew-input-clear-hidden", true);
+        template.$("#" + template.data.elementId).focus();
     }
 }
 

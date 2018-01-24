@@ -24,3 +24,118 @@
     height: 100%;
     width: 100%;
 }
+
+.webrew-input-list
+{
+    list-style-type: none;
+    padding-left: 0px;
+    margin-bottom: 0px;
+}
+
+.webrew-input-list-item
+{
+    font-size: 1.250rem;
+    padding: 7px;
+    border: solid 1px rgb(230, 229, 229);
+}
+
+.webrew-dynamic-input
+{
+    height: 40px;
+    font-family: Roboto;
+    font-size: 1.250rem;
+    width: 100%;
+    padding-right: 45px;
+    padding-left: 5px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+}
+
+.webrew-input-list-container
+{
+    margin: 0px;
+    border: solid 1px lightgrey;
+    background-color: rgb(230, 229, 229);
+    max-height: 280px;
+    overflow-y: auto;
+}
+
+.webrew-input-dropdown-button
+{
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    height: 40px;
+}
+
+.webrew-input-list-hidden
+{
+    display: none;
+    z-index: -99999;
+}
+
+.webrew-input-list-open
+{
+    position: absolute;
+    top: 40px;
+    left: 0px;
+    width: 100%;
+    z-index: 99999;
+}
+
+.webrew-item-highlight
+{
+    background-color: beige;
+    border-color: lightgray;
+    border-style: solid;
+    border-width: 1px;
+    cursor: pointer;
+}
+
+.webrew-unselectable
+{
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+.testtest
+{
+    background-color: red;
+}
+
+.webrew-input-active
+{
+    background-color: #B18367;
+}
+
+.webrew-input-active-click
+{
+    background-color: rgb(174, 142, 122);
+}
+
+.webrew-input-clear-button
+{
+    position: absolute;
+    top: 12px;
+    right: 46px;
+    padding-bottom: 0px;
+    margin: 0px;
+    padding-right: 1px;
+    padding-left: 1px;
+    padding-top: 0px;
+    line-height: 0px;
+}
+
+.webrew-input-clear-hidden
+{
+    display: none;
+}
+
+.webrew-input-list-item-highlighted-search
+{
+    font-weight: bold;
+    font-size: 1.220rem;
+}
