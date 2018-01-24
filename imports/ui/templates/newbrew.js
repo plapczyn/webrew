@@ -2,6 +2,7 @@ import './newbrew.html';
 import './newbrew.css';
 import { Coffees } from '../../api/collections/coffees.js';
 import Common from '../common/scripts/common.js';
+import "../../ui/common/templates/webrewInput.js";
 import { Coffee } from '../../../lib/DatabaseModels.js';
 import '../common/templates/imgupload.js'
 
@@ -35,7 +36,6 @@ Template.newbrew.events({
         
         //If Image Upload, load image with filename as res/CoffeeID
         if ( document.getElementById("imageURL").hasAttribute("disabled") ){
-          //uploadFile(res, "coffees.upload");
           uploadImgur(res, "coffees.uploadImgur");
         }
         FlowRouter.go('Main');
@@ -57,6 +57,5 @@ Template.newbrew.helpers({
 });
 
 Template.newbrew.onRendered(function() {
-  console.log($("#coffeeCompany"));
-  let gg = new Common.WebrewInput({renderOnId: "coffeeCompany"});
 });
+
