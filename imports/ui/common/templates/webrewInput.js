@@ -35,11 +35,14 @@ Template.webrewInput.onCreated(function () {
         }
     }
 
-    new Common.WebrewInput(this);
+    this.data.setControl(new Common.WebrewInput(this));
     this.dataBind(true);
 });
 
 Template.webrewInput.helpers({
+    callbackd: function(){
+
+    },
     items: function () {
         let template = Template.instance();
         return template.items.get();
