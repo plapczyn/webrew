@@ -20,8 +20,8 @@ Template.imgupload.events({
           return;
         }
         //Check filesize
-        if (file.size > 1024*1024*2) {
-          Common.WebrewToast.Show(file.name + " is too large, please select an image smaller than 2MB", "error")
+        if (file.size > 1024*1024*10) {
+          Common.WebrewToast.Show(file.name + " is too large, please select an image smaller than 10MB", "error")
           return;
         }
         
@@ -29,13 +29,65 @@ Template.imgupload.events({
         reader.onload = function (event) {
           imgDiv.innerHTML = "<img src=\"" + event.target.result + "\">";
           document.getElementById("imageURL").value = file.name;
-          document.getElementById("imageURL").setAttribute("disabled","");         
+          document.getElementById("imageURL").setAttribute("disabled","");
+          let c = document.getElementById("imageClear");
+          c.classList.remove("image-upload-hidden");         
         }
         reader.readAsDataURL(file);
-      }
+  },
+  'keyup #imageURL, change #imageURL' ( event, template) {
+    let value = event.target.value.trim();
+    let e = document.getElementById("imageClear");
+    if (value.length > 0 ){
+      e.classList.remove("image-upload-hidden");
+    } else {
+      e.classList.add("image-upload-hidden");
+    }
+  },
+  'click .image-upload-clear'(event, template){
+    event.preventDefault();
+    let c = document.getElementById("imageClear");
+    let e = document.getElementById("imageURL");
+    c.classList.add("image-upload-hidden");
+    e.removeAttribute("disabled",""); 
+    e.value = "";
+    document.getElementById("imgDiv").innerHTML = "";
+    document.getElementById("imageFile").value = "";
+  }
 });
 
-uploadFile = function (id, method) {
+// uploadFile = function (id, method) {
+//     var file = document.getElementById("imageFile").files[0];
+//     if (file) {
+//       //Check filetype
+//       if (!(file.type.match('image.*'))){
+//         Common.WebrewToast.Show(file.name + " is not an image, please select an image.", "error")
+//         return;
+//       }
+//       //Check filesize
+//       if (file.size > 1024*1024*2) {
+//         Common.WebrewToast.Show(file.name + " is too large, please select an image smaller than 2MB", "error")
+//         return;
+//       }
+      
+//       var reader = new FileReader();
+//       reader.onload = function(fileLoadEvent) {
+//       //call created upload method and pass file name, and file-reader info
+//       Meteor.call(method, id, file.name, reader.result, function(err, res) {
+//             if(!err){
+//               Common.WebrewToast.Show(file.name + " uploaded successfully", "success")
+//               return res;
+//             }
+//             else{
+//               Common.WebrewToast.Show(file.name + " was not uploaded successfully", "error")
+//             }
+//         });
+//       };
+//       reader.readAsBinaryString(file);
+//     }
+//   }
+
+  uploadImgur = function (id, method) {
     var file = document.getElementById("imageFile").files[0];
     if (file) {
       //Check filetype
@@ -44,25 +96,21 @@ uploadFile = function (id, method) {
         return;
       }
       //Check filesize
-      if (file.size > 1024*1024*2) {
-        Common.WebrewToast.Show(file.name + " is too large, please select an image smaller than 2MB", "error")
+      if (file.size > 1024*1024*10) {
+        Common.WebrewToast.Show(file.name + " is too large, please select an image smaller than 10MB", "error")
         return;
       }
-      
+      Common.WebrewToast.Show(file.name + " upload in process", "info")
       var reader = new FileReader();
       reader.onload = function(fileLoadEvent) {
-      //call created upload method and pass file name, and file-reader info
-      console.log("startUploadFileMeteorCall");
-      Meteor.call(method, id, file.name, reader.result, function(err, res) {
-            if(!err){
-              Common.WebrewToast.Show(file.name + " uploaded successfully", "success")
-              console.log("endUploadFileMeteorCall");
-              console.log(res);
-              return res;
-            }
-            else{
-              Common.WebrewToast.Show(file.name + " was not uploaded successfully", "error")
-            }
+        //call created upload method and pass file name, and file-reader info
+        Meteor.call(method, id, file.name, btoa(fileLoadEvent.target.result), function(err, res) {
+          if(!err){
+            Common.WebrewToast.Show(file.name + " uploaded successfully", "success")
+            return res;
+          } else {
+            Common.WebrewToast.Show(file.name + " was not uploaded successfully", "error")
+          }
         });
       };
       reader.readAsBinaryString(file);

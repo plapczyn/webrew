@@ -8,7 +8,7 @@ export const BrewFiles = new Mongo.Collection('brewfile');
 export const Messages = new Mongo.Collection('messages');
 export const RoomUsers = new Mongo.Collection('roomusers');
 export const RatingNotes = new Mongo.Collection('ratingNotes')
-
+export const Config = new Mongo.Collection('config')
 
 
 
