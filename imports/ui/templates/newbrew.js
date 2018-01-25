@@ -64,14 +64,14 @@ Template.newbrew.helpers({
   getWebrewInput(webrewInput){
     console.log(webrewInput);
   },
-  setupInput1(){
-    let template = Template.instance();
+  setupInput1(test){
+    let instance = Template.instance();
     let options = {
       elementId: "companyId",
       method: "roasters.dropdown",
-      rowCount: 9,
-      setControl: (input) => {
-        template.company = input;
+      rowCount: 5,
+      initialize: (input) => {
+        instance.company = input;
       }
     }
 

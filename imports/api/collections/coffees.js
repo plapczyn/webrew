@@ -79,7 +79,6 @@ function FillAdvancedReviewData()
   }
 
   // FillAdvancedReviewData();
-
   /*
   db.roasters.insert({Name: "Duncan Donut's"});
 db.roasters.insert({Name: "Maxwell House"});
@@ -92,3 +91,14 @@ db.roasters.insert({Name: "Peet's"});
 db.roasters.insert({Name: "Sarbucks"});
 db.roasters.insert({Name: "Higher Ground Roasters});
   */
+
+//  Roasters.insert({Name: "Duncan Donut's"});
+//  Roasters.insert({Name: "Maxwell House"});
+//  Roasters.insert({Name: "Folgers"});
+//  Roasters.insert({Name: "Nescafe"});
+//  Roasters.insert({Name: "Eight O'Clock Coffee"});
+//  Roasters.insert({Name: "Jacobs"});
+//  Roasters.insert({Name: "Sanka"});
+//  Roasters.insert({Name: "Peet's"});
+//  Roasters.insert({Name: "Sarbucks"});
+//  Roasters.insert({Name: "Higher Ground Roasters"});

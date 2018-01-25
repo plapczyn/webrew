@@ -12,20 +12,28 @@ Template.webrewInput.onCreated(function () {
     this.isDropDownOpen = new ReactiveVar(false);
     this.searchText = new ReactiveVar("");
     this.searching = new ReactiveVar(false);
-    this.searchBoxHeight = new ReactiveVar((this.data.rowCount) * 44);
+    this.searchBoxHeight = new ReactiveVar((this.data.rowCount) * 44 + 2)
+    this.key = new ReactiveVar("LzY3Dz4MeXdmWhKDr");
+    this.instance = new Common.WebrewInput(this);
     this.dataBind = (forceBind) => {
         if(this.searching.get() || forceBind){
-            Meteor.call(this.data.method, this.searchText.get(), (err, res) => {
+            Meteor.call(this.data.method, this.searchText.get(), this.key.get(), (err, res) => {
                 if(!err){
                     this.items.set(res);
+
+                    if(this.key.get() != "")
+                    {
+                        this.instance.setValue(res[0].value)
+                    }
+
                     if(res.length < (this.data.rowCount)){
                         this.range.set([0, res.length]);
-                        this.searchBoxHeight.set(res.length * 44);
+                        this.searchBoxHeight.set(res.length * 44 + 2);
                         this.$(this.$(".webrew-input-list-container")[0]).css("height", this.searchBoxHeight.get())
                     }
                     else{
                         this.range.set([0, (this.data.maxVisibleRange)]);
-                        this.searchBoxHeight.set((this.data.rowCount) * 44);
+                        this.searchBoxHeight.set((this.data.rowCount) * 44 + 2);
                         this.$(this.$(".webrew-input-list-container")[0]).css("height", this.searchBoxHeight.get())
                     }
                 }
@@ -35,7 +43,7 @@ Template.webrewInput.onCreated(function () {
         }
     }
 
-    this.data.setControl(new Common.WebrewInput(this));
+    this.data.initialize(this.instance);
     this.dataBind(true);
 });
 
@@ -111,9 +119,8 @@ Template.webrewInput.events({
     'keyup .webrew-dynamic-input': Common.WebrewInput.KeyUp,
     'click .clearInput': function (event, template){
         event.preventDefault();
-        Common.WebrewInput.ClearInput(template);
         template.searching.set(false);
-        console.log("input cleared")
+        Common.WebrewInput.ClearInput(template);
     },
     'mousedown .toggleDropdown': function (event, template) {
         event.preventDefault();
@@ -148,7 +155,6 @@ Template.webrewInput.events({
     'mouseleave .webrew-input-list-item': function (event, template) {
         template.$(event.target).removeClass("webrew-item-highlight")
     },
-
     'mousedown .webrew-input-list-item': function (event, template) {
         event.stopPropagation();
         event.preventDefault();
@@ -196,7 +202,7 @@ Template.webrewInput.events({
     },
     'webrew-input-mouseup': function (event, template){
         template.isMouseDown.set(false);
-        console.log("webrew-input-mousedown")
+        console.log("webrew-input-mouseup")
     },
     'webrew-input-toggle-dropdown-mousedown': function (event, template){
         console.log("webrew-input-toggle-dropdown-mousedown");
@@ -210,6 +216,9 @@ Template.webrewInput.events({
         }
         template.jqElement.trigger("webrew-input-mouseup");
         console.log("webrew-input-toggle-dropdown-mousedown");
+    },
+    'webrew-input-clear': function(event, template){
+        console.log('webrew-input-clear');
     }
 });
 
@@ -223,7 +232,6 @@ Template.webrewInput.onRendered(function () {
 
     $(document).on("mousedown", function (event) {
         let inputFields = template.$(".webrew-input-control-container").children().toArray();
-
         let inputWasClicked = inputFields.some((element) => { return element == event.target });
 
         if (inputWasClicked) {

@@ -235,11 +235,11 @@ class WebrewInput
         this.template = template;
         let index = -1;
         let hasInstance = WebrewInput.instances.some((instance, i) => {
-            if(template.data.elementId == instance.temp.data.elementId){
+            if(template.data.elementId == instance.template.data.elementId){
                 index = i;
             }
 
-            return template.data.elementId == instance.temp.data.elementId;
+            return template.data.elementId == instance.template.data.elementId;
         });
 
         if(hasInstance)
@@ -250,9 +250,26 @@ class WebrewInput
         WebrewInput.instances.push(this);
     }
 
-    getValue()
+    getKey()
     {
         return this.template.$("#" + this.template.data.elementId + "_hiddenKey").val();
+    }
+
+    getValue()
+    {
+        return this.template.$("#" + this.template.data.elementId).val();
+    }
+
+    setKey(key)
+    {
+        this.template.$("#" + this.template.data.elementId + "_hiddenKey").val(key);
+        this.template.key.set(key);
+    }
+
+    setValue(value)
+    {
+        this.template.$("#" + this.template.data.elementId).val(value);
+        this.template.$(".webrew-input-control-container").trigger("webrew-input-selection-changed")
     }
 
     static GetById(id)
@@ -333,10 +350,13 @@ class WebrewInput
 
         template.searchText.set("");
         template.searching.set(false);
+        template.key.set("");
         template.dataBind(true);
         template.$(".webrew-input-list-item").toggleClass("webrew-input-active", false);
         template.$(".webrew-input-clear-button").toggleClass("webrew-input-clear-hidden", true);
         template.$("#" + template.data.elementId).focus();
+
+        template.$(".webrew-input-control-container").trigger("webrew-input-clear");
     }
 
     static KeyDown(event, template)
@@ -411,7 +431,8 @@ class WebrewInput
                         WebrewInput.ClearInput(template)
                     }
             
-                    template.searchText.set(text)
+                    template.searchText.set(text);
+                    template.highlightedIndex.set(-1);
                     template.dataBind(true);
                     switch (event.which){
                         case 13:
@@ -426,6 +447,7 @@ class WebrewInput
                                 WebrewInput.ShowDropdown(template);
                             }
                             template.searching.set(true);
+                            template.key.set("");
                         }
                     }
                     console.log("input change")
@@ -454,12 +476,14 @@ class WebrewInputKeys
         
         if (template.$(".webrew-input-list-container").hasClass("webrew-input-list-hidden")) {
             WebrewInput.ShowDropdown(template);
+            return;
         }
 
         if (index == -2) {
             template.highlightedIndex.set(index + 1);
+            index++;
         }
-        else if (index == template.items.get().length - 1) {
+        if (index == template.items.get().length - 1) {
             return;
         }
         else {
