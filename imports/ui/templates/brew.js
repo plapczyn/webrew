@@ -205,14 +205,18 @@ Template.modalEdit.events({
     editBrew.coffeecompany = form.company.value;
     editBrew.coffeename = form.title.value;
     editBrew.coffeeroast = form.roast.value;
-    editBrew.imageURL = form.imageURL.value;
     editBrew.coffeedescription = form.description.value;
     editBrew._id = Template.instance().data.id;
-    let coffee = new Coffee(editBrew);
-    //Upload if imageURL has attribute disabled for file
+    //Set imageURL as loader image during upload
     if ( document.getElementById("imageURL").hasAttribute("disabled") ){
-      editBrew.imageURL = uploadFile(editBrew._id, "coffees.upload");
+      editBrew.imageURL = "/img/coffee.gif";
+      //uploadFile(editBrew._id, "coffees.upload");
+      uploadImgur(editBrew._id, "coffees.uploadImgur");
+    } else {
+      editBrew.imageURL = form.imageURL.value;
     }
+
+    let coffee = new Coffee(editBrew);
 
     Meteor.call('coffees.edit', coffee.Get(), (err, res) => {
       if(!err){

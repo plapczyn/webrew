@@ -9,7 +9,7 @@ export const Roasters = new Mongo.Collection('roasters');
 export const Messages = new Mongo.Collection('messages');
 export const RoomUsers = new Mongo.Collection('roomusers');
 export const RatingNotes = new Mongo.Collection('ratingNotes')
-
+export const Config = new Mongo.Collection('config')
 
 
 
