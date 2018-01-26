@@ -63,6 +63,7 @@ Template.newbrew.helpers({
       elementId: "companyId",
       method: "roasters.dropdown",
       rowCount: 5,
+      required: true,
       initialize: (input) => {
         instance.company = input;
       }

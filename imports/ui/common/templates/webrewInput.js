@@ -39,18 +39,18 @@ Template.webrewInput.onCreated(function () {
                 }
                 else{
                 }
-              });
+            });
         }
     }
 
-    this.data.initialize(this.instance);
+    if(typeof this.data.initialize === "function"){
+        this.data.initialize(this.instance);
+    }
+
     this.dataBind(true);
 });
 
 Template.webrewInput.helpers({
-    callbackd: function(){
-
-    },
     items: function () {
         let template = Template.instance();
         return template.items.get();
@@ -115,12 +115,16 @@ Template.webrewInput.helpers({
 });
 
 Template.webrewInput.events({
-    'keydown .webrew-dynamic-input': Common.WebrewInput.KeyDown,
-    'keyup .webrew-dynamic-input': Common.WebrewInput.KeyUp,
+    'keydown .webrew-dynamic-input': function(event, template){
+        template.instance.keyDown(event);
+    },
+    'keyup .webrew-dynamic-input': function(event, template){
+        template.instance.keyUp(event);
+    },
     'click .clearInput': function (event, template){
         event.preventDefault();
         template.searching.set(false);
-        Common.WebrewInput.ClearInput(template);
+        template.instance.clearInput();
     },
     'mousedown .toggleDropdown': function (event, template) {
         event.preventDefault();
@@ -165,8 +169,8 @@ Template.webrewInput.events({
     'mouseup .webrew-input-list-item': function (event, template) {
         template.$(".webrew-input-list-item").toggleClass("webrew-input-active", false);
         template.$(event.target).toggleClass("webrew-input-active", true);
-        Common.WebrewInput.SetSelectedValue(template);
-        Common.WebrewInput.ToggleDropdown(template);
+        template.instance.setSelectedValue();
+        template.instance.toggleDropdown();
         template.$("#" + template.data.elementId).focus();
         template.jqElement.trigger("webrew-input-mouseup");
     },
@@ -212,7 +216,7 @@ Template.webrewInput.events({
         if(template.isMouseDown.get()){
             template.$("#" + template.data.elementId).focus();
             template.highlightedIndex.set(template.highlightedIndex.get() + 1);
-            Common.WebrewInput.ToggleDropdown(template)
+            template.instance.toggleDropdown()
         }
         template.jqElement.trigger("webrew-input-mouseup");
         console.log("webrew-input-toggle-dropdown-mousedown");
@@ -229,6 +233,10 @@ Template.webrewInput.onRendered(function () {
     let height = template.data.rowCount;
     height = height * 44;
     $($(".webrew-input-list-container")[0]).css("height", height)
+
+    if(template.data.required){
+        template.$(".webrew-dynamic-input").attr("required", "required");
+    }
 
     $(document).on("mousedown", function (event) {
         let inputFields = template.$(".webrew-input-control-container").children().toArray();
@@ -249,7 +257,7 @@ Template.webrewInput.onRendered(function () {
     });
 
     template.$("#" + template.data.elementId).blur((event) => {
-        Common.WebrewInput.HideDropdown(template);
+        template.instance.hideDropdown();
     });
 
     // Setting the range of where the hell we are in the scroll

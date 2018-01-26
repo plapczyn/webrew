@@ -128,7 +128,7 @@ input[type=range]:focus::-ms-fill-upper {
     background: #ccc;
 }
 div {
-  transition: width 1s, height 1s, transform 1s;
+  transition: width .5s, height .5s, transform .5s;
 }
 
 .datagrid table { border-collapse: collapse; text-align: left; width: 100%; } 
