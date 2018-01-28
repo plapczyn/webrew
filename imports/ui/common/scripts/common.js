@@ -423,8 +423,13 @@ class WebrewInput
                 default: 
                 {
                     let text = this.template.$(event.target).val();
-                    if(text == ""){
-                        this.clearInput()
+                    if(text == "")
+                    {
+                        this.clearInput();
+                    }
+                    else
+                    {
+                        this.template.$(".webrew-input-clear-button").toggleClass("webrew-input-clear-hidden", false);
                     }
             
                     this.template.searchText.set(text);
@@ -471,7 +476,28 @@ class WebrewInputKeys
         let range = [...template.range.get()];   
         
         if (template.$(".webrew-input-list-container").hasClass("webrew-input-list-hidden")) {
-            template.instance.showDropdown(template);
+            if(template.key.get() !== ""){
+                let selectedIndex = 0;
+                if(template.items.get().some((value, index) => {
+                    if(value.key == template.key.get()){
+                        selectedIndex = index;
+                    }
+                    return value.key == template.key.get()
+                }))
+                {
+                    template.$(list[selectedIndex]).addClass("webrew-input-active")
+                    template.highlightedIndex.set(selectedIndex);
+                    template.instance.setSelectedValue(template);
+                    template.instance.showDropdown(template);
+                    if(selectedIndex > template.data.maxVisibleRange){
+                        template.$(".webrew-input-list-container").scrollTop((selectedIndex) * 44)
+                    }
+                }
+            }
+            else
+            {
+                template.instance.showDropdown(template);
+            }
             return;
         }
 

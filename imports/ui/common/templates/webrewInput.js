@@ -13,7 +13,7 @@ Template.webrewInput.onCreated(function () {
     this.searchText = new ReactiveVar("");
     this.searching = new ReactiveVar(false);
     this.searchBoxHeight = new ReactiveVar((this.data.rowCount) * 44 + 2)
-    this.key = new ReactiveVar("LzY3Dz4MeXdmWhKDr");
+    this.key = new ReactiveVar(this.data.key || "");
     this.instance = new Common.WebrewInput(this);
     this.dataBind = (forceBind) => {
         if(this.searching.get() || forceBind){
@@ -24,6 +24,14 @@ Template.webrewInput.onCreated(function () {
                     if(this.key.get() != "")
                     {
                         this.instance.setValue(res[0].value)
+                    }
+
+                    if(res.length == 0){
+                        this.instance.setKey("");
+                        this.$("#" + this.data.elementId).toggleClass("webrew-dynamic-input-new", true);
+                    }
+                    else{
+                        this.$("#" + this.data.elementId).toggleClass("webrew-dynamic-input-new", false);
                     }
 
                     if(res.length < (this.data.rowCount)){
