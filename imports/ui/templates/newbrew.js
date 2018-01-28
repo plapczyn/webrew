@@ -19,7 +19,8 @@ Template.newbrew.events({
     const target = event.target;
     // Insert a new coffee into the collection
     let obj = {};
-    obj.coffeecompany = target.company.value.trim();
+    obj.coffeeCompanyId = template.company.getKey();
+    obj.coffeeCompanyValue = template.company.getValue();
     obj.coffeename = target.name.value.trim();
     obj.coffeeroast = target.roast.value.trim();
     obj.coffeedescription = target.description.value.trim();

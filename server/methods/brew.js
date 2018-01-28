@@ -2,6 +2,7 @@ import { Coffees } from '../../imports/api/collections/coffees.js';
 import { Rebrews } from '../../imports/api/collections/coffees.js';
 import { Favorites } from '../../imports/api/collections/coffees.js';
 import { Config } from '../../imports/api/collections/coffees.js';
+import { Roasters } from '../../imports/api/collections/coffees.js';
 import { Coffee } from '../../lib/DatabaseModels.js';
 import { Rebrew } from '../../lib/DatabaseModels.js';
 import { Favorite } from '../../lib/DatabaseModels.js';
@@ -53,13 +54,39 @@ if(Meteor.isServer){
       let coffeeOwner = Meteor.userId();
       let username = Meteor.user().username;
       let newbrew = Object.assign({},brew,{createdAt: createdAt, coffeeOwner: coffeeOwner, username: username })
-
-      let coffee = new Coffee(newbrew);
-      if(!Coffees.findOne(coffee.OnlyCoffeeName())){
-        Coffees.insert(coffee.Get());
-        return Coffees.findOne(coffee.OnlyCoffeeName())._id;
+      if(brew.coffeeCompanyId == "" && Roasters.find({Name: brew.coffeeCompanyValue}).fetch().length == 0){
+        Roasters.insert({Name: brew.coffeeCompanyValue}, (err, id) => {
+          let coffee = new Coffee(newbrew);
+          let newCoffee = coffee.Get();
+          newCoffee.Roaster = Roasters.findOne(id);
+    
+          if(!Coffees.findOne(coffee.OnlyCoffeeName())){
+            Coffees.insert(newCoffee);
+            return Coffees.findOne(coffee.OnlyCoffeeName())._id;
+          }
+        });
       }
-      throw "Brew Not Found";
+      else
+      {
+        let coffee = new Coffee(newbrew);
+        let newCoffee = coffee.Get();
+        newCoffee.Roaster = Roasters.findOne(brew.coffeeCompanyId);
+  
+        if(!Coffees.findOne(coffee.OnlyCoffeeName())){
+          Coffees.insert(newCoffee);
+          return Coffees.findOne(coffee.OnlyCoffeeName())._id;
+        }
+      }
+
+      // let coffee = new Coffee(newbrew);
+      // let newCoffee = coffee.Get();
+      // newCoffee.RoasterId = brew.coffeeCompanyId;
+
+      // if(!Coffees.findOne(coffee.OnlyCoffeeName())){
+      //   Coffees.insert(newCoffee);
+      //   return Coffees.findOne(coffee.OnlyCoffeeName())._id;
+      // }
+      // throw "Brew Not Found";
     },
     'coffees.edit'(brew){
       let coffee = new Coffee(brew);

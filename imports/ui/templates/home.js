@@ -12,17 +12,12 @@ Template.Home.onCreated( function (){
 });
 
 Template.Home.onRendered( function() {
-  // if (!Meteor.user()){
-  //   FlowRouter.go("/login");
-  // }
   $('.loader').fadeIn();
 });
 
 Template.Home.helpers({
   coffees () {
-    return Coffees.find({},{ sort: { CreatedAt: -1 } });
+    console.log(Coffees.find({},{ sort: { CreatedAt: -1 }}).fetch())
+    return Coffees.find({},{ sort: { CreatedAt: -1 }});
   }
 });
-
-// Template.Home.events({
-// });
