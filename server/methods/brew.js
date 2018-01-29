@@ -89,15 +89,28 @@ if(Meteor.isServer){
       // throw "Brew Not Found";
     },
     'coffees.edit'(brew){
-      let coffee = new Coffee(brew);
+      var coffee = new Coffee(brew);
+      coffee.coffeeCompanyId = brew.coffeeCompanyId;
+      coffee.coffeeCompanyValue = brew.coffeeCompanyValue;
+      console.log(coffee);
       //Check owner and edit coffee
       let coffeeOwner = Coffees.findOne({_id: coffee._id}).CoffeeOwner;
       if (coffeeOwner == Meteor.userId() ){
+        var id = coffee.Only_id();
+        //coffee company
+        if (Roasters.find({Name: coffee.coffeeCompanyValue}).fetch().length == 0){
+          console.log("insert roaster");
+          Roasters.insert({Name: coffee.coffeeCompanyValue});
+          coffee.Roaster = Roasters.findOne({Name: coffee.coffeeCompanyValue});
+        } else {
+          console.log("found roaster");
+          coffee.Roaster = Roasters.findOne({Name: coffee.coffeeCompanyValue});
+        }
+        console.log(coffee);
         if(Coffees.findOne(coffee.OnlyCoffeeName())){
           if(Coffees.findOne(coffee.OnlyCoffeeName())._id == coffee.Only_id()._id){
             //Update Coffee-no name update
-            var id = coffee.Only_id();
-            Coffees.update(id, {$set: coffee.OnlyCoffeeCompany()});
+            Coffees.update(id, {$set: {Roaster: coffee.Roaster}});
             Coffees.update(id, {$set: coffee.OnlyCoffeeRoast()});
             Coffees.update(id, {$set: coffee.OnlyImageUrl()});
             Coffees.update(id, {$set: coffee.OnlyCoffeeDescription()});
@@ -105,10 +118,8 @@ if(Meteor.isServer){
           }
         }else {
           //Update Coffee-name update
-
-          var id = coffee.Only_id();
           Coffees.update(id, {$set: coffee.OnlyCoffeeName()});
-          Coffees.update(id, {$set: coffee.OnlyCoffeeCompany()});
+          Coffees.update(id, {$set: {Roaster: coffee.Roaster}});
           Coffees.update(id, {$set: coffee.OnlyCoffeeRoast()});
           Coffees.update(id, {$set: coffee.OnlyImageUrl()});
           Coffees.update(id, {$set: coffee.OnlyCoffeeDescription()});

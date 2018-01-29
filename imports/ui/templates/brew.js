@@ -186,7 +186,7 @@ Template.brew.events({
       data: {
         ImageUrl: coffee.ImageUrl,
         CoffeeDescription: coffee.CoffeeDescription,
-        CoffeeCompany: coffee.CoffeeCompany,
+        CoffeeCompany: coffee.Roaster.Name,
         CoffeeName: coffee.CoffeeName,
         id: coffee._id,
         CoffeeRoast: coffee.CoffeeRoast
@@ -202,7 +202,8 @@ Template.modalEdit.events({
     var form = Common.WebrewModal.GetForm(event);
     //update database
     let editBrew = {};
-    editBrew.coffeecompany = form.company.value;
+    editBrew.coffeeCompanyId = "";
+    editBrew.coffeeCompanyValue = form.company.value;
     editBrew.coffeename = form.title.value;
     editBrew.coffeeroast = form.roast.value;
     editBrew.coffeedescription = form.description.value;
@@ -216,9 +217,7 @@ Template.modalEdit.events({
       editBrew.imageURL = form.imageURL.value;
     }
 
-    let coffee = new Coffee(editBrew);
-
-    Meteor.call('coffees.edit', coffee.Get(), (err, res) => {
+    Meteor.call('coffees.edit', editBrew, (err, res) => {
       if(!err){
         FlowRouter.go('/brew/' + editBrew.coffeename);
         Common.WebrewToast.Show(editBrew.coffeename + " updated!", "success")

@@ -17,7 +17,6 @@ Template.Home.onRendered( function() {
 
 Template.Home.helpers({
   coffees () {
-    console.log(Coffees.find({},{ sort: { CreatedAt: -1 }}).fetch())
     return Coffees.find({},{ sort: { CreatedAt: -1 }});
   }
 });
