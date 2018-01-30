@@ -89,32 +89,45 @@ if(Meteor.isServer){
       // throw "Brew Not Found";
     },
     'coffees.edit'(brew){
-      let coffee = new Coffee(brew);
       //Check owner and edit coffee
-      let coffeeOwner = Coffees.findOne({_id: coffee._id}).CoffeeOwner;
+      var id = brew._id
+      
+      let coffeeOwner = Coffees.findOne({_id: brew._id}).CoffeeOwner;
       if (coffeeOwner == Meteor.userId() ){
-        if(Coffees.findOne(coffee.OnlyCoffeeName())){
-          if(Coffees.findOne(coffee.OnlyCoffeeName())._id == coffee.Only_id()._id){
+
+        if(brew.RoasterId != null && brew.RoasterId != ""){
+          let roaster = Roasters.findOne(brew.RoasterId);
+          Coffees.update(id, {$set: {Roaster: roaster}})
+        }
+        else if (brew.RoasterName != null && brew.RoasterName != "")
+        {
+          Roasters.insert({Name: brew.RoasterName}, (err, roasterId) => {
+            let roaster = Roasters.findOne(roasterId);
+            Coffees.update(id, {$set: {Roaster: roaster}})
+          });
+        }
+
+        if(Coffees.findOne({CoffeeName: brew.CoffeeName})){
+
+          if(Coffees.findOne({CoffeeName: brew.CoffeeName})._id == brew._id){
             //Update Coffee-no name update
-            var id = coffee.Only_id();
-            Coffees.update(id, {$set: coffee.OnlyCoffeeCompany()});
-            Coffees.update(id, {$set: coffee.OnlyCoffeeRoast()});
-            Coffees.update(id, {$set: coffee.OnlyImageUrl()});
-            Coffees.update(id, {$set: coffee.OnlyCoffeeDescription()});
+            Coffees.update(id, {$set: {CoffeeRoast: brew.CoffeeRoast}});
+            Coffees.update(id, {$set: {ImageUrl: brew.ImagUrl}});
+            Coffees.update(id, {$set: {CoffeeDescription: brew.CoffeeDescription}});
             return;
+          }
+          else{
+            throw new Meteor.Error('coffees.edit', "Coffee Already Exists")
           }
         }else {
           //Update Coffee-name update
 
-          var id = coffee.Only_id();
-          Coffees.update(id, {$set: coffee.OnlyCoffeeName()});
-          Coffees.update(id, {$set: coffee.OnlyCoffeeCompany()});
-          Coffees.update(id, {$set: coffee.OnlyCoffeeRoast()});
-          Coffees.update(id, {$set: coffee.OnlyImageUrl()});
-          Coffees.update(id, {$set: coffee.OnlyCoffeeDescription()});
+          Coffees.update(id, {$set: {CoffeeName: brew.CoffeeName}});
+          Coffees.update(id, {$set: {CoffeeRoast: brew.CoffeeRoast}});
+          Coffees.update(id, {$set: {ImageUrl: brew.ImagUrl}});
+          Coffees.update(id, {$set: {CoffeeDescription: brew.CoffeeDescription}});
           //Update reBrews
-          let rebrew = new Rebrew({CoffeeId: coffee.Only_id(), CoffeeName: coffee.OnlyCoffeeName()});
-          Rebrews.update(rebrew.OnlyCoffeeId(), {$set: rebrew.OnlyCoffeeName()},{multi: true});
+          Rebrews.update(brew._id, {$set: {CoffeeName: brew.CoffeeName}},{multi: true});
           return;
         }
       } else {

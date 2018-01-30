@@ -162,7 +162,7 @@ Template.brew.events({
     });
   },
   
-  'click .addRebrew' (event) {
+  'click .addRebrew' (event, template) {
     var instance = Template.instance();
     instance.isReBrewing.set(!instance.isReBrewing.get());
     Common.WebrewModal.Show({
@@ -170,7 +170,7 @@ Template.brew.events({
       title: "How was the brew?",
       coffeeOk: true,
       data: {
-        coffeeId: this._id
+        coffeeId: this.Roaster._id
       }
     });
   },
@@ -178,7 +178,12 @@ Template.brew.events({
   //Edit Brew
   'click .editModal'(event) {
     let coffee = Coffees.findOne();
-
+    let roaster = coffee.Roaster;
+    let roasterId = "";
+    let roasterName = "";
+    if(roaster){
+      roasterId = roaster._id;
+    }
     Common.WebrewModal.Show({
       template: "modalEdit",
       coffeeOk: true,
@@ -189,47 +194,66 @@ Template.brew.events({
         CoffeeCompany: coffee.CoffeeCompany,
         CoffeeName: coffee.CoffeeName,
         id: coffee._id,
-        CoffeeRoast: coffee.CoffeeRoast
+        CoffeeRoast: coffee.CoffeeRoast,
+        roasterId: roasterId
       }
     });
   }
 });
 
 Template.modalEdit.events({
-  'submit .modalOk'(event){
+  'submit .modalOk'(event, template){
     //prevent the refresh page and put params in
     event.preventDefault();
     var form = Common.WebrewModal.GetForm(event);
     //update database
     let editBrew = {};
-    editBrew.coffeecompany = form.company.value;
-    editBrew.coffeename = form.title.value;
-    editBrew.coffeeroast = form.roast.value;
-    editBrew.coffeedescription = form.description.value;
+    editBrew.CoffeeName = form.title.value;
+    editBrew.CoffeeRoast = form.roast.value;
+    editBrew.CoffeeDescription = form.description.value;
     editBrew._id = Template.instance().data.id;
     //Set imageURL as loader image during upload
     if ( document.getElementById("imageURL").hasAttribute("disabled") ){
-      editBrew.imageURL = "/img/coffee.gif";
-      //uploadFile(editBrew._id, "coffees.upload");
+      editBrew.ImageUrl = "/img/coffee.gif";
       uploadImgur(editBrew._id, "coffees.uploadImgur");
     } else {
-      editBrew.imageURL = form.imageURL.value;
+      editBrew.ImageUrl = form.imageURL.value;
     }
 
-    let coffee = new Coffee(editBrew);
+    editBrew.RoasterId = template.company.getKey();
+    editBrew.RoasterName = template.company.getValue();
 
-    Meteor.call('coffees.edit', coffee.Get(), (err, res) => {
+    Meteor.call('coffees.edit', editBrew, (err, res) => {
       if(!err){
-        FlowRouter.go('/brew/' + editBrew.coffeename);
-        Common.WebrewToast.Show(editBrew.coffeename + " updated!", "success")
+        FlowRouter.go('/brew/' + editBrew.CoffeeName);
+        Common.WebrewToast.Show(editBrew.CoffeeName + " updated!", "success")
         Common.WebrewModal.Hide();
       } else {
-        Common.WebrewToast.Show(editBrew.coffeename + " already exists.", "error")
+        Common.WebrewToast.Show(err.reason, "error");
       }
     });
   }
 });
 
 Template.modalEdit.onRendered(() => {
+  let instance = Template.instance();
   $("#roast").val(Template.instance().data.CoffeeRoast);
+});
+
+Template.modalEdit.helpers({
+  setupInput(){
+      let instance = Template.instance();
+      let options = {
+        elementId: "companyId",
+        method: "roasters.dropdown",
+        rowCount: 5,
+        required: true,
+        key: instance.data.roasterId,
+        initialize: (input) => {
+          instance.company = input;
+        }
+      }
+  
+      return options;
+  }
 })
