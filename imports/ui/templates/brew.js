@@ -191,7 +191,7 @@ Template.brew.events({
       data: {
         ImageUrl: coffee.ImageUrl,
         CoffeeDescription: coffee.CoffeeDescription,
-        CoffeeCompany: coffee.CoffeeCompany,
+        CoffeeCompany: coffee.Roaster.Name,
         CoffeeName: coffee.CoffeeName,
         id: coffee._id,
         CoffeeRoast: coffee.CoffeeRoast,

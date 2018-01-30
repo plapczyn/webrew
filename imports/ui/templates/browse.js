@@ -1,18 +1,20 @@
 import './browse.html';
 import './browse.css'
 import { Coffees } from '../../api/collections/coffees.js';
+import { Roasters } from '../../api/collections/coffees.js';
 
 Template.Browse.onCreated( function (){
   let template = Template.instance();
   template.searchText   = new ReactiveVar("");
+  template.searchCompany = new ReactiveVar(["All"]);
   template.searchRating = new ReactiveVar("0");
-  template.searchRoast  = new ReactiveVar("Light Roast,Medium Roast,Medium-Dark Roast,Dark Roast");
+  template.searchRoast  = new ReactiveVar(["Light Roast","Medium Roast","Medium-Dark Roast","Dark Roast"]);
   template.searching    = new ReactiveVar( false );
   template.sortBy       = new ReactiveVar("CoffeeName");
   template.searchCount  = new ReactiveVar("");
 
   template.autorun( () => {
-    template.subscribe( 'coffeeSearch', template.searchText.get(), template.searchRating.get(), template.searchRoast.get(), () => {
+    template.subscribe( 'coffeeSearch', template.searchText.get(), template.searchCompany.get(), template.searchRating.get(), template.searchRoast.get(), () => {
       $('.loader').fadeOut('fast', function(){
         $('.loading-wrapper').fadeIn('slow');
       });
@@ -20,6 +22,8 @@ Template.Browse.onCreated( function (){
         template.searching.set( false );
       }, 300 );
     });
+
+    template.subscribe('roasters');
   });
 
 });
@@ -59,8 +63,10 @@ Template.Browse.helpers({
   searchText() {
     return Template.instance().searchText.get();
   },
-  searchRating() {
-    return Template.instance().searchRating.get()
+  searchCompany() {
+    return Template.instance().searchCompany.get();
+  },  searchRating() {
+    return Template.instance().searchRating.get();
   },
   searchRoast() {
     return Template.instance().searchRoast.get();
@@ -70,6 +76,9 @@ Template.Browse.helpers({
   },
   searchCount() {
     return Template.instance().searchCount.get();
+  },
+  companyList() {
+    return Roasters.find({},{ sort: { Name: 1 }});
   }
 });
 
@@ -100,6 +109,11 @@ Template.Browse.events({
     template.searching.set( true );
     event.target.style.display = "none";
   },
+  'change #company'(event, template) {
+    let value = event.target.value;
+    template.searchCompany.set( value );
+    template.searching.set( true );
+  },
   'click .rating'(event, template) {
     const value = $(event.target).val();
     $("#brating").val(value);
@@ -119,7 +133,6 @@ Template.Browse.events({
         value.push( elements[i].value );
       }
     };
-    value = value.toString();
     template.searchRoast.set( value );
     template.searching.set( true );
   },
@@ -128,5 +141,28 @@ Template.Browse.events({
   },
   'click .scroll' (event){
     $('html').animate({scrollTop: 335},500,'swing');
+  },
+  'click .dropdown-menu a' (event, template){
+    let options = template.searchCompany.get();
+    let $target = $( event.currentTarget ),
+       val = $target.attr( 'data-value' ),
+       $inp = $target.find( 'input' ),
+       idx;
+    //remove all
+    if ( (idx = options.indexOf("All")) > -1) {
+      options.splice( idx, 1);
+    }
+    if ( ( idx = options.indexOf( val ) ) > -1 ) {
+      options.splice( idx, 1 );
+      setTimeout( function() { $inp.prop( 'checked', false ) }, 0);
+    } else {
+      options.push( val );
+      setTimeout( function() { $inp.prop( 'checked', true ) }, 0);
+    }
+
+    $( event.target ).blur();
+    
+    template.searchCompany.set( options );
+    return false;
   }
 });
