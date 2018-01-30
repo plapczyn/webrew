@@ -2,7 +2,7 @@ import { Coffees } from '../../imports/api/collections/coffees.js';
 import { Rebrews } from '../../imports/api/collections/coffees.js';
 import { Favorites } from '../../imports/api/collections/coffees.js';
 import { Config } from '../../imports/api/collections/coffees.js';
-import { Roasters } from '../../imports/api/collections/coffees.js';
+import { Brands } from '../../imports/api/collections/coffees.js';
 import { Coffee } from '../../lib/DatabaseModels.js';
 import { Rebrew } from '../../lib/DatabaseModels.js';
 import { Favorite } from '../../lib/DatabaseModels.js';
@@ -54,11 +54,11 @@ if(Meteor.isServer){
       let coffeeOwner = Meteor.userId();
       let username = Meteor.user().username;
       let newbrew = Object.assign({},brew,{createdAt: createdAt, coffeeOwner: coffeeOwner, username: username })
-      if(brew.coffeeCompanyId == "" && Roasters.find({Name: brew.coffeeCompanyValue}).fetch().length == 0){
-        Roasters.insert({Name: brew.coffeeCompanyValue}, (err, id) => {
+      if(brew.coffeeBrandId == "" && Brands.find({Name: brew.coffeeBrandValue}).fetch().length == 0){
+        Brands.insert({Name: brew.coffeeBrandValue}, (err, id) => {
           let coffee = new Coffee(newbrew);
           let newCoffee = coffee.Get();
-          newCoffee.Roaster = Roasters.findOne(id);
+          newCoffee.Brand = Brands.findOne(id);
     
           if(!Coffees.findOne(coffee.OnlyCoffeeName())){
             Coffees.insert(newCoffee);
@@ -70,23 +70,13 @@ if(Meteor.isServer){
       {
         let coffee = new Coffee(newbrew);
         let newCoffee = coffee.Get();
-        newCoffee.Roaster = Roasters.findOne(brew.coffeeCompanyId);
+        newCoffee.Brand = Brands.findOne(brew.coffeeBrandId);
   
         if(!Coffees.findOne(coffee.OnlyCoffeeName())){
           Coffees.insert(newCoffee);
           return Coffees.findOne(coffee.OnlyCoffeeName())._id;
         }
       }
-
-      // let coffee = new Coffee(newbrew);
-      // let newCoffee = coffee.Get();
-      // newCoffee.RoasterId = brew.coffeeCompanyId;
-
-      // if(!Coffees.findOne(coffee.OnlyCoffeeName())){
-      //   Coffees.insert(newCoffee);
-      //   return Coffees.findOne(coffee.OnlyCoffeeName())._id;
-      // }
-      // throw "Brew Not Found";
     },
     'coffees.edit'(brew){
       //Check owner and edit coffee
@@ -95,15 +85,15 @@ if(Meteor.isServer){
       let coffeeOwner = Coffees.findOne({_id: brew._id}).CoffeeOwner;
       if (coffeeOwner == Meteor.userId() ){
 
-        if(brew.RoasterId != null && brew.RoasterId != ""){
-          let roaster = Roasters.findOne(brew.RoasterId);
-          Coffees.update(id, {$set: {Roaster: roaster}})
+        if(brew.BrandId != null && brew.BrandId != ""){
+          let brand = Brands.findOne(brew.BrandId);
+          Coffees.update(id, {$set: {Brand: brand}})
         }
-        else if (brew.RoasterName != null && brew.RoasterName != "")
+        else if (brew.BrandName != null && brew.BrandName != "")
         {
-          Roasters.insert({Name: brew.RoasterName}, (err, roasterId) => {
-            let roaster = Roasters.findOne(roasterId);
-            Coffees.update(id, {$set: {Roaster: roaster}})
+          Brands.insert({Name: brew.BrandName}, (err, brandId) => {
+            let brand = Brands.findOne(brandId);
+            Coffees.update(id, {$set: {Brand: brand}})
           });
         }
 

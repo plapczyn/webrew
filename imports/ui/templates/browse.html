@@ -24,7 +24,7 @@
           <span id="sort_by_text">Sort by&nbsp;</span>
           <select name="sort" id="sort" class="sort">
             <option value="CoffeeName">Coffee Name</option>
-            <option value="Roaster.Name">Coffee Company</option>
+            <option value="Brand.Name">Coffee Brand</option>
             <option value="AverageRating">Avg. Coffee Review</option>
             <option value="CreatedAt">Date Added</option>
           </select>
@@ -42,13 +42,13 @@
                 <input id="keysearch" name="keysearch" class="form-control input-md" placeholder="Search for coffees" tabindex="1" style="margin-bottom:25px; padding-left: 20px;padding-right: 20px;" value="{{searchText}}">
                 <a id="search-clear" class="fa fa-times-circle search-clear" aria-hidden="true" style="display:none; position: absolute; right: 3px; top: 8px;" href=""></a>
               </section>
-              <h4>Company</h4>
+              <h4>Brand</h4>
               <div class="button-group" style="position:relative;margin-bottom:25px;">
                 <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
-                  <span>Search for Companies</span> <span><i class="fa fa-caret-down" aria-hidden="true"></i></span>
+                  <span>Search for Brands</span> <span><i class="fa fa-caret-down" aria-hidden="true"></i></span>
                 </button>
                 <ul class="dropdown-menu">
-                  {{#each companyList}}
+                  {{#each brandList}}
                     <li><a href="#" data-value="{{Name}}"><input type="checkbox"/>&nbsp;{{Name}}</a></li>
                   {{/each}}
                   <!-- <li><a href="#" data-value="option1"><input type="checkbox"/>&nbsp;Option 1</a></li>
