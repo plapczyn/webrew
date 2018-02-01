@@ -19,21 +19,21 @@ Template.newbrew.events({
     const target = event.target;
     // Insert a new coffee into the collection
     let obj = {};
-    obj.coffeeBrandId = template.brand.getKey();
-    obj.coffeeBrandValue = template.brand.getValue();
-    obj.coffeename = target.name.value.trim();
-    obj.coffeeroast = target.roast.value.trim();
-    obj.coffeedescription = target.description.value.trim();
+    obj.CoffeeBrandId = template.brand.getKey();
+    obj.CoffeeBrandValue = template.brand.getValue();
+    obj.CoffeeName = target.name.value.trim();
+    obj.CoffeeRoast = target.roast.value.trim();
+    obj.CoffeeDescription = target.description.value.trim();
     //Set imageURL as loader image during upload
     if ( document.getElementById("imageURL").hasAttribute("disabled") ){
-      obj.imageURL = "/img/coffee.gif";
+      obj.ImageUrl = "/img/coffee.gif";
     } else {
-      obj.imageURL = target.imageURL.value.trim();
+      obj.ImageUrl = target.imageURL.value.trim();
     }
     
     Meteor.call('coffees.add', obj , (err, res) => {
       if(!err){
-        Common.WebrewToast.Show("Mmm, It's a Good Brew!","success", obj.coffeename + "was added!" );
+        Common.WebrewToast.Show("Mmm, It's a Good Brew!","success", obj.CoffeeName + "was added!" );
         
         //If Image Upload, load image with filename as res/CoffeeID
         if ( document.getElementById("imageURL").hasAttribute("disabled") ){
@@ -42,7 +42,7 @@ Template.newbrew.events({
         FlowRouter.go('Main');
       }
       else {
-        Common.WebrewToast.Show(obj.coffeename + ' already exists. click to check it out.', "error");
+        Common.WebrewToast.Show(obj.CoffeeName + ' already exists.', "error");
       }
     });
   },
@@ -56,7 +56,7 @@ Template.newbrew.helpers({
     return Common.WebrewColorPallet.roastName.Color;
   },
   getWebrewInput(webrewInput){
-    console.log(webrewInput);
+    // console.log(webrewInput);
   },
   setupInput1(){
     let instance = Template.instance();

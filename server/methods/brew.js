@@ -6,20 +6,21 @@ import { Brands } from '../../imports/api/collections/coffees.js';
 import { Coffee } from '../../lib/DatabaseModels.js';
 import { Rebrew } from '../../lib/DatabaseModels.js';
 import { Favorite } from '../../lib/DatabaseModels.js';
+import WebrewInputDbMethods from '../../lib/WebrewInputMethods.js';
 
 import fs from 'fs';
 import { HTTP } from 'meteor/http'
 
-if(Meteor.isServer){
+if (Meteor.isServer) {
   Meteor.methods({
-    'coffees.removeById'(id){
-      check( id, Match.OneOf( String, null, undefined ) );
+    'coffees.removeById'(id) {
+      check(id, Match.OneOf(String, null, undefined));
       //Check owner and remove from coffees, rebrews, and favorites
-      let coffeeOwner = Coffees.findOne({_id: id}).CoffeeOwner;
-      if (coffeeOwner == Meteor.userId() ){
+      let coffeeOwner = Coffees.findOne({ _id: id }).CoffeeOwner;
+      if (coffeeOwner == Meteor.userId()) {
         Coffees.remove(id);
-        Rebrews.remove({CoffeeId: id});
-        Favorites.remove({CoffeeId: id});
+        Rebrews.remove({ CoffeeId: id });
+        Favorites.remove({ CoffeeId: id });
       } else {
         console.log("Coffee Removal Error From: " + Meteor.user().username);
       }
@@ -27,13 +28,13 @@ if(Meteor.isServer){
       //set variables
       let fs = require('fs');
       let path = process.env['METEOR_SHELL_DIR'] + '/../../../public/img/coffees/';
-      
+
       //Find and delete existing by coffeeid
-      fs.readdir( path, function( err, files ) {
+      fs.readdir(path, function (err, files) {
         if (err) {
           console.log(err);
         } else {
-          files.forEach ( function(file, index) {
+          files.forEach(function (file, index) {
             //if coffeeid in filename, and is not the uploadfile, delete
             if (file.indexOf(id) != -1) {
               fs.unlink(path + file, function (err) {
@@ -49,75 +50,78 @@ if(Meteor.isServer){
       });
     },
 
-    'coffees.add'(brew){
-      let createdAt = new Date();
-      let coffeeOwner = Meteor.userId();
-      let username = Meteor.user().username;
-      let newbrew = Object.assign({},brew,{createdAt: createdAt, coffeeOwner: coffeeOwner, username: username })
-      if(brew.coffeeBrandId == "" && Brands.find({Name: brew.coffeeBrandValue}).fetch().length == 0){
-        Brands.insert({Name: brew.coffeeBrandValue}, (err, id) => {
-          let coffee = new Coffee(newbrew);
-          let newCoffee = coffee.Get();
-          newCoffee.Brand = Brands.findOne(id);
-    
-          if(!Coffees.findOne(coffee.OnlyCoffeeName())){
-            Coffees.insert(newCoffee);
-            return Coffees.findOne(coffee.OnlyCoffeeName())._id;
-          }
+    'coffees.add'(brew) {
+      let newbrew = {
+        CreatedAt: new Date(),
+        CoffeeOwner: Meteor.userId(),
+        Username: Meteor.user().username,
+        CoffeeName: brew.CoffeeName,
+        CoffeeRoast: brew.CoffeeRoast,
+        ImageUrl: brew.ImageUrl,
+        CoffeeDescription: brew.CoffeeDescription
+      };
+
+      if (!Coffees.findOne({CoffeeName: newbrew.CoffeeName})) {
+        Coffees.insert(newbrew, (err, id) => {
+          WebrewInputDbMethods.UpdateSource({
+            key: brew.CoffeeBrandId,
+            collection: Brands,
+            value: brew.CoffeeBrandValue,
+            valueProperty: "Name",
+            name: "Brand",
+            collectionUpdates: [{
+              id: id,
+              collection: Coffees
+            }]
+          });
         });
+
+        return Coffees.findOne({CoffeeName: newbrew.CoffeeName})._id;
       }
-      else
-      {
-        let coffee = new Coffee(newbrew);
-        let newCoffee = coffee.Get();
-        newCoffee.Brand = Brands.findOne(brew.coffeeBrandId);
-  
-        if(!Coffees.findOne(coffee.OnlyCoffeeName())){
-          Coffees.insert(newCoffee);
-          return Coffees.findOne(coffee.OnlyCoffeeName())._id;
-        }
+      else{
+        throw new Meteor.Error('coffees.add', "Coffee Already Exists")
       }
     },
-    'coffees.edit'(brew){
+    'coffees.edit'(brew) {
       //Check owner and edit coffee
       var id = brew._id
-      
-      let coffeeOwner = Coffees.findOne({_id: brew._id}).CoffeeOwner;
-      if (coffeeOwner == Meteor.userId() ){
 
-        if(brew.BrandId != null && brew.BrandId != ""){
-          let brand = Brands.findOne(brew.BrandId);
-          Coffees.update(id, {$set: {Brand: brand}})
-        }
-        else if (brew.BrandName != null && brew.BrandName != "")
-        {
-          Brands.insert({Name: brew.BrandName}, (err, brandId) => {
-            let brand = Brands.findOne(brandId);
-            Coffees.update(id, {$set: {Brand: brand}})
-          });
-        }
+      let coffeeOwner = Coffees.findOne({ _id: brew._id }).CoffeeOwner;
+      if (coffeeOwner == Meteor.userId()) {
 
-        if(Coffees.findOne({CoffeeName: brew.CoffeeName})){
+        WebrewInputDbMethods.UpdateSource({
+          key: brew.BrandId,
+          collection: Brands,
+          value: brew.BrandName,
+          valueProperty: "Name",
+          name: "Brand",
+          collectionUpdates: [{
+            id: id,
+            collection: Coffees
+          }]
+        });
 
-          if(Coffees.findOne({CoffeeName: brew.CoffeeName})._id == brew._id){
+        if (Coffees.findOne({ CoffeeName: brew.CoffeeName })) {
+
+          if (Coffees.findOne({ CoffeeName: brew.CoffeeName })._id == brew._id) {
             //Update Coffee-no name update
-            Coffees.update(id, {$set: {CoffeeRoast: brew.CoffeeRoast}});
-            Coffees.update(id, {$set: {ImageUrl: brew.ImagUrl}});
-            Coffees.update(id, {$set: {CoffeeDescription: brew.CoffeeDescription}});
+            Coffees.update(id, { $set: { CoffeeRoast: brew.CoffeeRoast } });
+            Coffees.update(id, { $set: { ImageUrl: brew.ImagUrl } });
+            Coffees.update(id, { $set: { CoffeeDescription: brew.CoffeeDescription } });
             return;
           }
-          else{
+          else {
             throw new Meteor.Error('coffees.edit', "Coffee Already Exists")
           }
-        }else {
+        } else {
           //Update Coffee-name update
 
-          Coffees.update(id, {$set: {CoffeeName: brew.CoffeeName}});
-          Coffees.update(id, {$set: {CoffeeRoast: brew.CoffeeRoast}});
-          Coffees.update(id, {$set: {ImageUrl: brew.ImagUrl}});
-          Coffees.update(id, {$set: {CoffeeDescription: brew.CoffeeDescription}});
+          Coffees.update(id, { $set: { CoffeeName: brew.CoffeeName } });
+          Coffees.update(id, { $set: { CoffeeRoast: brew.CoffeeRoast } });
+          Coffees.update(id, { $set: { ImageUrl: brew.ImagUrl } });
+          Coffees.update(id, { $set: { CoffeeDescription: brew.CoffeeDescription } });
           //Update reBrews
-          Rebrews.update(brew._id, {$set: {CoffeeName: brew.CoffeeName}},{multi: true});
+          Rebrews.update(brew._id, { $set: { CoffeeName: brew.CoffeeName } }, { multi: true });
           return;
         }
       } else {
@@ -130,12 +134,12 @@ if(Meteor.isServer){
     //   if (coffeeOwner != Meteor.userId()) {
     //     return;
     //   }
-      
+
     //   //set variables
     //   let fs = require('fs');
     //   let path = process.env['METEOR_SHELL_DIR'] + '/../../../public/img/coffees/';
     //   let url = "/img/coffees/" + coffeeid + fileinfo;
-      
+
     //   //Find and delete existing by coffeeid
     //   fs.readdir( path, function( err, files ) {
     //     if (err) {
@@ -167,23 +171,25 @@ if(Meteor.isServer){
     //   }));
     //   return url;
     // },
-    'coffees.uploadImgur'(coffeeid, fileinfo, filedata) {    
+    'coffees.uploadImgur'(coffeeid, fileinfo, filedata) {
       //get user info based on current logged in user
-      let coffeeOwner = Coffees.findOne({_id: coffeeid}).CoffeeOwner; 
+      let coffeeOwner = Coffees.findOne({ _id: coffeeid }).CoffeeOwner;
       if (coffeeOwner != Meteor.userId()) {
         return;
       }
 
       //get token
-      var imgurConfig = Config.findOne({"service":"imgur"}); 
-      var tokenDetails = { "refresh_token": imgurConfig.refresh_token,
+      var imgurConfig = Config.findOne({ "service": "imgur" });
+      var tokenDetails = {
+        "refresh_token": imgurConfig.refresh_token,
         "client_id": imgurConfig.client_id,
-        "client_secret": imgurConfig.client_secret };
+        "client_secret": imgurConfig.client_secret
+      };
       var response;
       var url;
       var json;
-      response = HTTP.call( 'POST', 'https://api.imgur.com/oauth2/token', {
-        headers: {"Content-type": "application/json"},
+      response = HTTP.call('POST', 'https://api.imgur.com/oauth2/token', {
+        headers: { "Content-type": "application/json" },
         data: {
           "refresh_token": imgurConfig.refresh_token,
           "client_id": imgurConfig.client_id,
@@ -198,28 +204,28 @@ if(Meteor.isServer){
       } else {
         //token request failure
         console.log("token request failure");
-        console.log( response );
+        console.log(response);
       }
-            
-      if ( tokenDetails.access_token && tokenDetails.refresh_token ) {
-        //log refresh token in db
-        Config.update({"service":"imgur"}, {$set: {"refresh_token": tokenDetails.refresh_token }});
 
-        response = HTTP.call( 'POST', 'https://api.imgur.com/3/image', {
-          headers: {"Authorization": "Bearer " + tokenDetails.access_token},
-          data: { "name": fileinfo, "album": "uMuWV", "type":"base64", "image": filedata }
+      if (tokenDetails.access_token && tokenDetails.refresh_token) {
+        //log refresh token in db
+        Config.update({ "service": "imgur" }, { $set: { "refresh_token": tokenDetails.refresh_token } });
+
+        response = HTTP.call('POST', 'https://api.imgur.com/3/image', {
+          headers: { "Authorization": "Bearer " + tokenDetails.access_token },
+          data: { "name": fileinfo, "album": "uMuWV", "type": "base64", "image": filedata }
         });
         if (response.statusCode == 200) {
           //image upload success
-          if ( response.data.data.link ) {
-            Coffees.update({_id: coffeeid}, {$set: {"ImageUrl": response.data.data.link }});
-          } 
+          if (response.data.data.link) {
+            Coffees.update({ _id: coffeeid }, { $set: { "ImageUrl": response.data.data.link } });
+          }
         } else {
           //image upload failure
           console.log("image upload failure");
-          console.log( response );
+          console.log(response);
         }
       }
     }
-  });      
+  });
 }

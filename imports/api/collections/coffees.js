@@ -68,12 +68,12 @@ function FillAdvancedReviewData()
       'Smooth',
 
     ];
-    console.log(flavour);
-    RatingNotes.insert({
-      Aroma: aroma,
-      Acidity: acidity,
-      Body: body,
-      Flavour: flavour
-    });
+    // console.log(flavour);
+    // RatingNotes.insert({
+    //   Aroma: aroma,
+    //   Acidity: acidity,
+    //   Body: body,
+    //   Flavour: flavour
+    // });
 
   }

@@ -28,7 +28,7 @@ if(Meteor.isServer){
           BrewFiles.insert(_brewfile.Get());
         }
       } else {
-        console.log("Update Profile Error From: " + Meteor.user().username);
+        // console.log("Update Profile Error From: " + Meteor.user().username);
       }
     },
     'brewfile.user'(){
@@ -50,16 +50,16 @@ if(Meteor.isServer){
       //Find and delete existing by brewfileid
       fs.readdir( path, function( err, files ) {
         if (err) {
-          console.log(err);
+          // console.log(err);
         } else {
           files.forEach ( function(file, index) {
             //if brewfileid in filename, and is not the uploadfile, delete
             if (file.indexOf(brewfileid) != -1 && file != brewfileid + fileinfo) {
               fs.unlink(path + file, function (err) {
                 if (err) {
-                  console.log(err);
+                  // console.log(err);
                 } else {
-                  console.log('deleted:' + file);
+                 // console.log('deleted:' + file);
                 }
               });
             }
@@ -68,10 +68,10 @@ if(Meteor.isServer){
       });
       
       //add path to file name and write 
-      console.log("writing:" + brewfileid + fileinfo);
+      //console.log("writing:" + brewfileid + fileinfo);
       fs.writeFile(path + brewfileid + fileinfo, filedata, {encoding: 'binary'}, Meteor.bindEnvironment((err) => {
         if(err) {
-          console.log(err);
+          //console.log(err);
           return;
         } else {
           BrewFiles.update({_id: brewfileid}, {$set: {ImageUrl: url}});

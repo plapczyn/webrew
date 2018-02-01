@@ -54,9 +54,9 @@ Accounts.onCreateUser(function (options, user) {
         BrewFiles.insert({ Username: user.username, ImageUrl: brewfile.imageurl, Email: brewfile.email });
     }
     catch(e){
-        console.log("Error inserting BrewFile during onCreateUser");
-        console.log(user);
-        console.log(brewfile);
+        //console.log("Error inserting BrewFile during onCreateUser");
+        //console.log(user);
+        //console.log(brewfile);
     }
     
     return user;

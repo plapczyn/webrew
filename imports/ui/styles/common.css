@@ -57,18 +57,18 @@
 
 .webrew-dynamic-input-new
 {
-    background-color: #b3dfa4;
+    background-color: #B3DFAD;
 }
 
 .webrew-input-clear-icon-new
 {
-    color: #b3dfa4;
+    color: #B3DFAD;
 }
 
 .webrew-input-list-container
 {
     margin: 0px;
-    border: solid 1px lightgrey;
+    border: solid 1px #e8e9eb;
     background-color: rgb(230, 229, 229);
     overflow-y: auto;
 }
@@ -99,7 +99,7 @@
 
 .webrew-item-highlight
 {
-    background-color: beige;
+    background-color: #D5BDAE;
     border-color: lightgray;
     border-style: solid;
     border-width: 1px;
@@ -122,7 +122,7 @@
 
 .webrew-input-active
 {
-    background-color: #B18367;
+    background-color: rgb(174, 142, 122);;
 }
 
 .webrew-input-active-click

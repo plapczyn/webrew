@@ -68,7 +68,7 @@ Template.chat.events({
         if(!err){
           $('.send-away').val('Set Back');
         } else {
-          console.log("error setting user away");
+          // console.log("error setting user away");
         }
       });
     } 
@@ -79,7 +79,7 @@ Template.chat.events({
         if(!err){
           $('.send-away').val('Set Away');
         } else {
-          console.log("error setting user back");
+          // console.log("error setting user back");
         }
       });
     }
@@ -89,7 +89,7 @@ Template.chat.events({
       Meteor.call('chat.addUser', {id: "id"}, (err, res) => {
         if(!err){
         } else {
-          console.log("error adding roomuser");
+          // console.log("error adding roomuser");
         }
       });
     }    

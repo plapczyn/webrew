@@ -451,7 +451,7 @@ class WebrewInput
                             this.template.key.set("");
                         }
                     }
-                    console.log("input change")
+                    // console.log("input change")
                 }
             }
             // Handle the event with KeyboardEvent.key and set handled true.
@@ -523,7 +523,7 @@ class WebrewInputKeys
             template.$(".webrew-input-list-container").scrollTop((index - 1) * 44)
         }
 
-        console.log(index, range);
+        // console.log(index, range);
         template.searching.set(false);
         return;
     }
@@ -555,7 +555,7 @@ class WebrewInputKeys
         }
 
         if(index == range[0]){
-            console.log(index, range);
+            // console.log(index, range);
             template.range.set([range[0] - 1, range[1] - 1])
             template.$(".webrew-input-list-container").scrollTop((range[0] - 1) * 44)
         }

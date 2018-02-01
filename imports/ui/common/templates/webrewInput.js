@@ -199,28 +199,28 @@ Template.webrewInput.events({
         template.$('.webrew-input-list-item').toggleClass("webrew-item-highlight", false)
         template.$('.webrew-input-list-item').toggleClass("webrew-input-active", false)
         template.$('.webrew-input-list-item').toggleClass("webrew-input-active-click", false)
-        console.log("webrew-input-dropdown-hide");
+        // console.log("webrew-input-dropdown-hide");
     },
     'webrew-input-dropdown-show': function (event, template) {
-        console.log("webrew-input-dropdown-show");
+        // console.log("webrew-input-dropdown-show");
     },
     'webrew-input-selection-changed': function(event, template){
         template.$(".webrew-input-clear-icon").toggleClass("webrew-input-clear-icon-new", false);
         template.$("#" + template.data.elementId).toggleClass("webrew-dynamic-input-new", false);
         template.$(".webrew-input-clear-button").toggleClass("webrew-input-clear-hidden", false);
 
-        console.log("webrew-input-selection-changed")
+        // console.log("webrew-input-selection-changed")
     },
     'webrew-input-mousedown': function(event, template){
         template.isMouseDown.set(true);
-        console.log("webrew-input-mousedown")
+        // console.log("webrew-input-mousedown")
     },
     'webrew-input-mouseup': function (event, template){
         template.isMouseDown.set(false);
-        console.log("webrew-input-mouseup")
+        // console.log("webrew-input-mouseup")
     },
     'webrew-input-toggle-dropdown-mousedown': function (event, template){
-        console.log("webrew-input-toggle-dropdown-mousedown");
+        // console.log("webrew-input-toggle-dropdown-mousedown");
         template.jqElement.trigger("webrew-input-mousedown");
     },
     'webrew-input-toggle-dropdown-mouseup': function(event, template){
@@ -230,12 +230,12 @@ Template.webrewInput.events({
             template.instance.toggleDropdown()
         }
         template.jqElement.trigger("webrew-input-mouseup");
-        console.log("webrew-input-toggle-dropdown-mousedown");
+        // console.log("webrew-input-toggle-dropdown-mousedown");
     },
     'webrew-input-clear': function(event, template){
         template.$(".webrew-input-clear-icon").toggleClass("webrew-input-clear-icon-new", false);
         template.$("#" + template.data.elementId).toggleClass("webrew-dynamic-input-new", false);
-        console.log('webrew-input-clear');
+        // console.log('webrew-input-clear');
     },
     'webrew-input-deselection': function(event, template){
         if(template.instance.getValue() != ""){
@@ -295,7 +295,7 @@ Template.webrewInput.onRendered(function () {
 
         if(Math.round(template.$(event.target).scrollTop() / 44) <= template.$(event.target).scrollTop() / 44){
             template.range.set([Math.round(template.$(event.target).scrollTop() / 44), Math.round(template.$(event.target).scrollTop() / 44 + maxRange)]);
-            console.log(template.range.get());
+            // console.log(template.range.get());
         }
     })
 });
