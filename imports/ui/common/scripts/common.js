@@ -332,7 +332,7 @@ class WebrewInput
 
     clearInput()
     {
-        this.setKey(-1);
+        this.setKey("");
         this.setValue("");
         
         if(this.template.isDropDownOpen.get())

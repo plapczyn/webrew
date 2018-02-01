@@ -49,15 +49,20 @@
     padding-left: 5px;
     padding-bottom: 5px;
     padding-top: 5px;
-    border-left: thin 1px lightgrey;
-    border-right: thin 1px lightgrey;
-    border-bottom: thin 1px lightgrey;
-    border-top: thin 1px lightgrey;
+    border-left: solid 1px #ddd;
+    border-right: solid 1px #ddd;
+    border-bottom: solid 1px #ddd;
+    border-top: solid 1px #ddd;
 }
 
 .webrew-dynamic-input-new
 {
-    background-color: #b3dfa4
+    background-color: #b3dfa4;
+}
+
+.webrew-input-clear-icon-new
+{
+    color: #b3dfa4;
 }
 
 .webrew-input-list-container
@@ -71,9 +76,9 @@
 .webrew-input-dropdown-button
 {
     position: absolute;
-    top: 0px;
-    right: 0px;
-    height: 40px;
+    top: 1px;
+    right: 1px;
+    height: 38px;
     border-radius: 0px;
 }
 
@@ -129,13 +134,14 @@
 {
     position: absolute;
     top: 12px;
-    right: 46px;
+    right: 50px;
     padding-bottom: 0px;
     margin: 0px;
     padding-right: 1px;
-    padding-left: 1px;
+    padding-left: 2px;
     padding-top: 0px;
     line-height: 0px;
+    border-radius: 10px;
 }
 
 .webrew-input-clear-hidden

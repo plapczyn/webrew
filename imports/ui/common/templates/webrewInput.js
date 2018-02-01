@@ -28,10 +28,11 @@ Template.webrewInput.onCreated(function () {
 
                     if(res.length == 0){
                         this.instance.setKey("");
-                        this.$("#" + this.data.elementId).toggleClass("webrew-dynamic-input-new", true);
+                        // this.$("#" + this.data.elementId).toggleClass("webrew-dynamic-input-new", true);
                     }
-                    else{
-                        this.$("#" + this.data.elementId).toggleClass("webrew-dynamic-input-new", false);
+                    else
+                    {
+                        // this.$("#" + this.data.elementId).toggleClass("webrew-dynamic-input-new", false);
                     }
 
                     if(res.length < (this.data.rowCount)){
@@ -204,6 +205,8 @@ Template.webrewInput.events({
         console.log("webrew-input-dropdown-show");
     },
     'webrew-input-selection-changed': function(event, template){
+        template.$(".webrew-input-clear-icon").toggleClass("webrew-input-clear-icon-new", false);
+        template.$("#" + template.data.elementId).toggleClass("webrew-dynamic-input-new", false);
         template.$(".webrew-input-clear-button").toggleClass("webrew-input-clear-hidden", false);
 
         console.log("webrew-input-selection-changed")
@@ -230,7 +233,16 @@ Template.webrewInput.events({
         console.log("webrew-input-toggle-dropdown-mousedown");
     },
     'webrew-input-clear': function(event, template){
+        template.$(".webrew-input-clear-icon").toggleClass("webrew-input-clear-icon-new", false);
+        template.$("#" + template.data.elementId).toggleClass("webrew-dynamic-input-new", false);
         console.log('webrew-input-clear');
+    },
+    'webrew-input-deselection': function(event, template){
+        if(template.instance.getValue() != ""){
+            
+            template.$(".webrew-input-clear-icon").toggleClass("webrew-input-clear-icon-new", template.instance.getKey() == "");
+            template.$("#" + template.data.elementId).toggleClass("webrew-dynamic-input-new", template.instance.getKey() == "");
+        }
     }
 });
 
@@ -265,6 +277,14 @@ Template.webrewInput.onRendered(function () {
     });
 
     template.$("#" + template.data.elementId).blur((event) => {
+        if(template.items.get().some(value => template.instance.getValue() == value.value)){
+            let key = template.items.get().filter(value => value.value == template.instance.getValue())[0].key
+            template.instance.setKey(key);
+        }
+        else{
+            template.instance.setKey("");
+        }
+        template.jqElement.trigger("webrew-input-deselection")
         template.instance.hideDropdown();
     });
 
