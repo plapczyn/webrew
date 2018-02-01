@@ -1,13 +1,13 @@
 import { Coffees } from '../../imports/api/collections/coffees.js';
 import { Favorites } from '../../imports/api/collections/coffees.js';
-import { Roasters } from '../../imports/api/collections/coffees.js';
+import { Brands } from '../../imports/api/collections/coffees.js';
 import { Favorite } from '../../lib/DatabaseModels.js';
 import { Coffee } from '../../lib/DatabaseModels.js';
 if (Meteor.isServer) {
   // This code only runs on the server
-  Meteor.publish('coffeeSearch', function (searchText, searchCompany, searchRating, searchRoast) {
+  Meteor.publish('coffeeSearch', function (searchText, searchBrand, searchRating, searchRoast) {
     check(searchText, Match.OneOf(String, null, undefined));
-    check(searchCompany, Match.OneOf([String], null, undefined ));
+    check(searchBrand, Match.OneOf([String], null, undefined ));
     check(searchRating, Match.OneOf(String, null, undefined));
     check(searchRoast, Match.OneOf([String], null, undefined));
 
@@ -15,25 +15,25 @@ if (Meteor.isServer) {
     let projection = {};
     projection.limit = 100;
 
-    if (searchText || searchCompany || searchRating || searchRoast) {
+    if (searchText || searchBrand || searchRating || searchRoast) {
       let regex = new RegExp(searchText, 'i');
       let hasAvgRating = !(searchRating == "0");
       let avgRatingSubquery = [{ AverageRating: { $gte: searchRating } }];
       if (!hasAvgRating) {
         avgRatingSubquery.push({ AverageRating: { $exists: hasAvgRating } });
       }
-      let companySubquery = [];
-      if (searchCompany[0] == "All") {
-        companySubquery.push({Roaster: {$exists: true}}, {Roaster: {$exists: false}});
+      let brandSubquery = [];
+      if (searchBrand[0] == "All") {
+        brandSubquery.push({Brand: {$exists: true}}, {Brand: {$exists: false}});
       } else {
-        companySubquery.push({"Roaster.Name": {$in: searchCompany }});
+        brandSubquery.push({"Brand.Name": {$in: searchBrand }});
       }    
       query = {
         $and: [
-          { $or: [{ "Roaster.Name": { $regex: regex } }, { CoffeeName: { $regex: regex } }, { CoffeeRoast: { $regex: regex } }, { CoffeeDescription: { $regex: regex } }] },
+          { $or: [{ "Brand.Name": { $regex: regex } }, { CoffeeName: { $regex: regex } }, { CoffeeRoast: { $regex: regex } }, { CoffeeDescription: { $regex: regex } }] },
           { $or: [{ CoffeeRoast: { $in: searchRoast } }] },
           { $or: avgRatingSubquery },
-          { $or: companySubquery }
+          { $or: brandSubquery }
         ]
       };
       return Coffees.find(query, projection);
@@ -73,11 +73,11 @@ if (Meteor.isServer) {
     return Coffees.find({ CoffeeName: brewName });
   });
   
-  Meteor.publish('roasters', function(id) {
+  Meteor.publish('brands', function(id) {
     if (id) {
-      return Roasters.find({ _id: id }, { _id: 1, Name: 1});
+      return Brands.find({ _id: id }, { _id: 1, Name: 1});
     } else {
-      return Roasters.find({},{ _id: 1, Name: 1});
+      return Brands.find({},{ _id: 1, Name: 1});
     }
   });
 }

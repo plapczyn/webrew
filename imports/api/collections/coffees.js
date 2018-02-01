@@ -5,7 +5,7 @@ export const Favorites = new Mongo.Collection('favorites');
 export const Coffees = new Mongo.Collection('coffees');
 export const Rebrews = new Mongo.Collection('rebrew');
 export const BrewFiles = new Mongo.Collection('brewfile');
-export const Roasters = new Mongo.Collection('roasters');
+export const Brands = new Mongo.Collection('brands');
 export const Messages = new Mongo.Collection('messages');
 export const RoomUsers = new Mongo.Collection('roomusers');
 export const RatingNotes = new Mongo.Collection('ratingNotes')
@@ -77,28 +77,3 @@ function FillAdvancedReviewData()
     });
 
   }
-
-  // FillAdvancedReviewData();
-  /*
-  db.roasters.insert({Name: "Duncan Donut's"});
-db.roasters.insert({Name: "Maxwell House"});
-db.roasters.insert({Name: "Folgers"});
-db.roasters.insert({Name: "Nescafe"});
-db.roasters.insert({Name: "Eight O'Clock Coffee"});
-db.roasters.insert({Name: "Jacobs"});
-db.roasters.insert({Name: "Sanka"});
-db.roasters.insert({Name: "Peet's"});
-db.roasters.insert({Name: "Sarbucks"});
-db.roasters.insert({Name: "Higher Ground Roasters});
-  */
-
-//  Roasters.insert({Name: "Duncan Donut's"});
-//  Roasters.insert({Name: "Maxwell House"});
-//  Roasters.insert({Name: "Folgers"});
-//  Roasters.insert({Name: "Nescafe"});
-//  Roasters.insert({Name: "Eight O'Clock Coffee"});
-//  Roasters.insert({Name: "Jacobs"});
-//  Roasters.insert({Name: "Sanka"});
-//  Roasters.insert({Name: "Peet's"});
-//  Roasters.insert({Name: "Sarbucks"});
-//  Roasters.insert({Name: "Higher Ground Roasters"});

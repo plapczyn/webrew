@@ -1,12 +1,12 @@
 import './browse.html';
 import './browse.css'
 import { Coffees } from '../../api/collections/coffees.js';
-import { Roasters } from '../../api/collections/coffees.js';
+import { Brands } from '../../api/collections/coffees.js';
 
 Template.Browse.onCreated( function (){
   let template = Template.instance();
   template.searchText   = new ReactiveVar("");
-  template.searchCompany = new ReactiveVar(["All"]);
+  template.searchBrand = new ReactiveVar(["All"]);
   template.searchRating = new ReactiveVar("0");
   template.searchRoast  = new ReactiveVar(["Light Roast","Medium Roast","Medium-Dark Roast","Dark Roast"]);
   template.searching    = new ReactiveVar( false );
@@ -14,7 +14,7 @@ Template.Browse.onCreated( function (){
   template.searchCount  = new ReactiveVar("");
 
   template.autorun( () => {
-    template.subscribe( 'coffeeSearch', template.searchText.get(), template.searchCompany.get(), template.searchRating.get(), template.searchRoast.get(), () => {
+    template.subscribe( 'coffeeSearch', template.searchText.get(), template.searchBrand.get(), template.searchRating.get(), template.searchRoast.get(), () => {
       $('.loader').fadeOut('fast', function(){
         $('.loading-wrapper').fadeIn('slow');
       });
@@ -23,7 +23,7 @@ Template.Browse.onCreated( function (){
       }, 300 );
     });
 
-    template.subscribe('roasters');
+    template.subscribe('brands');
   });
 
 });
@@ -63,8 +63,8 @@ Template.Browse.helpers({
   searchText() {
     return Template.instance().searchText.get();
   },
-  searchCompany() {
-    return Template.instance().searchCompany.get();
+  searchBrand() {
+    return Template.instance().searchBrand.get();
   },  searchRating() {
     return Template.instance().searchRating.get();
   },
@@ -77,8 +77,8 @@ Template.Browse.helpers({
   searchCount() {
     return Template.instance().searchCount.get();
   },
-  companyList() {
-    return Roasters.find({},{ sort: { Name: 1 }});
+  brandList() {
+    return Brands.find({},{ sort: { Name: 1 }});
   }
 });
 
@@ -109,9 +109,9 @@ Template.Browse.events({
     template.searching.set( true );
     event.target.style.display = "none";
   },
-  'change #company'(event, template) {
+  'change #brand'(event, template) {
     let value = event.target.value;
-    template.searchCompany.set( value );
+    template.searchBrand.set( value );
     template.searching.set( true );
   },
   'click .rating'(event, template) {
@@ -143,7 +143,7 @@ Template.Browse.events({
     $('html').animate({scrollTop: 335},500,'swing');
   },
   'click .dropdown-menu a' (event, template){
-    let options = template.searchCompany.get();
+    let options = template.searchBrand.get();
     let $target = $( event.currentTarget ),
        val = $target.attr( 'data-value' ),
        $inp = $target.find( 'input' ),
@@ -162,7 +162,7 @@ Template.Browse.events({
 
     $( event.target ).blur();
     
-    template.searchCompany.set( options );
+    template.searchBrand.set( options );
     return false;
   }
 });

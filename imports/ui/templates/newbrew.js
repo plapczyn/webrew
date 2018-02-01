@@ -19,8 +19,8 @@ Template.newbrew.events({
     const target = event.target;
     // Insert a new coffee into the collection
     let obj = {};
-    obj.coffeeCompanyId = template.company.getKey();
-    obj.coffeeCompanyValue = template.company.getValue();
+    obj.coffeeBrandId = template.brand.getKey();
+    obj.coffeeBrandValue = template.brand.getValue();
     obj.coffeename = target.name.value.trim();
     obj.coffeeroast = target.roast.value.trim();
     obj.coffeedescription = target.description.value.trim();
@@ -58,15 +58,15 @@ Template.newbrew.helpers({
   getWebrewInput(webrewInput){
     console.log(webrewInput);
   },
-  setupInput1(test){
+  setupInput1(){
     let instance = Template.instance();
     let options = {
-      elementId: "companyId",
-      method: "roasters.dropdown",
+      elementId: "brandId",
+      method: "brands.dropdown",
       rowCount: 5,
       required: true,
       initialize: (input) => {
-        instance.company = input;
+        instance.brand = input;
       }
     }
 

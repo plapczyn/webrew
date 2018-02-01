@@ -170,7 +170,7 @@ Template.brew.events({
       title: "How was the brew?",
       coffeeOk: true,
       data: {
-        coffeeId: this.Roaster._id
+        coffeeId: this.Brand._id
       }
     });
   },
@@ -178,11 +178,11 @@ Template.brew.events({
   //Edit Brew
   'click .editModal'(event) {
     let coffee = Coffees.findOne();
-    let roaster = coffee.Roaster;
-    let roasterId = "";
-    let roasterName = "";
-    if(roaster){
-      roasterId = roaster._id;
+    let brand = coffee.Brand;
+    let brandId = "";
+    let brandName = "";
+    if(brand){
+      brandId = brand._id;
     }
     Common.WebrewModal.Show({
       template: "modalEdit",
@@ -191,11 +191,10 @@ Template.brew.events({
       data: {
         ImageUrl: coffee.ImageUrl,
         CoffeeDescription: coffee.CoffeeDescription,
-        CoffeeCompany: coffee.Roaster.Name,
         CoffeeName: coffee.CoffeeName,
         id: coffee._id,
         CoffeeRoast: coffee.CoffeeRoast,
-        roasterId: roasterId
+        brandId: brandId
       }
     });
   }
@@ -220,8 +219,8 @@ Template.modalEdit.events({
       editBrew.ImageUrl = form.imageURL.value;
     }
 
-    editBrew.RoasterId = template.company.getKey();
-    editBrew.RoasterName = template.company.getValue();
+    editBrew.BrandId = template.brand.getKey();
+    editBrew.BrandName = template.brand.getValue();
 
     Meteor.call('coffees.edit', editBrew, (err, res) => {
       if(!err){
@@ -244,13 +243,13 @@ Template.modalEdit.helpers({
   setupInput(){
       let instance = Template.instance();
       let options = {
-        elementId: "companyId",
-        method: "roasters.dropdown",
+        elementId: "brandId",
+        method: "brands.dropdown",
         rowCount: 5,
         required: true,
-        key: instance.data.roasterId,
+        key: instance.data.brandId,
         initialize: (input) => {
-          instance.company = input;
+          instance.brand = input;
         }
       }
   
