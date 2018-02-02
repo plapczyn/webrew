@@ -9,7 +9,7 @@
                 {{#each item in items}}
                 <li class="webrew-input-list-item webrew-unselectable" data-key="{{item.key}}" data-value="{{item.value}}">
                     {{#if checkbox}}
-                    <span class="webrew-input-checkbox-container"><i class="fa fa-check webrew-input-checkbox-unchecked webrew-unselectable" aria-checked="false"></i></span>
+                    <span class="webrew-input-checkbox-container"><i class="fa fa-check {{#if item.checked}}webrew-input-checkbox-checked{{else}}webrew-input-checkbox-unchecked{{/if}} webrew-unselectable" aria-checked="false"></i></span>
                     {{/if}}
                     {{#each textObject in textArray item.value}}{{#if textObject.highlight}}<span class="webrew-input-list-item-highlighted-search">{{textObject.text}}</span>{{else}}<span>{{textObject.text}}</span>{{/if}}{{/each}}
                 </li>

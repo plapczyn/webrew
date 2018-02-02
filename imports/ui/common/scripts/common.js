@@ -569,6 +569,7 @@ class WebrewInput
     static CheckBoxHelpers()
     {
         Template.webrewInput.helpers({
+            checked: false,
             checkbox: true,
             items: function () {
                 let template = Template.instance();
@@ -695,12 +696,12 @@ class WebrewInput
                 actualTarget.toggleClass("webrew-input-checkbox-checked");
                 actualTarget.attr("aria-checked", !(actualTarget.attr("aria-checked") == "true"));
                 template.$(".webrew-input-list-item").toggleClass("webrew-input-active-click", false);
-
+                template.instance.setSelectedValue()
                 template.$("#" + template.data.elementId).focus();
                 template.jqElement.trigger("webrew-input-mouseup");
             },
             'click .webrew-input-list-item': function (event, template) {
-        
+                template.$(".webrew-input-list-item").toggleClass("webrew-input-active-click", false);
             },
             // Custom Events for the control
             'mouseleave webrew-dynamic-input': function (event, template) {

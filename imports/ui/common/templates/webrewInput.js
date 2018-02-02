@@ -20,6 +20,7 @@ Template.webrewInput.onCreated(function () {
     this.searchBoxHeight = new ReactiveVar((this.data.rowCount) * 44 + 2)
     this.key = new ReactiveVar(this.data.key || "");
     this.instance = new Common.WebrewInput(this);
+    this.checkedItems = new ReactiveVar([]);
     this.dataBind = (forceBind) => {
         if(this.searching.get() || forceBind){
             Meteor.call(this.data.method, this.searchText.get(), this.key.get(), (err, res) => {
