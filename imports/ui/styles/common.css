@@ -154,3 +154,24 @@
     font-weight: bold;
     font-size: 1.220rem;
 }
+
+.webrew-input-checkbox-checked
+{
+    border: solid 2px rgb(82, 82, 82);
+    color: grey;
+    background-color: transparent;
+    border-radius: 2px;
+}
+
+.webrew-input-checkbox-unchecked
+{
+    border: solid 2px grey;
+    color: transparent;
+    background-color: transparent;
+    border-radius: 2px;
+}
+
+.webrew-input-checkbox-container
+{
+    padding-right: 10px;
+}

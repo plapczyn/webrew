@@ -64,6 +64,7 @@ Template.newbrew.helpers({
       elementId: "brandId",
       method: "brands.dropdown",
       rowCount: 5,
+      mode: "checkbox",
       required: true,
       initialize: (input) => {
         instance.brand = input;
