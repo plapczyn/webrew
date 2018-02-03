@@ -24,6 +24,7 @@ Template.webrewInput.onCreated(function () {
     this.searchBoxHeight = new ReactiveVar((this.data.rowCount) * 44 + 2)
     this.key = new ReactiveVar(this.data.key || "");
     this.selectedItems = new ReactiveVar([]);
+    // this.data.checkbox = this.data.mode == "checkbox";
 
     this.dataBind = (forceBind) => {
         if(this.searching.get() || forceBind){
@@ -242,19 +243,18 @@ Template.webrewInput.onRendered(function () {
     });
 
     template.$("#" + template.data.elementId).blur((event) => {
-        if(template.items.get().some(value => template.instance.getValue() == value.value)){
-            let key = template.items.get().filter(value => value.value == template.instance.getValue())[0].key
-            if(!template.isMultipleSelection)
-            {
-                template.instance.setKey(key);
+        if(!template.isMultipleSelection)
+        {
+            if(template.items.get().some(value => template.instance.getValue() == value.value)){
+                let key = template.items.get().filter(value => value.value == template.instance.getValue())[0].key
+
+                    template.instance.setKey(key);
             }
-        }
-        else{
-            if(!template.isMultipleSelection)
-            {
+            else{
                 template.instance.setKey("");
             }
         }
+        
         template.instance._setTemporaryKeyboardSelectedItem(null);
         template.jqElement.trigger("webrew-input-deselection")
         template.instance.hideDropdown();

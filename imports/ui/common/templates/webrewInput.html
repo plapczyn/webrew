@@ -1,6 +1,6 @@
 <template name="webrewInput">
     <div class="webrew-input-control-container" style="position:relative">
-        <input id="{{elementId}}" type="text" autocomplete="off" class="webrew-dynamic-input" />
+        <input id="{{elementId}}" placeholder="{{#if checkbox}}({{selectedItemCount}}) Selected Items{{/if}}" type="text" autocomplete="off" class="webrew-dynamic-input" />
         <input type="hidden" id="{{elementId}}_hiddenKey"/>
         <button tabindex="-1" type="button" class="clearInput webrew-input-clear-button webrew-input-clear-hidden btn btn-info"><i class="fa fa-times-circle webrew-input-clear-icon" aria-hidden="true"></i></button>
         <button tabindex="-1" type="button" class="btn btn-info toggleDropdown toggleDropdowntest webrew-input-dropdown-button"><i tabindex="-1" id="webrew-input-icon" class="fa fa-chevron-down " aria-hidden="true"></i></button>
