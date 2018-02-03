@@ -3,10 +3,14 @@ import '../../styles/common.css';
 import Common from '../scripts/common.js'
 
 Template.webrewInput.onCreated(function () {
+    //TODO make this nicer
     this.data.mode = this.data.mode || "default";
-    
-    Common.WebrewInput.RegisterEvents(this);
-    Common.WebrewInput.RegisterHelpers(this);
+    this.isMultipleSelection = false || this.data.mode == "checkbox";
+
+    this.instance = new Common.WebrewInput(this);
+
+    this.instance.registerEvents(this);
+    this.instance.registerHelpers(this);
 
     this.isMouseDown = new ReactiveVar(false);
     this.highlightedIndex = new ReactiveVar(-2);
@@ -19,8 +23,8 @@ Template.webrewInput.onCreated(function () {
     this.searching = new ReactiveVar(false);
     this.searchBoxHeight = new ReactiveVar((this.data.rowCount) * 44 + 2)
     this.key = new ReactiveVar(this.data.key || "");
-    this.instance = new Common.WebrewInput(this);
-    this.checkedItems = new ReactiveVar([]);
+    this.selectedItems = new ReactiveVar([]);
+
     this.dataBind = (forceBind) => {
         if(this.searching.get() || forceBind){
             Meteor.call(this.data.method, this.searchText.get(), this.key.get(), (err, res) => {
@@ -34,10 +38,12 @@ Template.webrewInput.onCreated(function () {
 
                     if(res.length == 0){
                         this.instance.setKey("");
+                        // TODO
                         // this.$("#" + this.data.elementId).toggleClass("webrew-dynamic-input-new", true);
                     }
                     else
                     {
+                        // TODO
                         // this.$("#" + this.data.elementId).toggleClass("webrew-dynamic-input-new", false);
                     }
 
@@ -61,6 +67,7 @@ Template.webrewInput.onCreated(function () {
     if(typeof this.data.initialize === "function"){
         this.data.initialize(this.instance);
     }
+
     this.dataBind(true);
 });
 
@@ -237,11 +244,18 @@ Template.webrewInput.onRendered(function () {
     template.$("#" + template.data.elementId).blur((event) => {
         if(template.items.get().some(value => template.instance.getValue() == value.value)){
             let key = template.items.get().filter(value => value.value == template.instance.getValue())[0].key
-            template.instance.setKey(key);
+            if(!template.isMultipleSelection)
+            {
+                template.instance.setKey(key);
+            }
         }
         else{
-            template.instance.setKey("");
+            if(!template.isMultipleSelection)
+            {
+                template.instance.setKey("");
+            }
         }
+        template.instance._setTemporaryKeyboardSelectedItem(null);
         template.jqElement.trigger("webrew-input-deselection")
         template.instance.hideDropdown();
     });
@@ -257,7 +271,3 @@ Template.webrewInput.onRendered(function () {
         }
     })
 });
-
-function randomFunction(template){
-    
-}

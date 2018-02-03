@@ -8,6 +8,7 @@ import '../common/templates/imgupload.js'
 
 Template.newbrew.onCreated( function (){
   let template = Template.instance();
+
 });
 
 Template.newbrew.events({
@@ -56,7 +57,7 @@ Template.newbrew.helpers({
     return Common.WebrewColorPallet.roastName.Color;
   },
   getWebrewInput(webrewInput){
-    // console.log(webrewInput);
+    console.log("WE DID IT");
   },
   setupInput1(){
     let instance = Template.instance();
@@ -64,10 +65,25 @@ Template.newbrew.helpers({
       elementId: "brandId",
       method: "brands.dropdown",
       rowCount: 5,
-      mode: "checkbox",
+      // mode: "checkbox",
       required: true,
       initialize: (input) => {
         instance.brand = input;
+      }
+    }
+
+    return options;
+  },
+  setupInput2(){
+    let instance = Template.instance();
+    let options = {
+      elementId: "brandId2",
+      method: "brands.dropdown",
+      rowCount: 5,
+      // mode: "checkbox",
+      required: true,
+      initialize: (input) => {
+        instance.brand2 = input;
       }
     }
 

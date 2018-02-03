@@ -228,6 +228,12 @@ class WebrewInput
 {
     static instances = [];
     template;
+    temporaryKeyboardSelectedItem = {};
+    templateEvents = {};
+    templateHelpers = [];
+    
+    static helpersAreRegistered = false;
+    static eventsAreRegistered = false;
 
     constructor(template)
     {
@@ -251,24 +257,90 @@ class WebrewInput
 
     getKey()
     {
-        return this.template.$("#" + this.template.data.elementId + "_hiddenKey").val();
+        // return this.template.$("#" + this.template.data.elementId + "_hiddenKey").val();
+        if(this.template.isMultipleSelection)
+        {
+            return this.getKeys()[0] || "";
+        }
+        else
+        {
+            return this.template.key.get();
+        }
     }
 
-    getValue()
+    getKeys()
     {
-        return this.template.$("#" + this.template.data.elementId).val();
+        return this.template.selectedItems.get().map(item => item.key);
     }
 
     setKey(key)
     {
-        this.template.$("#" + this.template.data.elementId + "_hiddenKey").val(key);
-        this.template.key.set(key);
+        // this.template.$("#" + this.template.data.elementId + "_hiddenKey").val(key);
+        if(this.template.isMultipleSelection)
+        {
+            console.error("Method is invalid with multiple selection");
+            throw new Meteor.Error("Set Key", "Method is invalid with multiple selection");
+        }
+        else
+        {
+            this.template.key.set(key);
+        }
+    }
+
+    getValue()
+    {
+        if(this.template.isMultipleSelection)
+        {
+            return this.template.selectedItems.get().map(item => item.value)[0] || "";
+        }
+        else
+        {
+            return this.template.$("#" + this.template.data.elementId).val();
+        }
     }
 
     setValue(value)
     {
-        this.template.$("#" + this.template.data.elementId).val(value);
-        this.template.$(".webrew-input-control-container").trigger("webrew-input-selection-changed")
+        if(this.template.isMultipleSelection)
+        {
+            console.error("Method is invalid with multiple selection");
+            throw new Meteor.Error("Set Key", "Method is invalid with multiple selection");
+        }
+        else
+        {
+            this.template.$("#" + this.template.data.elementId).val(value);
+            // TODO
+            // this.template.$(".webrew-input-control-container").trigger("webrew-input-selection-changed");
+        }
+    }
+
+    selectItem(item)
+    {
+        if(this.template.isMultipleSelection)
+        {
+            this.template.selectedItems.set([...this.template.selectedItems.get(), item]);
+        }
+        else
+        {
+            this.template.selectedItems.set([item]);
+        }
+    }
+
+    deselectItem(item)
+    {
+        if(this.template.isMultipleSelection)
+        {
+            this.template.selectedItems.set([...this.template.selectedItems.get().filter(iItem => iItem.key != item.key)]);
+        }
+        else
+        {
+            this.template.selectedItems.set([]);
+        }
+    }
+
+    _setTemporaryKeyboardSelectedItem(item)
+    {
+        this.temporaryKeyboardSelectedItem = item;
     }
 
     static GetById(id)
@@ -322,20 +394,14 @@ class WebrewInput
         this.template.isDropDownOpen.set(show);
     }
 
-    setSelectedValue(){
-        let element = this.template.$(".webrew-input-active")[0];
-        let value = this.template.$(element).attr("data-value")
-        let key = this.template.$(element).attr("data-key")
-        this.setValue(value);
-        this.setKey(key);
+    setSelectedValue(item){
+        this.selectItem(item);
+        this.template.jqElement.trigger("wi-selection-changed", [item]);
     }
 
     clearInput()
     {
-        this.setKey("");
-        this.setValue("");
-        
-        if(this.template.isDropDownOpen.get())
+        if (this.template.isDropDownOpen.get())
         {
             this.template.highlightedIndex.set(-1);
         }
@@ -343,11 +409,9 @@ class WebrewInput
         {
             this.template.highlightedIndex.set(-2);
         }
-
+        
         this.template.searchText.set("");
         this.template.searching.set(false);
-        this.template.key.set("");
-        this.template.dataBind(true);
         this.template.$(".webrew-input-list-item").toggleClass("webrew-input-active", false);
         this.template.$(".webrew-input-clear-button").toggleClass("webrew-input-clear-hidden", true);
         this.template.$("#" + this.template.data.elementId).focus();
@@ -434,7 +498,6 @@ class WebrewInput
             
                     this.template.searchText.set(text);
                     this.template.highlightedIndex.set(-1);
-                    this.template.dataBind(true);
                     switch (event.which){
                         case 13:
                         break;
@@ -464,44 +527,50 @@ class WebrewInput
           if (handled) {
             // Suppress "double action" if event handled
           }
+
+          this.template.jqElement.trigger("wi-internal-keyup");
     }
 
-    static RegisterEvents(instance){
+    registerEvents(instance){
         switch(instance.data.mode)
         {
             case "default":
             {
-                WebrewInput.DefaultEvents();
+                this.initDefaultEvents();
                 break;
             }
             case "checkbox":
             {
-                WebrewInput.CheckBoxEvents();
+                // WebrewInput.CheckBoxEvents();
                 break;
             }
         }
+
+        this.registerDefaultEvents();
     }
 
-    static RegisterHelpers(instance)
+    registerHelpers(instance)
     {
         switch(instance.data.mode)
         {
             case "default":
             {
-                WebrewInput.DefaultHelpers();
+                this.initDefaultHelpers();
                 break;
             }
             case "checkbox":
             {
-                WebrewInput.CheckBoxHelpers();
+                // WebrewInput.CheckBoxHelpers();
                 break;
             }
         }
+
+        this.registerDefaultHelpers();
     }
 
-    static DefaultHelpers()
+    initDefaultHelpers()
     {
-        Template.webrewInput.helpers({
+        this.templateHelpers = {
             items: function () {
                 let template = Template.instance();
                 return template.items.get();
@@ -563,210 +632,174 @@ class WebrewInput
         
                 return textChunckArray;
             }
+        }
+    }
+
+    registerDefaultHelpers()
+    {
+        if(WebrewInput.helpersAreRegistered)
+        {
+            return;
+        }
+
+        Template.webrewInput.helpers({
+            items: this.templateHelpers.items,
+            textArray: this.templateHelpers.textArray
         });
+
+        WebrewInput.helpersAreRegistered = true;
     }
     
     static CheckBoxHelpers()
     {
-        Template.webrewInput.helpers({
-            checked: false,
-            checkbox: true,
-            items: function () {
-                let template = Template.instance();
-                return template.items.get();
-            },
-            textArray: function(text){
-                let template = Template.instance();
-                let searchText = template.searchText.get();
-                let textChunckArray = [];
         
-                function expandString(string, search, topLevel){
-                    if(typeof topLevel === "undefined" && string.indexOf(search) == 0 && search != ""){
-                        return ["", search, ...expandString(string.slice(string.indexOf(search) + search.length), search, false)];
-                    }
-        
-                    if(search == ""){
-                        return [string]
-                    }
-                    let array = [];
-                    let newString = string.slice(0, string.indexOf(search));
-        
-                    if(string.indexOf(search) == 0){
-                        return [search, ...expandString(string.slice(string.indexOf(search) + search.length), search, false)];
-                    }
-        
-                    if(!(newString != "" && (string.indexOf(search) >= 0))){
-                        return [string];
-                    }
-        
-                    return [newString, search, ...expandString(string.slice(string.indexOf(search) + search.length), search, false)];
-                }
-                
-                let splitArray = expandString(text, searchText);
-            
-                if(template.searching.get()){
-                    splitArray.forEach((value, index) => {
-                        if(value == ""){
-                            return;
-                        }
-                        if(!(index % 2)){
-                            textChunckArray.push({
-                                highlight: false,
-                                text: value.replace(/ /g, '\u00a0')
-                            });
-                        }
-                        else{
-                            textChunckArray.push({
-                                highlight: true,
-                                text: template.searchText.get().replace(/ /g, '\u00a0')
-                            });
-                        }
-                    });
-                }
-                else{
-                    textChunckArray = [{
-                        highlight: false,
-                        text: text
-                    }];
-                }
-        
-                return textChunckArray;
-            }
-        });
     }
 
-    static CheckBoxEvents()
-    {
-        Template.webrewInput.events({
-            'keydown .webrew-dynamic-input': function(event, template){
-                template.instance.keyDown(event);
-            },
-            'keyup .webrew-dynamic-input': function(event, template){
-                template.instance.keyUp(event);
-            },
-            'click .clearInput': function (event, template){
-                event.preventDefault();
-                template.searching.set(false);
-                template.instance.clearInput();
-            },
-            'mousedown .toggleDropdown': function (event, template) {
-                event.preventDefault();
-                event.stopPropagation();
-                template.jqElement.trigger("webrew-input-toggle-dropdown-mousedown");
-            },
-            'click .toggleDropdown': function (event, template) {
-                event.preventDefault();
-                event.stopPropagation();
-            },
-            'mouseup .toggleDropdowntest': function (event, template) {
-                event.preventDefault();
-                event.stopPropagation();
-                template.jqElement.trigger("webrew-input-toggle-dropdown-mouseup");
-            },
-            'mouseleave .webrew-input-list-container': function (event, template) {
-                if(template.isMouseDown.get()){
-                    template.$(".webrew-input-list-item").removeClass("webrew-input-active-click", false)
-                }
-                template.$(".webrew-input-list-item").toggleClass("webrew-item-highlight", false)
-            },
-            'mouseenter .webrew-input-list-item': function (event, template) {
-                if (template.isMouseDown.get()) {
-                    template.$(".webrew-input-list-item").toggleClass("webrew-input-active-click", false)
-                    template.$(event.target).toggleClass("webrew-input-active-click", true)
-                }
-                else{
-                    template.$('.webrew-input-list-item').toggleClass("webrew-item-highlight", false)
-                    template.$(event.target).addClass("webrew-item-highlight")
-                }
-            },
-            'mouseleave .webrew-input-list-item': function (event, template) {
-                template.$(event.target).removeClass("webrew-item-highlight")
-            },
-            'mousedown .webrew-input-list-item': function (event, template) {
-                event.stopPropagation();
-                event.preventDefault();
-                template.$(".webrew-input-list-item").toggleClass("webrew-input-active-click", false);
-                template.$(event.currentTarget).addClass("webrew-input-active-click");
+    // static CheckBoxEvents()
+    // {
+    //     Template.webrewInput.events({
+    //         'keydown .webrew-dynamic-input': function(event, template){
+    //             template.instance.keyDown(event);
+    //         },
+    //         'keyup .webrew-dynamic-input': function(event, template){
+    //             template.instance.keyUp(event);
+    //         },
+    //         'click .clearInput': function (event, template){
+    //             event.preventDefault();
+    //             template.searching.set(false);
+    //             template.instance.clearInput();
+    //         },
+    //         'mousedown .toggleDropdown': function (event, template) {
+    //             event.preventDefault();
+    //             event.stopPropagation();
+    //             template.jqElement.trigger("webrew-input-toggle-dropdown-mousedown");
+    //         },
+    //         'click .toggleDropdown': function (event, template) {
+    //             event.preventDefault();
+    //             event.stopPropagation();
+    //         },
+    //         'mouseup .toggleDropdowntest': function (event, template) {
+    //             event.preventDefault();
+    //             event.stopPropagation();
+    //             template.jqElement.trigger("webrew-input-toggle-dropdown-mouseup");
+    //         },
+    //         'mouseleave .webrew-input-list-container': function (event, template) {
+    //             if(template.isMouseDown.get()){
+    //                 template.$(".webrew-input-list-item").removeClass("webrew-input-active-click", false)
+    //             }
+    //             template.$(".webrew-input-list-item").toggleClass("webrew-item-highlight", false)
+    //         },
+    //         'mouseenter .webrew-input-list-item': function (event, template) {
+    //             if (template.isMouseDown.get()) {
+    //                 template.$(".webrew-input-list-item").toggleClass("webrew-input-active-click", false)
+    //                 template.$(event.target).toggleClass("webrew-input-active-click", true)
+    //             }
+    //             else{
+    //                 template.$('.webrew-input-list-item').toggleClass("webrew-item-highlight", false)
+    //                 template.$(event.target).addClass("webrew-item-highlight")
+    //             }
+    //         },
+    //         'mouseleave .webrew-input-list-item': function (event, template) {
+    //             template.$(event.target).removeClass("webrew-item-highlight")
+    //         },
+    //         'mousedown .webrew-input-list-item': function (event, template) {
+    //             event.stopPropagation();
+    //             event.preventDefault();
+    //             template.$(".webrew-input-list-item").toggleClass("webrew-input-active-click", false);
+    //             template.$(event.currentTarget).addClass("webrew-input-active-click");
 
-                template.$(".webrew-input-control-container").trigger("webrew-input-mousedown");
-            },
-            'mouseup .webrew-input-list-item': function (event, template) {
-                let actualTarget = $(event.currentTarget).find(".fa-check");
-                actualTarget.toggleClass("webrew-input-checkbox-unchecked");
-                actualTarget.toggleClass("webrew-input-checkbox-checked");
-                actualTarget.attr("aria-checked", !(actualTarget.attr("aria-checked") == "true"));
-                template.$(".webrew-input-list-item").toggleClass("webrew-input-active-click", false);
-                template.instance.setSelectedValue()
-                template.$("#" + template.data.elementId).focus();
-                template.jqElement.trigger("webrew-input-mouseup");
-            },
-            'click .webrew-input-list-item': function (event, template) {
-                template.$(".webrew-input-list-item").toggleClass("webrew-input-active-click", false);
-            },
-            // Custom Events for the control
-            'mouseleave webrew-dynamic-input': function (event, template) {
+    //             template.$(".webrew-input-control-container").trigger("webrew-input-mousedown");
+    //         },
+    //         'mouseup .webrew-input-list-item': function (event, template) {
+    //             let actualTarget = $(event.currentTarget).find(".fa-check");
+    //             actualTarget.toggleClass("webrew-input-checkbox-unchecked");
+    //             actualTarget.toggleClass("webrew-input-checkbox-checked");
+    //             actualTarget.attr("aria-checked", !(actualTarget.attr("aria-checked") == "true"));
+    //             template.$(".webrew-input-list-item").toggleClass("webrew-input-active-click", false);
+    //             template.instance.setSelectedValue()
+    //             template.$("#" + template.data.elementId).focus();
+    //             template.jqElement.trigger("webrew-input-mouseup");
+    //         },
+    //         'click .webrew-input-list-item': function (event, template) {
+    //             console.log(template.$(":focus"))
+    //             template.$(".webrew-input-list-item").toggleClass("webrew-input-active-click", false);
+    //         },
+    //         // Custom Events for the control
+    //         'mouseleave webrew-dynamic-input': function (event, template) {
         
-            },
-            'mouseenter webrew-dynamic-input': function (event, template) {
+    //         },
+    //         'mouseenter webrew-dynamic-input': function (event, template) {
         
-            },
-            'webrew-input-dropdown-hide': function (event, template) {
-                template.highlightedIndex.set(-2);
-                template.range.set([0, template.data.maxVisibleRange])
-                template.$('.webrew-input-list-item').toggleClass("webrew-item-highlight", false)
-                template.$('.webrew-input-list-item').toggleClass("webrew-input-active", false)
-                template.$('.webrew-input-list-item').toggleClass("webrew-input-active-click", false)
-                // console.log("webrew-input-dropdown-hide");
-            },
-            'webrew-input-dropdown-show': function (event, template) {
-                // console.log("webrew-input-dropdown-show");
-            },
-            'webrew-input-selection-changed': function(event, template){
-                template.$(".webrew-input-clear-icon").toggleClass("webrew-input-clear-icon-new", false);
-                template.$("#" + template.data.elementId).toggleClass("webrew-dynamic-input-new", false);
-                template.$(".webrew-input-clear-button").toggleClass("webrew-input-clear-hidden", false);
+    //         },
+    //         'webrew-input-dropdown-hide': function (event, template) {
+    //             template.highlightedIndex.set(-2);
+    //             template.range.set([0, template.data.maxVisibleRange])
+    //             template.$('.webrew-input-list-item').toggleClass("webrew-item-highlight", false)
+    //             template.$('.webrew-input-list-item').toggleClass("webrew-input-active", false)
+    //             template.$('.webrew-input-list-item').toggleClass("webrew-input-active-click", false)
+    //             // console.log("webrew-input-dropdown-hide");
+    //         },
+    //         'webrew-input-dropdown-show': function (event, template) {
+    //             // console.log("webrew-input-dropdown-show");
+    //         },
+    //         'webrew-input-selection-changed': function(event, template){
+    //             // template.$(".webrew-input-clear-icon").toggleClass("webrew-input-clear-icon-new", false);
+    //             // template.$("#" + template.data.elementId).toggleClass("webrew-dynamic-input-new", false);
+    //             // template.$(".webrew-input-clear-button").toggleClass("webrew-input-clear-hidden", false);
         
-                // console.log("webrew-input-selection-changed")
-            },
-            'webrew-input-mousedown': function(event, template){
-                template.isMouseDown.set(true);
-                // console.log("webrew-input-mousedown")
-            },
-            'webrew-input-mouseup': function (event, template){
-                template.isMouseDown.set(false);
-                // console.log("webrew-input-mouseup")
-            },
-            'webrew-input-toggle-dropdown-mousedown': function (event, template){
-                // console.log("webrew-input-toggle-dropdown-mousedown");
-                template.jqElement.trigger("webrew-input-mousedown");
-            },
-            'webrew-input-toggle-dropdown-mouseup': function(event, template){
-                if(template.isMouseDown.get()){
-                    template.$("#" + template.data.elementId).focus();
-                    template.highlightedIndex.set(template.highlightedIndex.get() + 1);
-                    template.instance.toggleDropdown()
-                }
-                template.jqElement.trigger("webrew-input-mouseup");
-                // console.log("webrew-input-toggle-dropdown-mousedown");
-            },
-            'webrew-input-clear': function(event, template){
-                template.$(".webrew-input-clear-icon").toggleClass("webrew-input-clear-icon-new", false);
-                template.$("#" + template.data.elementId).toggleClass("webrew-dynamic-input-new", false);
-                // console.log('webrew-input-clear');
-            },
-            'webrew-input-deselection': function(event, template){
-                if(template.instance.getValue() != ""){
+    //             // console.log("webrew-input-selection-changed")
+    //         },
+    //         'webrew-input-mousedown': function(event, template){
+    //             template.isMouseDown.set(true);
+    //             // console.log("webrew-input-mousedown")
+    //         },
+    //         'webrew-input-mouseup': function (event, template){
+    //             template.isMouseDown.set(false);
+    //             // console.log("webrew-input-mouseup")
+    //         },
+    //         'webrew-input-toggle-dropdown-mousedown': function (event, template){
+    //             // console.log("webrew-input-toggle-dropdown-mousedown");
+    //             template.jqElement.trigger("webrew-input-mousedown");
+    //         },
+    //         'webrew-input-toggle-dropdown-mouseup': function(event, template){
+    //             if(template.isMouseDown.get()){
+    //                 template.$("#" + template.data.elementId).focus();
+    //                 template.highlightedIndex.set(template.highlightedIndex.get() + 1);
+    //                 template.instance.toggleDropdown()
+    //             }
+    //             template.jqElement.trigger("webrew-input-mouseup");
+    //             // console.log("webrew-input-toggle-dropdown-mousedown");
+    //         },
+    //         'webrew-input-clear': function(event, template){
+    //             template.$(".webrew-input-clear-icon").toggleClass("webrew-input-clear-icon-new", false);
+    //             template.$("#" + template.data.elementId).toggleClass("webrew-dynamic-input-new", false);
+    //             // console.log('webrew-input-clear');
+    //         },
+    //         'webrew-input-deselection': function(event, template){
+    //             if(template.instance.getValue() != ""){
                     
-                    template.$(".webrew-input-clear-icon").toggleClass("webrew-input-clear-icon-new", template.instance.getKey() == "");
-                    template.$("#" + template.data.elementId).toggleClass("webrew-dynamic-input-new", template.instance.getKey() == "");
-                }
-            }
-        });
-    }
+    //                 template.$(".webrew-input-clear-icon").toggleClass("webrew-input-clear-icon-new", template.instance.getKey() == "");
+    //                 template.$("#" + template.data.elementId).toggleClass("webrew-dynamic-input-new", template.instance.getKey() == "");
+    //             }
+    //         },
+    //         'wi-selection-changed': function(event, template, item){
+    //             template.jqElement.trigger('wi-internal-selection-changed', [item]);
 
-    static DefaultEvents()
+    //             if(typeof template.data.onSelectionChanged === "function"){
+    //                 template.data.onSelectionChanged(event, template, item);
+    //             }
+    //         },
+    //         'wi-internal-selection-changed': function(event, template, item){
+                
+    //         },
+    //         'wi-internal-keyup': function(event, template){
+    //         }
+    //     });
+    // }
+
+    initDefaultEvents()
     {
-        Template.webrewInput.events({
+        this.templateEvents = {
             'keydown .webrew-dynamic-input': function(event, template){
                 template.instance.keyDown(event);
             },
@@ -820,14 +853,14 @@ class WebrewInput
             },
             'mouseup .webrew-input-list-item': function (event, template) {
                 template.$(event.currentTarget).toggleClass("webrew-input-active", true);
-                template.instance.setSelectedValue();
+                template.instance.setSelectedValue(event.currentTarget.dataset);
                 template.instance.toggleDropdown();
                 template.$("#" + template.data.elementId).focus();
                 template.jqElement.trigger("webrew-input-mouseup");
             },
-            'click .webrew-input-list-item': function (event, template) {
+            // 'click .webrew-input-list-item': function (event, template) {
         
-            },
+            // },
             // Custom Events for the control
             'mouseleave webrew-dynamic-input': function (event, template) {
         
@@ -875,18 +908,78 @@ class WebrewInput
                 // console.log("webrew-input-toggle-dropdown-mousedown");
             },
             'webrew-input-clear': function(event, template){
+                template.key.set("");
+                template.instance.setKey("");
+                template.instance.setValue("");
+                template.dataBind(true);
                 template.$(".webrew-input-clear-icon").toggleClass("webrew-input-clear-icon-new", false);
                 template.$("#" + template.data.elementId).toggleClass("webrew-dynamic-input-new", false);
                 // console.log('webrew-input-clear');
             },
             'webrew-input-deselection': function(event, template){
                 if(template.instance.getValue() != ""){
-                    
                     template.$(".webrew-input-clear-icon").toggleClass("webrew-input-clear-icon-new", template.instance.getKey() == "");
                     template.$("#" + template.data.elementId).toggleClass("webrew-dynamic-input-new", template.instance.getKey() == "");
                 }
+            },
+            'wi-selection-changed': function(event, template, item){
+                template.jqElement.trigger('wi-internal-selection-changed', [item]);
+
+                if(typeof template.data.onSelectionChanged === "function"){
+                    template.data.onSelectionChanged(event, template, item);
+                }
+            },
+            'wi-internal-selection-changed': function(event, template, item){
+                template.$(".webrew-input-clear-icon").toggleClass("webrew-input-clear-icon-new", false);
+                template.$("#" + template.data.elementId).toggleClass("webrew-dynamic-input-new", false);
+                template.$(".webrew-input-clear-button").toggleClass("webrew-input-clear-hidden", false);
+
+                template.instance.setValue(item.value);
+                template.instance.setKey(item.key);
+            },
+            'wi-internal-keyup': function(event, template){
+                template.dataBind(true);
+                
             }
+        };
+    }
+
+    registerDefaultEvents()
+    {
+        if(WebrewInput.eventsAreRegistered)
+        {
+            return;
+        }
+
+        Template.webrewInput.events({
+            'keydown .webrew-dynamic-input': (event, template) => this.templateEvents['keydown .webrew-dynamic-input'](event, template),
+            'keyup .webrew-dynamic-input': (event, template) => this.templateEvents['keyup .webrew-dynamic-input'](event, template),
+            'click .clearInput': (event, template) => this.templateEvents['click .clearInput'](event, template),
+            'mousedown .toggleDropdown': (event, template) => this.templateEvents['mousedown .toggleDropdown'](event, template),
+            'click .toggleDropdown': (event, template) => this.templateEvents['click .toggleDropdown'](event, template),
+            'mouseup .toggleDropdowntest': (event, template) => this.templateEvents['mouseup .toggleDropdowntest'](event, template),
+            'mouseleave .webrew-input-list-container': (event, template) => this.templateEvents['mouseleave .webrew-input-list-container'](event, template),
+            'mouseenter .webrew-input-list-item': (event, template) => this.templateEvents['mouseenter .webrew-input-list-item'](event, template),
+            'mouseleave .webrew-input-list-item': (event, template) => this.templateEvents['mouseleave .webrew-input-list-item'](event, template),
+            'mousedown .webrew-input-list-item': (event, template) => this.templateEvents['mousedown .webrew-input-list-item'](event, template),
+            'mouseup .webrew-input-list-item': (event, template) => this.templateEvents['mouseup .webrew-input-list-item'](event, template),
+            'mouseleave webrew-dynamic-input': (event, template) => this.templateEvents['mouseleave webrew-dynamic-input'](event, template),
+            'mouseenter webrew-dynamic-input': (event, template) => this.templateEvents['mouseenter webrew-dynamic-input'](event, template),
+            'webrew-input-dropdown-hide': (event, template) => this.templateEvents['webrew-input-dropdown-hide'](event, template),
+            'webrew-input-dropdown-show': (event, template) => this.templateEvents['webrew-input-dropdown-show'](event, template),
+            'webrew-input-selection-changed': (event, template) => this.templateEvents['webrew-input-selection-changed'](event, template),
+            'webrew-input-mousedown': (event, template) => this.templateEvents['webrew-input-mousedown'](event, template),
+            'webrew-input-mouseup': (event, template) => this.templateEvents['webrew-input-mouseup'](event, template),
+            'webrew-input-toggle-dropdown-mousedown': (event, template) => this.templateEvents['webrew-input-toggle-dropdown-mousedown'](event, template),
+            'webrew-input-toggle-dropdown-mouseup': (event, template) => this.templateEvents['webrew-input-toggle-dropdown-mouseup'](event, template),
+            'webrew-input-clear': (event, template) => this.templateEvents['webrew-input-clear'](event, template),
+            'webrew-input-deselection': (event, template) => this.templateEvents['webrew-input-deselection'](event, template),
+            'wi-selection-changed': (event, template, item) => this.templateEvents['wi-selection-changed'](event, template, item),
+            'wi-internal-selection-changed': (event, template, item) => this.templateEvents['wi-internal-selection-changed'](event, template, item),
+            'wi-internal-keyup': (event, template) => this.templateEvents['wi-internal-keyup'](event, template),
         });
+
+        WebrewInput.eventsAreRegistered = true;
     }
 }
 
@@ -910,7 +1003,9 @@ class WebrewInputKeys
                 {
                     template.$(list[selectedIndex]).addClass("webrew-input-active")
                     template.highlightedIndex.set(selectedIndex);
-                    template.instance.setSelectedValue(template);
+                    template.instance.setValue(template.$(list[selectedIndex ])[0].dataset.value);
+                    template.instance._setTemporaryKeyboardSelectedItem(template.$(list[selectedIndex ])[0].dataset)
+
                     template.instance.showDropdown(template);
                     if(selectedIndex > template.data.maxVisibleRange){
                         template.$(".webrew-input-list-container").scrollTop((selectedIndex) * 44)
@@ -935,7 +1030,8 @@ class WebrewInputKeys
             template.$(list[index]).toggleClass("webrew-input-active", false)
             template.$(list[index + 1]).addClass("webrew-input-active")
             template.highlightedIndex.set(index + 1);
-            template.instance.setSelectedValue(template);
+            template.instance.setValue(template.$(list[index + 1])[0].dataset.value);
+            template.instance._setTemporaryKeyboardSelectedItem(template.$(list[index + 1])[0].dataset)
         }
         if(index == range[1]){
             template.range.set([range[0] + 1, range[1] + 1])
@@ -987,25 +1083,24 @@ class WebrewInputKeys
             template.$(".webrew-input-list-container").scrollTop((index - 1) * 44)
         }
 
-        template.instance.setSelectedValue(template);
+        template.instance.setValue(template.$(list[index - 1])[0].dataset.value);
+        template.instance._setTemporaryKeyboardSelectedItem(template.$(list[index - 1])[0].dataset)
+        
         template.searching.set(false);
         return;
     }
 
     static Enter(event, template)
     {
+        event.preventDefault();
+        event.stopPropagation();
+
         if(template.isDropDownOpen.get() && !template.searching.get())
         {
-            template.instance.setSelectedValue();
+            template.instance.setSelectedValue($(".webrew-input-active")[0].dataset);
+            template.instance._setTemporaryKeyboardSelectedItem(null);
             template.instance.hideDropdown();
             template.searching.set(false);
-            event.preventDefault();
-            event.stopPropagation();
-        }
-        else
-        {
-            event.preventDefault();
-            event.stopPropagation();
         }
 
         return;
