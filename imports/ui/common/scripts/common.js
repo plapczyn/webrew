@@ -303,9 +303,8 @@ class WebrewInput
     {
         if(this.template.isMultipleSelection)
         {
-            this.template.$("#" + this.template.data.elementId).val(value);
-            // console.error("Method is invalid with multiple selection");
-            // throw new Meteor.Error("Set Key", "Method is invalid with multiple selection");
+            //TODO Find a bette way to handle this...
+            // this.template.$("#" + this.template.data.elementId).val(value);
         }
         else
         {
@@ -775,6 +774,7 @@ class WebrewInput
             'wi-internal-selection-changed': function(event, template, item){
             },
             'wi-internal-keyup': function(event, template){
+                template.dataBind();
             },
             'wi-internal-enter': function(event, template, target){
                 target.dataset.checked = !(target.dataset.checked === "true");
@@ -889,9 +889,6 @@ class WebrewInput
                 template.$("#" + template.data.elementId).focus();
                 template.jqElement.trigger("webrew-input-mouseup");
             },
-            // 'click .webrew-input-list-item': function (event, template) {
-        
-            // },
             // Custom Events for the control
             'mouseleave webrew-dynamic-input': function (event, template) {
         
@@ -966,8 +963,7 @@ class WebrewInput
                 }
             },
             'wi-internal-keyup': function(event, template){
-                // template.dataBind(true);
-                
+                template.dataBind(true);
             },
             'wi-internal-enter': function(event, template, target){
                 template.instance.setSelectedValue(target.dataset);
@@ -1131,8 +1127,6 @@ class WebrewInputKeys
 
         if(template.isDropDownOpen.get() && !template.searching.get())
         {
-            // template.instance.setSelectedValue($(".webrew-input-active")[0].dataset);
-            // template.instance.hideDropdown();
             template.jqElement.trigger("wi-internal-enter", [$(".webrew-input-active")[0]])
             template.instance._setTemporaryKeyboardSelectedItem(null);
             template.searching.set(false);
