@@ -6,29 +6,28 @@ import {Config} from '../imports/api/collections/coffees.js';
 
 Meteor.startup(() => {
   // code to run on server at startup
-    var DBConfig;
-    DBConfig = Config.findOne({ "service": "facebook","env":"Live" });
+    // var DBConfig;
+    // DBConfig = Config.findOne({ "service": "facebook","env":"Live" });
 
-    ServiceConfiguration.configurations.remove({
-        service: "facebook"
-    });
-    ServiceConfiguration.configurations.insert({
-        service: "facebook",
-        appId: DBConfig.appId,
-        secret: DBConfig.secret
-    });
+    // ServiceConfiguration.configurations.remove({
+    //     service: "facebook"
+    // });
+    // ServiceConfiguration.configurations.insert({
+    //     service: "facebook",
+    //     appId: DBConfig.appId,
+    //     secret: DBConfig.secret
+    // });
 
-    DBConfig = Config.findOne({ "service": "google","env":"Live" });
+    // DBConfig = Config.findOne({ "service": "google","env":"Live" });
     
-    ServiceConfiguration.configurations.remove({
-        service: "google"
-    });
-    ServiceConfiguration.configurations.insert({
-        service: "google",
-        clientId: DBConfig.clientId,
-        secret: DBConfig.secret
-    });
-
+    // ServiceConfiguration.configurations.remove({
+    //     service: "google"
+    // });
+    // ServiceConfiguration.configurations.insert({
+    //     service: "google",
+    //     clientId: DBConfig.clientId,
+    //     secret: DBConfig.secret
+    // });
 });
 
 Accounts.onCreateUser(function (options, user) {
