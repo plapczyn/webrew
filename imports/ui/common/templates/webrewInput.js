@@ -24,11 +24,12 @@ Template.webrewInput.onCreated(function () {
     this.searchBoxHeight = new ReactiveVar((this.data.rowCount) * 44 + 2)
     this.key = new ReactiveVar(this.data.key || "");
     this.selectedItems = new ReactiveVar([]);
-    // this.data.checkbox = this.data.mode == "checkbox";
+    this.totalRecordCount = new ReactiveVar(0);
+    this.data.checkbox = this.data.mode == "checkbox";
 
     this.dataBind = (forceBind) => {
         if(this.searching.get() || forceBind){
-            Meteor.call(this.data.method, this.searchText.get(), this.key.get(), (err, res) => {
+            Meteor.call(this.data.method, { search: this.searchText.get(), key: this.key.get() }, (err, res) => {
                 if(!err){
                     this.items.set(res);
 
@@ -65,10 +66,19 @@ Template.webrewInput.onCreated(function () {
         }
     }
 
+    this.getRecordCount = () => {
+        Meteor.call(this.data.method, {recordCount: true}, (err, res) => {
+            if(!err){
+                this.totalRecordCount.set(res || 0);
+            }
+        });
+    }
+
     if(typeof this.data.initialize === "function"){
         this.data.initialize(this.instance);
     }
 
+    this.getRecordCount();
     this.dataBind(true);
 });
 
@@ -214,7 +224,7 @@ Template.webrewInput.onCreated(function () {
 
 Template.webrewInput.onRendered(function () {
     var template = Template.instance();
-    this.jqElement = template.$(".webrew-input-control-container");
+    template.jqElement = template.$(".webrew-input-control-container");
     // Set Height of dropdown
     let height = template.data.rowCount;
     height = height * 44;

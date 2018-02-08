@@ -3,11 +3,9 @@ import WebrewInputDbMethods from '../../lib/WebrewInputMethods.js';
 
 if (Meteor.isServer) {
     Meteor.methods({
-        'brands.dropdown'(search, key, limit) {
+        'brands.dropdown'(criteria) {
             return WebrewInputDbMethods.GetDropdownList({
-                search: search,
-                key: key,
-                limit: limit,
+                criteria: criteria,
                 document: Brands,
                 valueProperty: "Name"
             });

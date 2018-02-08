@@ -83,7 +83,7 @@ Template.newbrew.helpers({
       mode: "checkbox",
       required: true,
       initialize: (input) => {
-        instance.brand2 = input;
+        instance.brand = input;
       }
     }
 

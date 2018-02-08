@@ -62,21 +62,22 @@ if (Meteor.isServer) {
       };
 
       if (!Coffees.findOne({CoffeeName: newbrew.CoffeeName})) {
-        Coffees.insert(newbrew, (err, id) => {
-          WebrewInputDbMethods.UpdateSource({
-            key: brew.CoffeeBrandId,
-            collection: Brands,
-            value: brew.CoffeeBrandValue,
-            valueProperty: "Name",
-            name: "Brand",
-            collectionUpdates: [{
-              id: id,
-              collection: Coffees
-            }]
-          });
+        Coffees.insert(newbrew);
+        let id = Coffees.findOne({CoffeeName: newbrew.CoffeeName})._id;
+
+        WebrewInputDbMethods.UpdateSource({
+          key: brew.CoffeeBrandId,
+          collection: Brands,
+          value: brew.CoffeeBrandValue,
+          valueProperty: "Name",
+          name: "Brand",
+          collectionUpdates: [{
+            id: id,
+            collection: Coffees
+          }]
         });
 
-        return Coffees.findOne({CoffeeName: newbrew.CoffeeName})._id;
+        return id;
       }
       else{
         throw new Meteor.Error('coffees.add', "Coffee Already Exists")

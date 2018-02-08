@@ -230,7 +230,7 @@ class WebrewInput
     template;
     temporaryKeyboardSelectedItem = {};
     templateEvents = {};
-    templateHelpers = [];
+    templateHelpers = {};
     
     static helpersAreRegistered = false;
     static eventsAreRegistered = false;
@@ -303,8 +303,9 @@ class WebrewInput
     {
         if(this.template.isMultipleSelection)
         {
-            console.error("Method is invalid with multiple selection");
-            throw new Meteor.Error("Set Key", "Method is invalid with multiple selection");
+            this.template.$("#" + this.template.data.elementId).val(value);
+            // console.error("Method is invalid with multiple selection");
+            // throw new Meteor.Error("Set Key", "Method is invalid with multiple selection");
         }
         else
         {
@@ -415,7 +416,6 @@ class WebrewInput
         this.template.$(".webrew-input-list-item").toggleClass("webrew-input-active", false);
         this.template.$(".webrew-input-clear-button").toggleClass("webrew-input-clear-hidden", true);
         this.template.$("#" + this.template.data.elementId).focus();
-
         this.template.$(".webrew-input-control-container").trigger("webrew-input-clear");
     }
 
@@ -498,6 +498,7 @@ class WebrewInput
             
                     this.template.searchText.set(text);
                     this.template.highlightedIndex.set(-1);
+                    this.template.jqElement.trigger("wi-internal-keyup");
                     switch (event.which){
                         case 13:
                         break;
@@ -528,7 +529,7 @@ class WebrewInput
             // Suppress "double action" if event handled
           }
 
-          this.template.jqElement.trigger("wi-internal-keyup");
+          
     }
 
     registerEvents(instance){
@@ -652,6 +653,22 @@ class WebrewInput
             selectedItemCount: function(){
                 let instance = Template.instance();
                 return instance.selectedItems.get().length;
+            },
+            checkedAll: function(){
+                let template = Template.instance();
+                return template.instance.templateHelpers.checkedAll();
+            },
+            checkedSome: function(){
+                let template = Template.instance();
+                return template.instance.templateHelpers.checkedSome();
+            },
+            checkedNone: function(){
+                let template = Template.instance();
+                return template.instance.templateHelpers.checkedNone();
+            },
+            checkAllState: function(){
+                let template = Template.instance();
+                return template.instance.templateHelpers.checkAllState();
             }
         });
 
@@ -661,7 +678,43 @@ class WebrewInput
    checkBoxHelpersOverride()
     {
         let overrideHelpers = {
-            checkbox: true
+            checkbox: true,
+            checkedAll: function(){
+                let template = Template.instance();
+                return template.selectedItems.get().length == template.totalRecordCount.get();
+            },
+            checkedSome: function(){
+                let template = Template.instance();
+                return template.selectedItems.get().length > 0 && template.selectedItems.get().length < template.totalRecordCount.get();
+            },
+            checkedNone: function(){
+                let template = Template.instance();
+                return template.selectedItems.get().length == 0;
+            },
+            checkAllState: function(){
+                let template = Template.instance();
+                
+                if (template.selectedItems.get().length == template.totalRecordCount.get()){
+                    return "true";
+                }
+                if(template.selectedItems.get().length > 0 && template.selectedItems.get().length < template.totalRecordCount.get()){
+                    return "mixed";
+                }
+                if(template.selectedItems.get().length == 0){
+                    return "false";
+                }
+            },
+            items: function(){
+                let template = Template.instance();
+                
+                if(template.searchText.get() == ""){
+                    return template.items.get();
+                }
+                else{
+                    let searchText = template.searchText.get();
+                    return template.items.get().filter(item => item.value.toLowerCase().indexOf(searchText.toLowerCase()) >= 0);
+                }
+            }
         }
 
         Object.keys(overrideHelpers).forEach((key) => {
@@ -672,34 +725,38 @@ class WebrewInput
     checkboxEventsOverride()
     {
        let overrideEvents = {
+            'click .clearInput': function (event, template){
+                event.preventDefault();
+                template.searching.set(false);
+                template.instance.clearInput();
+            },
             'mouseup .webrew-input-list-item': function (event, template) {
-                let actualTarget = $(event.currentTarget).find(".fa-check");
-                actualTarget.toggleClass("webrew-input-checkbox-unchecked");
-                actualTarget.toggleClass("webrew-input-checkbox-checked");
-                actualTarget.attr("aria-checked", !(actualTarget.attr("aria-checked") == "true"));
+                event.currentTarget.dataset.checked = !(event.currentTarget.dataset.checked === "true");
                 template.$(".webrew-input-list-item").toggleClass("webrew-input-active-click", false);
 
-                if(actualTarget.attr("aria-checked") == "true"){
+                if(event.currentTarget.dataset.checked === "true"){
                     template.instance.selectItem(event.currentTarget.dataset);
+                    let items = template.items.get();
+                    items.filter(value => value.key == event.currentTarget.dataset.key)[0].checked = true;
+                    template.items.set(items);
                 }
                 else{
                     template.instance.deselectItem(event.currentTarget.dataset);
+                    let items = template.items.get();
+                    items.filter(value => value.key == event.currentTarget.dataset.key)[0].checked = false;
+                    template.items.set(items);
                 }
 
                 template.$("#" + template.data.elementId).focus();
                 template.jqElement.trigger("webrew-input-mouseup");
             },
             'webrew-input-selection-changed': function(event, template){
-                // template.$(".webrew-input-clear-icon").toggleClass("webrew-input-clear-icon-new", false);
-                // template.$("#" + template.data.elementId).toggleClass("webrew-dynamic-input-new", false);
-                // template.$(".webrew-input-clear-button").toggleClass("webrew-input-clear-hidden", false);
-        
-                // console.log("webrew-input-selection-changed")
+
             },
             'webrew-input-clear': function(event, template){
                 template.$(".webrew-input-clear-icon").toggleClass("webrew-input-clear-icon-new", false);
                 template.$("#" + template.data.elementId).toggleClass("webrew-dynamic-input-new", false);
-                // console.log('webrew-input-clear');
+                template.instance.showDropdown();
             },
             'webrew-input-deselection': function(event, template){
                 if(template.instance.getValue() != ""){
@@ -716,9 +773,53 @@ class WebrewInput
                 }
             },
             'wi-internal-selection-changed': function(event, template, item){
-                
             },
             'wi-internal-keyup': function(event, template){
+            },
+            'wi-internal-enter': function(event, template, target){
+                target.dataset.checked = !(target.dataset.checked === "true");
+
+                if(target.dataset.checked === "true"){
+                    template.instance.selectItem(target.dataset);
+                    let items = template.items.get();
+                    items.filter(value => value.key == target.dataset.key)[0].checked = true;
+                    template.items.set(items);
+                }
+                else{
+                    template.instance.deselectItem(target.dataset);
+                    let items = template.items.get();
+                    items.filter(value => value.key == target.dataset.key)[0].checked = false;
+                    template.items.set(items);
+                }
+
+                template.$("#" + template.data.elementId).focus();
+            },
+            'click .js-check-all': function(event, template){
+                let checkState = $(event.target).attr("aria-checked");
+
+                template.items.set(template.items.get().map(item => {
+                    item.checked = (checkState === "false");
+                    return item;
+                }));
+
+                template.$('.webrew-input-list-item').toArray().forEach((item) => {
+                    if(checkState === "false"){
+                        item.dataset.checked = true;
+                        template.instance.selectItem(item.dataset);
+                    }
+                    else{
+                        item.dataset.checked = false;
+                        template.instance.deselectItem(item.dataset);
+                    }
+                });
+
+
+                template.$("#" + template.data.elementId).focus();
+                template.instance.showDropdown();
+            },
+            'mousedown .js-check-all': function(event, template){
+                event.preventDefault();
+                event.stopPropagation();
             }
         }
 
@@ -865,8 +966,12 @@ class WebrewInput
                 }
             },
             'wi-internal-keyup': function(event, template){
-                template.dataBind(true);
+                // template.dataBind(true);
                 
+            },
+            'wi-internal-enter': function(event, template, target){
+                template.instance.setSelectedValue(target.dataset);
+                template.instance.hideDropdown();
             }
         };
     }
@@ -884,6 +989,8 @@ class WebrewInput
             'click .clearInput': function(event, template) { template.instance.templateEvents['click .clearInput'](event, template) },
             'mousedown .toggleDropdown': function(event, template) { template.instance.templateEvents['mousedown .toggleDropdown'](event, template) },
             'click .toggleDropdown': function(event, template) { template.instance.templateEvents['click .toggleDropdown'](event, template) },
+            'click .js-check-all': function(event, template) { template.instance.templateEvents['click .js-check-all'](event, template) },
+            'mousedown .js-check-all': function(event, template, target) { template.instance.templateEvents[ 'mousedown .js-check-all'](event, template) },
             'mouseup .toggleDropdowntest': function(event, template) { template.instance.templateEvents['mouseup .toggleDropdowntest'](event, template) },
             'mouseleave .webrew-input-list-container': function(event, template) { template.instance.templateEvents['mouseleave .webrew-input-list-container'](event, template) },
             'mouseenter .webrew-input-list-item': function(event, template) { template.instance.templateEvents['mouseenter .webrew-input-list-item'](event, template) },
@@ -902,7 +1009,9 @@ class WebrewInput
             'webrew-input-clear': function(event, template) { template.instance.templateEvents['webrew-input-clear'](event, template) },
             'webrew-input-deselection': function(event, template) { template.instance.templateEvents['webrew-input-deselection'](event, template) },
             'wi-selection-changed': function(event, template, item) { template.instance.templateEvents['wi-selection-changed'](event, template, item) },
-            'wi-internal-keyup': function(event, template) { template.instance.templateEvents['wi-internal-keyup'](event, template) }
+            'wi-internal-keyup': function(event, template) { template.instance.templateEvents['wi-internal-keyup'](event, template) },
+            'wi-internal-enter': function(event, template, target) { template.instance.templateEvents['wi-internal-enter'](event, template, target) },
+           
         });
 
         WebrewInput.eventsAreRegistered = true;
@@ -916,7 +1025,7 @@ class WebrewInputKeys
         let index = template.highlightedIndex.get();
         let list = template.$(".webrew-input-list").children().toArray();
         let range = [...template.range.get()];   
-        
+
         if (template.$(".webrew-input-list-container").hasClass("webrew-input-list-hidden")) {
             if(template.key.get() !== ""){
                 let selectedIndex = 0;
@@ -929,7 +1038,7 @@ class WebrewInputKeys
                 {
                     template.$(list[selectedIndex]).addClass("webrew-input-active")
                     template.highlightedIndex.set(selectedIndex);
-                    template.instance.setValue(template.$(list[selectedIndex ])[0].dataset.value);
+                    template.instance.setValue(template.$(list[selectedIndex])[0].dataset.value);
                     template.instance._setTemporaryKeyboardSelectedItem(template.$(list[selectedIndex ])[0].dataset)
 
                     template.instance.showDropdown(template);
@@ -968,7 +1077,6 @@ class WebrewInputKeys
             template.$(".webrew-input-list-container").scrollTop((index - 1) * 44)
         }
 
-        // console.log(index, range);
         template.searching.set(false);
         return;
     }
@@ -1023,9 +1131,10 @@ class WebrewInputKeys
 
         if(template.isDropDownOpen.get() && !template.searching.get())
         {
-            template.instance.setSelectedValue($(".webrew-input-active")[0].dataset);
+            // template.instance.setSelectedValue($(".webrew-input-active")[0].dataset);
+            // template.instance.hideDropdown();
+            template.jqElement.trigger("wi-internal-enter", [$(".webrew-input-active")[0]])
             template.instance._setTemporaryKeyboardSelectedItem(null);
-            template.instance.hideDropdown();
             template.searching.set(false);
         }
 

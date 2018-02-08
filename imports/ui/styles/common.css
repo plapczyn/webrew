@@ -68,6 +68,11 @@
     background-color: #B3DFAD;
 }
 
+.webrew-dynamic-input-checkbox
+{
+    padding-left: 50px !important;
+}
+
 .webrew-input-clear-icon-new
 {
     color: #B3DFAD;
@@ -165,21 +170,49 @@
 
 .webrew-input-checkbox-checked
 {
+    width: 24px;
+    text-align: center;
     border: solid 2px rgb(82, 82, 82);
-    color: grey;
-    background-color: transparent;
     border-radius: 2px;
+    color: rgb(82, 82, 82);
+    transition: .2s;
+    font-size: 1.250rem;
+    cursor: pointer;
 }
 
 .webrew-input-checkbox-unchecked
 {
-    border: solid 2px grey;
     color: transparent;
     background-color: transparent;
+    border: solid 2px rgb(82, 82, 82);
     border-radius: 2px;
+    width: 24px;
+    text-align: center;
+    transition: .2s;
+    font-size: 1.250rem;
+    cursor: pointer;
+}
+
+.webrew-input-checkbox-intermediate
+{
+    width: 24px;
+    text-align: center;
+    border: solid 2px rgb(82, 82, 82);
+    border-radius: 2px;
+    color: rgb(82, 82, 82);
+    transition: .2s;
+    font-size: 1.250rem;
+    cursor: pointer;
 }
 
 .webrew-input-checkbox-container
 {
     padding-right: 10px;
+}
+
+.webrew-input-checkall-container
+{
+    position: absolute;
+    top: 8px;
+    left: 9px;
 }
