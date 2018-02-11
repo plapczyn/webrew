@@ -213,7 +213,7 @@ Template.modalEdit.events({
     editBrew._id = Template.instance().data.id;
     //Set imageURL as loader image during upload
     if ( document.getElementById("imageURL").hasAttribute("disabled") ){
-      editBrew.ImageUrl = "/img/coffee.gif";
+      editBrew.ImageUrl = "/img/loading.gif";
       uploadImgur(editBrew._id, "coffees.uploadImgur");
     } else {
       editBrew.ImageUrl = form.imageURL.value;

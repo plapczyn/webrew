@@ -11,7 +11,7 @@ Template.meBrewModal.events({
     brewfile.Email = form.email.value;
     //Upload if imageURL has attribute disabled for file
     if ( document.getElementById("imageURL").hasAttribute("disabled") ){
-      brewfile.ImageUrl = "/img/coffee.gif";
+      brewfile.ImageUrl = "/img/loading.gif";
       uploadImgur( Meteor.userId() , "brewfile.uploadImgur");
     } else {
       brewfile.ImageUrl = form.imageURL.value;

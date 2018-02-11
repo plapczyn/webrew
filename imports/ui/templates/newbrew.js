@@ -27,7 +27,7 @@ Template.newbrew.events({
     obj.CoffeeDescription = target.description.value.trim();
     //Set imageURL as loader image during upload
     if ( document.getElementById("imageURL").hasAttribute("disabled") ){
-      obj.ImageUrl = "/img/coffee.gif";
+      obj.ImageUrl = "/img/loading.gif";
     } else {
       obj.ImageUrl = target.imageURL.value.trim();
     }
