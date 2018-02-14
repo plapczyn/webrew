@@ -35,11 +35,28 @@ Template.imgupload.events({
         }
         reader.readAsDataURL(file);
   },
-  'keyup #imageURL, change #imageURL' ( event, template) {
+  'keyup #imageURL' ( event, template) {
     let value = event.target.value.trim();
     let e = document.getElementById("imageClear");
     if (value.length > 0 ){
       e.classList.remove("image-upload-hidden");
+    } else {
+      e.classList.add("image-upload-hidden");
+    }
+  },
+  'change #imageURL' ( event, template) {
+    var value = event.target.value.trim();
+    var e = document.getElementById("imageClear");
+    if (value.length > 0 ){
+      e.classList.remove("image-upload-hidden");
+      var img = new Image();
+      img.onload = function() {
+        imgDiv.innerHTML = "<img src=\"" + value + "\">";
+      };
+      img.onerror = function(){
+        Common.WebrewToast.Show("The entered image URL is invalid or an error has occurred image, please try again.", "error");
+      };        
+      img.src = value;
     } else {
       e.classList.add("image-upload-hidden");
     }
