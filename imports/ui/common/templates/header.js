@@ -16,6 +16,9 @@ Template.Header.onRendered( function() {
     case "/chat":
       e = document.getElementById("hbchat"); e.classList.add("active");
       break;
+    case "/about":
+      e = document.getElementById("hbabout"); e.classList.add("active");
+      break;
     case "/mebrew/:userName":
       e = document.getElementById("hbprofile"); e.classList.add("active");
       break;

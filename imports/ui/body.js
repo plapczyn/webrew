@@ -14,5 +14,6 @@ import './templates/brew.js';
 import './templates/rebrew.js';
 import './templates/chat.js';
 import './templates/browse.js';
+import './templates/about.html';
 import './styles/common.css';
 
