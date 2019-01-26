@@ -1,0 +1,33 @@
+{
+    "service": {
+        "facebook": {
+            "env": {
+                "Live": {
+                    "appId": "",
+                    "secret": ""
+                },
+                "Dev": {
+                    "appId": "",
+                    "secret": ""
+                }
+            }
+        },
+        "google": {
+            "env": {
+                "Live": {
+                    "clientId": "",
+                    "secret": ""
+                },
+                "Dev": {
+                    "clientId": "",
+                    "secret": ""
+                }
+            }
+        },
+        "imgur": {
+            "client_id": "",
+            "client_secret": "",
+            "refresh_token": ""
+        }
+    }
+}
