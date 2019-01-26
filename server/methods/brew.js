@@ -107,7 +107,7 @@ if (Meteor.isServer) {
           if (Coffees.findOne({ CoffeeName: brew.CoffeeName })._id == brew._id) {
             //Update Coffee-no name update
             Coffees.update(id, { $set: { CoffeeRoast: brew.CoffeeRoast } });
-            Coffees.update(id, { $set: { ImageUrl: brew.ImagUrl } });
+            Coffees.update(id, { $set: { ImageUrl: brew.ImageUrl } });
             Coffees.update(id, { $set: { CoffeeDescription: brew.CoffeeDescription } });
             return;
           }
@@ -119,7 +119,7 @@ if (Meteor.isServer) {
 
           Coffees.update(id, { $set: { CoffeeName: brew.CoffeeName } });
           Coffees.update(id, { $set: { CoffeeRoast: brew.CoffeeRoast } });
-          Coffees.update(id, { $set: { ImageUrl: brew.ImagUrl } });
+          Coffees.update(id, { $set: { ImageUrl: brew.ImageUrl } });
           Coffees.update(id, { $set: { CoffeeDescription: brew.CoffeeDescription } });
           //Update reBrews
           Rebrews.update(brew._id, { $set: { CoffeeName: brew.CoffeeName } }, { multi: true });
