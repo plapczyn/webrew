@@ -15,7 +15,7 @@ Meteor.startup(() => {
     var DBConfig, FileConfig, filedata;
 
     DBConfig = Config.findOne({ "service": "facebook","env":"Live" }); 
-    filedata = fs.readFileSync( __meteor_bootstrap__.serverDir.split(".meteor")[0] + "serviceconfig.json");
+    filedata = Assets.getText('serviceconfig.json');
     FileConfig = JSON.parse(filedata);
 
     if (DBConfig) {
